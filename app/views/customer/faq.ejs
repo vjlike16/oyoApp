@@ -1,0 +1,185 @@
+<!-- include header -->
+<% include common/header %>
+<!-- / end include -->	
+
+    <div class="common_sec"> 
+      <div class="container">
+        <h2 class="page_title">FAQ</h2>
+        <div id="accordion" class="accordion_sec">
+          <div class="card">
+            <div class="card-header">
+              <a class="card-link" data-toggle="collapse" href="#collapse_01">
+               <%= result[0].question %>
+              </a>
+            </div>
+            <div id="collapse_01" class="collapse show" data-parent="#accordion">
+              <div class="card-body">
+                <%= result[0].answer %> 
+              </div>
+            </div>
+          </div>
+
+          <% for(var i=1; i<result.length; i++) { %>
+          <div class="card">
+            <div class="card-header">
+              <a class="card-link collapsed" data-toggle="collapse" href="#collapse_<%=result[i]._id%>">
+               <%= result[i].question %>
+              </a>
+            </div>
+            <div id="collapse_<%=result[i]._id%>" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                <%= result[i].answer %> 
+              </div>
+            </div>
+          </div>
+        <% } %>
+
+        </div>
+        <!-- end:accordion_sec -->
+
+        <!-- <div class="submit_feedback">
+          <div class="feedback_title">
+            <h3 class="feedback_title_heading" data-toggle="collapse" data-target="#demo">Submit a Request/Feedback</h3>
+          </div>
+
+          <div class="feedback_form" id="demo">
+            <p>If you have any question or suggestion please fil the below form and we will get in touch with you.</p>
+            <form name="Faq_request" role="form" method="POST" id="Faq_request">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Email Address</label> 
+                  <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>User Type</label>
+                  <select class="form-control" name="user_type" id="user_type">
+                    <option value="Customer">Customer</option>
+                    <option value="Service_provider">Business Owner</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Subject</label>
+                  <select class="form-control" name="subject" id="subject">
+                    <option value="OYOapp">OYOapp</option>
+                    <option value="Issue">Issue</option>
+                    <option value="PR">PR</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea class="form-control" cols="30" rows="6" name="description" id="description"></textarea>
+                </div>
+              </div>
+
+              <div class="col-md-12" style="text-align: center;">
+                <div class="form-group">
+                  <p class="g-recaptcha" id="catpcha" name="catpcha" 
+                      data-sitekey="6Lck4v0aAAAAAPjZsap7oVDBkEAuvKgr3mwUbjv5">
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <button type="submit" class="btn btn_sty_1" style="min-width: 135px;">Submit</button>
+              </div>
+
+            </div>
+            </form>
+          </div>
+        </div> -->
+        <!-- end:submit_feedback -->
+
+      </div>
+    </div>
+    <!-- end:common_sec -->
+
+   
+          
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <script src="<%- baseUrl %>js/sweetalert2.js"></script>
+      
+        <script>
+          $(document).ready(function () {	
+            // $('.navbar-nav .nav-item a').click(function(){
+            // $('.nav-item').removeClass('nav-active');   // it remove all the active links
+            $('.faq-link').addClass('nav-active');    // it adds active class to the current link you have opened
+        // });
+          $("form[name='Faq_request']").validate({
+            ignore: [],
+            debug: false,
+            rules: {
+              email: {
+                required: true,
+              },
+              user_type: {
+                required: true
+              },
+              subject: {
+                required: true
+              },
+              description: {
+                required: true
+              },
+            },
+            messages:{
+              email:{
+                  required: 'Please enter email address.'
+              },
+              user_type: {
+                         required: 'Please select user type.'
+              },
+              subject: {
+                         required: 'Please select subject.'
+              },
+              description: {
+                         required: 'Please enter description.'
+              },
+            },
+      
+            submitHandler: function (form) {
+              console.log("called  :");
+              let a = document.getElementById("#g-recaptcha-response");
+              console.log(a);
+              $(":submit").attr("disabled", true);
+            //	form.submit();
+              $.ajax({
+                 type: "POST",
+                 url: "<%- baseUrl %>faq_request",
+                 data: $('#Faq_request').serialize(), // serializes the form's elements.
+                 success: function(data)
+                 {
+                   if(data.success == true){
+                    Swal.fire("Your feedback has been submitted.")
+                     $("#Faq_request")[0].reset();
+                     grecaptcha.reset();
+                     location.reload();    // to reload the same page again
+                     window.location.href = "<%- baseUrl %>faq"; 
+                   }
+                   else{
+                    Swal.fire(data.msg);
+                   }
+                 }
+               });
+            }
+          });
+      });
+        </script>
+
+<!-- include footer -->
+<% include common/footer %>
+<!-- / end footer -->	

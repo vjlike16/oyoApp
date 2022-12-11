@@ -1,0 +1,192 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+
+<div>
+
+
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Subscription Plan</h3>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Add Subscription Plan</h2>
+					<div class="clearfix"></div>
+				</div>
+				<form name="form"
+					action="/admin/manage_subscription_plan/save" role="form" method="post"
+					class="login-form form-horizontal form-label-left">
+					<fieldset>
+						<div class="col-sm-12">
+							<span class="section">Information</span>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Plan Name <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<input type="text" name="plan_name" id="plan_name" class="form-control" required
+									placeholder="Enter Plan Name" />
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Trial Duration in Days <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+									<input class="form-control" required type="text" name="trial_duration" id="trial_duration" max="99"
+										 placeholder="Enter Trial Duration in days" />
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Monthly Price<span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+									<input class="form-control" required type="text" name="monthly_price" id="monthly_price" max="1000000" onchange="pricechange()"
+										 placeholder=" Enter Monthly Price" />
+							</div>
+						</div>
+                        <!-- <div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Annual Price<span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+									<input class="form-control" required type="text" name="annual_price" id="annual_price" max="1000000" onchange="pricechange()"
+										 placeholder="Annual Price" />
+							</div>
+						</div> -->
+						
+					</fieldset>
+ 
+
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<!-- Change this to a button or input when using this as a form -->
+							<button type="submit" class="btn btn-primary">Submit</button>
+							<a href="<%- baseUrl %>admin/manage_subscription_plan" class="btn btn-primary">Cancel</a>
+						</div>
+					</div>
+				</form>
+				<!-- /.table-responsive -->
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Datepicker -->
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+<script>
+	// function pricechange(){ 
+	// 	var monthly_price = $('#monthly_price').val();
+	// 	var annual_price = $('#annual_price').val();
+	// 	if(monthly_price == undefined){return};
+	// 	if(annual_price == undefined) {return};
+	// 	if(monthly_price == null ) {return};
+	// 	if(annual_price == null) {return};
+	// 	if(annual_price<=monthly_price){
+	// 		alert("Monthly price should be less than equal to annual price");
+	// 	}
+	//}
+	$(document).ready(function() {
+		$('#monthly_price').on('input', function () {
+        this.value = this.value.match(/^\d+\.?\d{0,2}/);
+    });
+	$('#annual_price').on('input', function () {
+        this.value = this.value.match(/^\d+\.?\d{0,2}/);
+    });
+		var lastDate = new Date();
+		$(function() {
+			$(".datePicker").datepicker({
+				dateFormat: "mm-dd-yy",
+				changeMonth: true,
+				changeYear: true,
+				//maxDate: lastDate,
+				yearRange: '1940:' + new Date().getFullYear()
+			});
+		});
+	});	
+</script>
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(function () {
+		$("form[name='form']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				plan_name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 50,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+					remote: {
+						url: "<%- baseUrl %>admin/manage_subscription_plan/checknameexist",
+						type: "post",
+						data: {
+							name: function () {
+								return $('input[name="name"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					},
+				},
+				// annual_price: {
+				// 	required : true,
+				// 	//annual_Price_lessThen_Monthly_Price:['annual_price','monthly_price'],
+				// 	positiveNumber:true,
+				// 	greaterThan: "#monthly_price"
+				// },
+				trial_duration: {
+					required : true,
+					positiveNumber:true,
+					digits:true
+				},
+				monthly_price: {
+					required : true,
+					//annual_Price_lessThen_Monthly_Price:['annual_price','monthly_price'],
+					positiveNumber:true
+
+				}
+			},
+
+			messages: {
+				plan_name: {
+					required: "Please enter plan name.",
+					maxlength: "Maximum length is 50.",
+					remote: "This name already exist in our system, Please use another."
+				},
+				trial_duration: {
+					required: "Please enter trial duration.",
+				},
+				// annual_price: {
+				// 	required: "Please enter annual price.",
+				// 	greaterThan:"Annual price should be greater than monthly plan."
+				// },
+				monthly_price: {
+					required: "Please enter monthly price.",
+					//annual_Price_lessThen_Monthly_Price:"Monthly plan should be less than annual plan."
+				},
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

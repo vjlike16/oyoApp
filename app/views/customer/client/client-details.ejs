@@ -1,0 +1,201 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+  <!-- / end include -->
+
+  <div class="main_content">
+    <div class="container-fluid">
+      <section class="isp_info">
+        <div class="isp_info_block">
+          <div class="isp_pic_circle"> <img src="<%-baseUrl%>uploads/profile/<%= connectedList.cusProfile %>"  alt=""> </div>
+          <!-- end:isp_pic_circle -->
+
+          <script>
+            var currentDate = new Date();
+            var trsnsactionDate =  '<%- connectedList.lastTrasaction %>';
+            trsnsactionDate = new Date(trsnsactionDate);
+            trsnsactionDate.setDate(trsnsactionDate.getDate()-5);
+            var transactionClass = 'red-bor';
+            var Difference_In_Time = currentDate.getTime() - trsnsactionDate.getTime();
+          
+// To calculate the no. of days between two dates
+var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+//alert(Difference_In_Days);
+            var transcoId = '<%= connectedList._id %>';
+            if(Difference_In_Days >= 30){
+            $('#img_'+transcoId).addClass('red-bor');
+            }
+            console.log("trsnsactionDate-----" , trsnsactionDate);
+            console.log("currentDate-----" , currentDate);
+          </script>
+          
+          <div class="isp_info_sec">
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <h3 class="isp_detail_name mt-3"><%= connectedList.cusName %></h3>
+              </div>
+              <div class="col-md-6">
+                <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span class="isp_status connected"></span>Connected</h5>
+                <!-- <a href="#" class="isp_info_sec_al_right report"><i class="icofont-flag"></i> Report/Block</a>  -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <% if(connectedList.lastTrasaction != undefined) { %>
+                  <h5><span style="font-weight: 500;">Last Transacted: </span><%= dateFormat(connectedList.lastTrasaction, "dd mmm yyyy"); %></h5>
+                <% } else { %>
+                  <h5><span style="font-weight: 500;">Last Transacted: </span>Not yet</h5>
+                <% } %>
+              </div>
+              <div class="col-md-6">
+                <h5 class="isp_info_sec_al_right">Birthday: </span><%= dateFormat(connectedList.cusBirthday, "dd mmm yyyy"); %></h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Connected Since: <%= dateFormat(connectedList.createdDate, "dd mmm yyyy"); %></h5>
+              </div>
+              <div class="col-md-6">
+                <h5 class="isp_info_sec_al_right">Phone: <%= connectedList.cusMobile %></h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Email: <%= connectedList.cusMail %></h5>
+              </div>
+				<div class="col-md-6">
+                <h5 class="isp_info_sec_al_right"><a href="<%- baseUrl %>client/remove/<%= connectedList.cusId %>">Remove Connection</a></h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Address: <%= connectedList.cusAddress %></h5>
+              </div>
+              
+            </div>
+          </div>
+          <!-- end:isp_info_sec --> 
+        </div>
+      </section>
+      <!-- end:isp_info -->
+      
+      <div class="my_notes">
+        <form action="/ispNotes" name="myNotes" method="POST">
+          <div class="isp_titile_block">
+            <h3 class="isp_detail_head_2">My Notes</h3>
+          </div>
+          <input type="hidden" name="connectedId" value="<%= connectedList._id %>">
+          <textarea class="form-control mb-3" cols="30" rows="5" name="myNotes" id="myNotes"><%= connectedList.ispNotes %></textarea>
+          <div class="row">
+            <% if(connectedList.ispNotesUpdate != undefined) { %>
+              <div class="col-md-6 mb-2">Last Updated On: <%= dateFormat(connectedList.ispNotesUpdate, "dd mmm yyyy"); %></div>
+            <% } else { %>
+              <div class="col-md-6 mb-2">Last Updated On: Not Yet</div>
+            <% } %>
+            <div class="col-md-6 text-right mb-2">
+              <button type="submit" class="btn_sty_1 mr-1 btn_sty_01">Save</button>
+              <a href="/ispNotes/<%= connectedList._id %>" class="btn_red" onclick="confirmFormAlert(this,'Are you sure you want to delete?','click'); return false">Delete</a>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- end:ips_past_work --> 
+      
+    </div>
+  </div>
+  <!-- end:main_content --> 
+  
+</div>
+<!-- end:middle_block -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS --> 
+
+<script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+<script src="<%- baseUrl %>validation/custom.validate.js"></script>
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script src="<%- baseUrl %>js/sweetalert2.js"></script>
+<script>
+      $(document).ready(function(){
+        $('.client-link').addClass('nav-active'); 
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+
+  const confirmFormAlert = async function (events,msg,type) {
+    const sweetConfirm = await Swal.fire({
+      title: msg,
+      showDenyButton: false,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      confirmButtonColor: 'limegreen',
+      cancelButtonText: 'No',
+      cancelButtonColor:'red'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        if(type == 'click'){
+          window.location=events.href;
+        }else{
+          events.submit();
+        }
+      }else{
+        return false;
+      }
+    });
+    return sweetConfirm;
+  }
+</script> 
+<script>
+      $('.isp_work_list').slick({
+        dots: true,
+        infinite: true,
+        arrows:false,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        responsive: [
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 500,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+        ]
+      });
+    </script>
+    <script>
+      $validator= $("form[name='myNotes']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+          myNotes: {
+              required: true,
+            },
+        },
+        messages: {
+          myNotes: {
+            required: 'Please enter some notes.',
+            },
+        },
+        submitHandler: function (form) {
+          $(":submit").attr("disabled", true);
+          form.submit();
+        }
+      });
+    </script>
+</body>
+</html>

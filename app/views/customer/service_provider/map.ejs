@@ -1,0 +1,206 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+<style>
+	/* Set the size of the div element that contains the map */
+	#map {
+		height: 100%;
+		/* The height is 400 pixels */
+		width: 100%;
+		/* The width is the width of the web page */
+	}
+</style>
+
+<div class="search_info_bar">
+	<div class="container">
+		<div class="sib_left">
+			<h3 class="sib_left_title">
+				<span id="countBisOwnerMap">Locating</span> Business Owners
+			</h3>
+		</div>
+		<form action="/customSearchformap" name="customSearch" method="POST">
+			<div class="sib_right">
+				<div class="search_wrap">
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Name, Category or Invite Code"
+						value="<%-name_category%>"
+						name="name_category"
+						id="name_category"
+					/>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Location or Zip Code"
+						value="<%-address%>"
+						name="location"
+						id="location"
+					/>
+				</div>
+
+				<div class="search_btn_wrap">
+					<button type="submit" class="search_btn">
+						<i class="icofont-search-1"></i>
+					</button>
+				</div>
+
+				<div class="view_toggle">
+					<a href="<%- baseUrl %>service-providers"
+						><img src="img/list.png"
+					/></a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- end:search_info_bar -->
+
+<div class="g_map_service_provider">
+	<div id="map"></div>
+	<div id="result" style="display: none"><%- JSON.stringify(result) %></div>
+	<!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.305935303!2d-74.25986548248684!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1621418913717!5m2!1sen!2sin" style="border:0;" allowfullscreen="" loading="lazy"></iframe> -->
+</div>
+<!-- end:g_service_provider -->
+<script>
+	var isps = $('#result').html();
+	isps = JSON.parse(isps);
+	var myLat,
+		myLong,
+		myPosLogo = '<%- baseUrl %>img/currentLoc.svg';
+	function initAutocomplete() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(showPosition);
+		} else {
+			alert('Geolocation is not supported by this browser.');
+		}
+	}
+	function showPosition(position) {
+		// navigator.geolocation.watchPosition(function (res) {
+		// 	console.log(res);
+		// });
+		var lt, lg;
+		if (position.coords !== undefined) {
+			lt = position.coords.latitude;
+			myLat = lt;
+			lg = position.coords.longitude;
+			myLong = lg;
+		} else {
+			lt = 31.9685988;
+			lg = -99.9018131;
+		}
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 6,
+			center: new google.maps.LatLng(lt, lg),
+		});
+		var latLngArray = [];
+		isps.forEach(element => {
+			if (
+				element.location.coordinates[0].lat != '' &&
+				element.location.coordinates[0].lng != ''
+			) {
+				var flag = '<%- baseUrl %>img/google-maps.svg';
+				latLngArray.push({
+					position: {
+						lat: parseFloat(element.location.coordinates[0].lat),
+						lng: parseFloat(element.location.coordinates[0].lng),
+					},
+					map: map,
+					icon: {
+						url: flag,
+						size: new google.maps.Size(36, 36),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(18, 18),
+						scaledSize: new google.maps.Size(36, 36),
+					},
+					title: element.name,
+					id: element._id,
+					businessName: element.business_name,
+				});
+			}
+		});
+		var infowindow = new google.maps.InfoWindow();
+		var marker, i;
+		document.querySelector('#countBisOwnerMap').textContent =
+			'Found ' + latLngArray.length;
+		for (i = 0; i < latLngArray.length; i++) {
+			marker = new google.maps.Marker({
+				position: new google.maps.LatLng(
+					latLngArray[i].position.lat,
+					latLngArray[i].position.lng
+				),
+				map: map,
+				animation: google.maps.Animation.DROP,
+				icon: latLngArray[i].icon,
+			});
+
+			google.maps.event.addListener(
+				marker,
+				'click',
+				(function (marker, i) {
+					const boData =
+						'<p>Name: ' +
+						String(latLngArray[i].title).toUpperCase() +
+						'</p>' +
+						'<p>Business Name: ' +
+						latLngArray[i].businessName +
+						'</p>';
+					return function () {
+						infowindow.setContent(boData);
+						infowindow.open(map, marker);
+					};
+				})(marker, i)
+			);
+		}
+		addYourLocationButton(map, infowindow);
+	}
+	function addYourLocationButton(map, infowindow, marker) {
+		var controlDiv = document.createElement('div');
+		var firstChild = document.createElement('button');
+		firstChild.style.backgroundColor = '#fff';
+		firstChild.style.border = 'none';
+		firstChild.style.outline = 'none';
+		firstChild.style.width = '40px';
+		firstChild.style.height = '40px';
+		firstChild.style.borderRadius = '2px';
+		firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+		firstChild.style.cursor = 'pointer';
+		firstChild.style.marginRight = '10px';
+		firstChild.style.padding = '0';
+		firstChild.title = 'Your Location';
+		controlDiv.appendChild(firstChild);
+		var secondChild = document.createElement('div');
+		secondChild.style.margin = '11px';
+		secondChild.style.width = '18px';
+		secondChild.style.height = '18px';
+		secondChild.style.backgroundImage =
+			'url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-2x.png)';
+		secondChild.style.backgroundSize = '180px 18px';
+		secondChild.style.backgroundPosition = '0 0';
+		secondChild.style.backgroundRepeat = 'no-repeat';
+		firstChild.appendChild(secondChild);
+		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+		firstChild.addEventListener('click', () => {
+			const pos = {
+				lat: myLat,
+				lng: myLong,
+			};
+			infowindow.close();
+			map.setCenter(pos);
+			map.setZoom(14);
+			new google.maps.Marker({
+				position: new google.maps.LatLng(myLat, myLong),
+				map: map,
+				icon: {
+					url: myPosLogo,
+					size: new google.maps.Size(36, 36),
+					origin: new google.maps.Point(0, 0),
+					anchor: new google.maps.Point(18, 18),
+					scaledSize: new google.maps.Size(36, 36),
+				},
+			});
+		});
+	}
+	window.addEventListener('load', initAutocomplete);
+</script>
+<% include ../common/footer %>

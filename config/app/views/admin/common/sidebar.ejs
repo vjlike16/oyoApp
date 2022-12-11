@@ -1,0 +1,37 @@
+<!-- sidebar menu -->
+<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+	<div class="menu_section">
+		<ul class="nav side-menu">
+			<% if (user_admin_session.role_id == "1") { %>
+			<li class="dashboard"><a href="<%- baseUrl %>admin/dashboard"><i class="fa fa-home"></i> Dashboard ncjkbvkerbvkev</a></li>
+			<li class="customer"><a href="<%- baseUrl %>admin/customer"><i class="fa fa-users"></i> Customers </a></li>
+
+
+			<li class="isps"><a href="<%- baseUrl %>admin/isps"><i class="fa fa-cubes"></i> Manage Business Owners </a></li>
+			<li class="service_category"><a href="<%- baseUrl %>admin/service_category"><i class="fa fa-cubes"></i>
+					Service Categories </a></li>
+			<li class="manage_discount_coupons"><a href="<%- baseUrl %>admin/manage_discount_coupons"><i
+						class="fa fa-cubes"></i>
+					Manage Discount Coupons </a></li>
+			<li class="subscription_plan"><a href="<%- baseUrl %>admin/manage_subscription_plan"><i class="fa fa-cubes"></i> Subscription Plan</a></li>
+
+
+
+			
+			          <!-- <li class="staff"><a href="<%- baseUrl %>admin/staff"><i class="fa fa-cubes"></i> Staff </a></li>
+			          <li class="subscription"><a href="<%- baseUrl %>admin/subscription/add"><i class="fa fa-archive"></i>
+					          Subscriptions </a></li>  -->
+                     <li class="static_content"><a href="<%- baseUrl %>admin/static_content><i class="fa fa-file-code-o"></i>
+						Static Pages </a></li>		
+					 <li class="static_content"><a href="<%- baseUrl %>admin/faq"><i class="fa fa-file-code-o"></i>
+								Manage CMS</a></li>				          
+					         
+								<li class="static_content"><a href="<%- baseUrl %>admin/manage_pop_content"><i class="fa fa-file-code-o"></i>
+									 Manage popup  content</a></li>	
+
+			<% } %>
+
+
+		</ul>
+	</div>
+</div>

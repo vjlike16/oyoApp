@@ -1,0 +1,295 @@
+<!-- include header -->
+<% include ../../common/loggedIn-header %>
+<!-- / end include -->
+
+      <div class="main_content">
+        <div class="container-fluid">
+          <div class="home_detail_more">
+            <section class="home_white_blocks">
+              <div class="white_block_head">
+                <h3>Payments</h3>
+              </div>
+              <div class="white_block_body">
+                <% for(var i=0; i<appointments.length; i++) { %>
+                    <div class="white_block_box" data-user-id='<%- appointments[i]._id%>' data-user-amount='<%- appointments[i].remaining_payment%>'>
+                    <% if (appointments[i].full_payment && appointments[i].amount != 0) { %>
+                        <div class="white_block_img">
+                          <img src="<%= baseUrl%>uploads/profile/<%= appointments[i].ispProfile %>" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p>Thank you, your payment of $<%= appointments[i].amount %> has been processed.</p>
+                        </div>
+                    <% } %>
+                    <% if (!appointments[i].full_payment && appointments[i].amount != 0) { %>
+                        <div class="white_block_img">
+                          <img src="<%= baseUrl%>uploads/profile/<%= appointments[i].ispProfile %>" alt="">
+                        </div>
+                        <div class="white_info_box">
+                            <p>Thank you, your payment of $<%= appointments[i].amount %> has been processed.</p>
+                            <div class="white_box_btn_group">
+                              <a href="#" class="btn_sty_1 make_payment" 
+                              data-id="<%= appointments[i]._id %>"
+                              data-price="<%= appointments[i].remaining_payment %>"
+                              id="Book_add_off_ser" >Make Payment</a>
+                            </div>
+                        </div>
+                    <% } %>
+                    </div>
+                <% } %>
+                <% if (appointments.length == 0) { %>
+                  <div class="white_block_box">
+                    <div class="white_info_box">
+                      <p>No data available</p>
+                    </div>
+                  </div>
+                <% } %>
+                <div id="add_payment"></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+<!-- make payment start -->
+  <div class="modal" id="paymentModal" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Payment</h4>
+          <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <% if(typeof cardList != "undefined"){ %>
+          <form action="<%- baseUrl %>completePaymentSaveCard" method="POST" id="completePaymentSaveCard">
+            <h5 class="payment_select_card">Select Card</h5>
+            <div class="row">
+              <% for(var i=0; i<cardList.length; i++) { %>
+              <div class="col-xl-12" id="append_amount" style="display: flex; align-items: center;">
+                  <input name="existingCardRadio" type="radio" class="existingCardRadio" value="<%- cardList[i].id %>" style="margin-right: 10px;">
+                  <div class="payment_cart">
+                    <div class="card_logo">
+                        <img src="<%= baseUrl%>img/visa.png" alt="">
+                    </div>
+                    <div class="card_info">
+                        <h4 class="card_number">**** **** **** <span id="getCardNumber"></span>
+                          <span id="card_number">
+                            <%= cardList[i].last4 %>
+                          </span></h4>
+                        <h5 class="card_expire">Expires <%= cardList[i].exp_month %>/<%= cardList[i].exp_year %></h5>
+                    </div>
+                  </div>
+                  <script>
+                    $("#completePaymentSaveCard").click(function(){
+                      let appointmentId = $("#add_payment_id").val();
+                      let remainingAmount = $("#add_payment_amount").val();
+      
+                      $('#completePaymentSaveCard [name="remainingAmount1"]').remove();
+                      $('#completePaymentSaveCard [name="remainingAmountappointmentId"]').remove();
+                       
+                      $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');
+                      $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                    });
+                  </script>
+              </div>
+              <% } %>
+            </div>
+            <Button type="submit" class="btn_sty_1 pay_now_using_existing_btn">Pay Now</Button>
+          </form>
+            <div class="form_seprator">
+              <div class="sep_or">OR</div>
+            </div>
+          <% } %>
+          <div class="row">
+              <div class="form_container" style="width: 100%;margin-top: 37px;">
+                <div class="col-md-12">
+                  <h4>Payment with new card.</h4>
+                </div>
+    
+                <div class="col-md-12">
+                  <label for="card-element">
+                    Credit or debit card
+                  </label>
+                  <div id="card-element" style="width: 450px; max-width:100%;">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+                  </div>
+
+                <form action="<%- baseUrl %>completePayment" method="post" id="completePayment">
+                  <div class="col-md-12" style="padding-top: 10px;">
+                    <div class="form-group mb-0">
+                      <button type="submit" class="btn_sty_1 pay_now_btn">Pay Now</button>
+                    </div>
+                    <script>
+                      $("#completePayment").click(function(){
+                        let appointmentId = $("#add_payment_id").val();
+                        let remainingAmount = $("#add_payment_amount").val();
+                        
+                        $('#completePayment [name="remainingAmountappointmentId"]').remove();
+                        $('#completePayment [name="remainingAmount1"]').remove();
+                         
+                        $('#completePayment').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');    
+                        $('#completePayment').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                      });
+                    </script>
+                  </div>
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- make payment end -->
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<style>
+  .StripeElement {
+    box-sizing: border-box;
+
+    height: 40px;
+
+    padding: 10px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+  .linkFor:hover {
+    text-decoration: none;
+    color: #333
+  }
+
+  .linkFor {
+    text-decoration: none;
+  }
+
+
+ .payment_card_sec .card_block {width: calc(100% - 30px); float: right;}
+
+ @media (max-width: 550px){
+ .card_block_left {margin:0 10px 0 0;}
+ .card_block_right {width:auto; text-align: left;}
+ .card_block_right h4 {font-size: 16px;}
+ }
+
+</style>
+
+<script>
+  // Create a Stripe client.
+  var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+
+  // Create an instance of Elements.
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create('card', {hidePostalCode: true, style: style});
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  // Handle real-time validation errors from the card Element.
+  card.addEventListener('change', function (event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById('completePayment');
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function (result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('completePayment');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    $(".pay_now_btn").attr("disabled", true);
+    // Submit the form
+    form.submit();
+  }
+
+  $(function () {
+    $('.linkFor').one('click', function () {
+      window.location.replace($(this).data('href'));
+      $(this).removeAttr('data-href');
+    });
+  });
+</script>
+<script>
+  $(document).on('click', '.make_payment', function(){
+    var appointmentId = $(this).data('id');
+    var remainingAmount = $(this).data('price');
+
+    $('#add_payment').html('');
+    $('#add_payment').append(`
+      <input type="hidden" name="add_payment_id" id="add_payment_id" value="${appointmentId}">
+      <input type="hidden" name="add_payment_amount" id="add_payment_amount" value="${remainingAmount}">
+    `);
+    $('#paymentModal').modal('show');
+  });
+</script>
+  </body>
+</html>

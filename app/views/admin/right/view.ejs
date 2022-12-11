@@ -1,0 +1,70 @@
+"<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+	
+		
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3> Static Content Details</h3>
+              </div>
+			</div>
+
+            <div class="clearfix"></div>
+			<div class="row">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>View Details</h2>
+						<div class="clearfix"></div>
+					</div>
+					<fieldset class="form-horizontal">
+							<div class="col-sm-12">
+								<span class="section">Information
+								<a href="<%- baseUrl %>admin/static_content" class="btn btn-primary btn-sm pull-right" style="margin-top: -6px;">Back</a>
+								</span>
+							</div>
+							<div class="col-sm-12 col-xs-12 item form-group">
+								<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Page Name</label>
+								<div class="col-md-10 col-sm-10 col-xs-12">
+									<input type="text" name="name" value="<%= result.name  %>" id="name" class="form-control"   disabled placeholder="Page Name" />
+								</div>	
+							</div>
+							<div class="col-sm-12 col-xs-12 item form-group">
+									<label class="control-label col-md-2 col-sm-2 col-xs-12" for="status">Status</label>
+									<div class="col-md-10 col-sm-10 col-xs-12">
+										<select id="status" name="status" class="form-control" placeholder="Role" disabled />
+											<option value="">Select status</option>
+											<option value="active" <% if (result.status == "active") {%>
+											selected <% } %>>Active</option>
+											<option value="inactive" <% if (result.status == "inactive") {%>
+											selected <% } %>>Inactive</option>
+										</select>
+									</div>	
+							</div>
+							<div class="col-sm-12 col-xs-12 item">
+								<label class="control-label col-md-2 col-sm-2 col-xs-12" for="pagecontent">Page Content</label>
+								<div class="col-md-10 col-sm-10 col-xs-12">
+									<textarea name="pagecontent"  id="pagecontent" class="form-control" placeholder="Page Content" readonly  /><%= result.pagecontent  %></textarea>
+								</div>	
+							</div>
+						
+						</fieldset>
+					 
+					<!-- /.table-responsive -->
+               </div>
+            </div>
+          </div>
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	
+
+<script src="<%- baseUrl %>ckeditor/ckeditor.js"></script>     
+<script>
+	 $(document).ready(function() {
+			var CK = CKEDITOR.replace('pagecontent');
+			CK.config.tabSpaces = 4;
+			CK.config.removeButtons = 'Select,Button,Form,Print,HiddenField,Templates,Save,Textarea,Radio,Checkbox,TextField';
+			CK.config.font_defaultLabel = 'Verdana';
+			CK.config.fontSize_defaultLabel = '16px';
+	  });
+ </script> 		  

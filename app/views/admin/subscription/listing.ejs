@@ -1,0 +1,89 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+			<div class="page-title">
+              <div class="title_left">
+                <h3>Listing</h3>
+              </div>
+			</div>
+
+            <div class="clearfix"></div>
+			<div class="row">
+				<div class="panel-body x_panel">
+					<div class="table-responsive listing-tbl">
+						<table id="datatable" class="datatable-responsive table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th class="column-title" data-field-name="name">Name</th>
+										<th class="column-title" data-field-name="status">Status</th>
+										<th class="column-title" data-field-name="created_date">Created</th>
+										<th class="column-title">Edit</th>
+										<th class="column-title">View</th>
+										<th class="column-title">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									  
+								</tbody>
+						</table>
+					</div>
+				</div>			
+				<!-- /.table-responsive -->
+           </div>
+          
+       
+           
+<!-- Datatable -->
+<script src="<%- baseUrl %>admin/vendors/datatables.net/jquery.dataTables.min.js"></script>     
+<link href="<%- baseUrl %>admin/vendors/datatables.net/jquery.dataTables.min.css" rel="stylesheet">  
+
+<script>
+     
+	$(document).ready(function() {
+	   // oTable.draw();
+	   oTable = $('#datatable').DataTable({
+					  ajax: {
+						url: '/admin/format/listingWithDatatable',
+						type: 'POST',
+						data: function(d){
+							 d.extra_sort_field_name = $('[aria-sort]').attr('data-field-name');
+							 d.extra_sort_field_value = $('[aria-sort]').attr('aria-sort');
+						}
+					  },
+					  cache: false,
+					  processing: true,
+					  serverSide: true,
+					  columns: [
+							{data : "name"},
+							{data : "status"},
+							{
+								mRender: function (data, type, row) {
+									return moment(row.created_date).format('DD-MMM-YYYY h:mm:ss a')
+								}
+							},
+							{
+								mRender: function (data, type, row) {
+									return '<a href="<%- baseUrl %>admin/format/edit/' + row._id + '">Edit</a>'
+								}
+							},
+							{
+								mRender: function (data, type, row) {
+									return '<a href="<%- baseUrl %>admin/format/view/' + row._id + '">View</a>'
+								}
+							},
+							{
+								mRender: function (data, type, row) {
+									return '<a class="deleteButton" onclick="return confirm(\'Do you really want to remove this record. \');" href="<%- baseUrl %>admin/format/delete/' + row._id + '">Delete</a>'
+								}
+							}
+						]
+						
+				});
+				
+				
+	});
+</script>    
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

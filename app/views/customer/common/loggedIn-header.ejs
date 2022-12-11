@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en"> 
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/png" href="<%- baseUrl %>img/logo.png"/>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="<%- baseUrl %>css/icofont.css">
+    <link rel="stylesheet" href="<%- baseUrl %>css/style-customer.css">
+    <link rel="stylesheet" href="<%- baseUrl %>css/style-owner.css">
+    
+    
+    <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>   
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="<%- baseUrl %>admin/vendors/moment/moment.js"></script>
+    <script src="<%- baseUrl %>admin/vendors/moment/moment-timezone-with-data-2012-2022.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    <script src="<%- baseUrl %>js/sweetalert2.js"></script>
+     <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163116171-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-163116171-1');
+    </script>
+    <title>OYO</title>
+ 
+  </head>
+  <body>
+    <header class="header_inside">
+        <nav class="navbar bg-dark navbar-dark top_nav">
+            <div class="container-fluid">
+                <div class="header_wrap">
+                  <div class="head_users">
+                    <a class="head_profile" href="/my-profile/<%- userCustomerSession._id %>"><img src="<%-baseUrl%>uploads/profile/<%- userCustomerSession.profileImage %>" alt="" id="my_image"></a>
+
+                    <div class="mobile_menu_btn">
+                      <div class="menu_btn_user_pic">
+                        <img src="<%-baseUrl%>uploads/profile/<%- userCustomerSession.profileImage %>" alt="">
+                      </div>
+                      <img class="menu_icon" src="<%- baseUrl %>img/menu_icon.svg" alt="">
+                    </div>
+                    <!-- ene:mobile_menu_btn -->
+                  </div>
+                  <% if(userCustomerSession.role_id != "3"){ %>
+                  <a href="<%-baseUrl%>upgradeToIsp/<%- userCustomerSession._id %>" class="btn_sty_1 upgrade_isp">Upgrade To Business Owner</a>
+                  <% } %>
+                  <% if(userCustomerSession.role_id == "3"){ %>
+                    <a href="#" data-toggle="modal" data-target="#shareModal" class="upgrade_isp"><svg xmlns="http://www.w3.org/2000/svg" width="22.181" height="22.181" viewBox="0 0 22.181 22.181">
+                      <path id="Path_4222" data-name="Path 4222" d="M82.22,64a3.972,3.972,0,0,0-3.961,3.961,2.953,2.953,0,0,0,.158,1.03L71.09,72.674a3.958,3.958,0,1,0-3.129,6.377,3.9,3.9,0,0,0,3.089-1.505l7.327,3.684a3.77,3.77,0,0,0-.119.99,3.961,3.961,0,1,0,3.961-3.961,4.044,4.044,0,0,0-3.129,1.505L71.763,76.08a4.306,4.306,0,0,0,.158-1.03,2.954,2.954,0,0,0-.158-1.03l7.327-3.684a3.883,3.883,0,0,0,3.129,1.584,3.961,3.961,0,1,0,0-7.922Z" transform="translate(-64 -64)" fill="#fff"/>
+                    </svg></a>
+                    <% } %>
+                  <div class="notification_wrap" style="margin-left: 25px;">
+                    <a href="/notifications" class="notification">
+                      <img src="<%- baseUrl %>img/bell.svg" alt="">
+                      <div style="display: none;" class="notification_indicator"></div>
+                    </a>
+                  </div>
+
+                </div>
+            </div>
+        </nav>
+        <!-- end:nav -->
+        
+    </header>
+    <!-- share start -->
+    <div class="modal" id="shareModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Share</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="invitation_code_sec">
+              <label>Invitation Code</label>
+              <div class="invitation_code"><%- userCustomerSession.inviteCode %></div>
+            </div>
+            <div class="share_seprator">
+              <span>Share Link</span>
+            </div>
+            <ul class="social_share">
+              <li>
+                <a href="https://www.facebook.com/sharer.php?u=<%- baseUrl %>share?verifyCode=<%= userCustomerSession._id %>
+					&client_id=3199387653679851
+					&redirect_uri=https://stage.oyoapp.com/main
+					&display=popup">  
+                  <img src="<%= baseUrl%>img/facebook.png" alt="">
+                  <span>Facebook</span>
+                </a>
+              </li>
+ 
+              <li>
+                <a target="_blank" href="https://twitter.com/intent/tweet?url=<%- baseUrl %>share?verifyCode=<%= userCustomerSession._id %>">
+                  <img src="<%= baseUrl%>img/twitter.png" alt="">
+                  <span>Twitter</span>
+                </a>
+              </li>
+              <li>
+                <a href="mailto:?subject=Invitation code&body= <%= userCustomerSession.name %> - <%= userCustomerSession.inviteCode %> , Please visit oyoapp.com use my invitation code to search and connect with me. <%- baseUrl %>">
+                  <img src="<%- baseUrl %>img/email.png" alt="">
+                  <span>E-Mail</span>
+              </li>
+              <li>
+                <a href="#" onClick="return  myFunction();">
+                  <img src="<%= baseUrl%>img/copy-code.png" alt="">
+                  <span>Copy</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- share end -->
+
+    <div class="right_col" role="main">
+      <% if (error.length > 0) { %>
+      <div class="alert alert-danger common-notification-alert text-center"
+        style="margin-bottom: 0px;padding: 7px 0;"><%- error %></div>
+      <% } %>
+
+      <% if (success.length > 0) { %>
+      <div class="alert alert-success common-notification-alert text-center"
+        style="margin-bottom: 0px;padding: 7px 0;"><%- success %></div>
+      <% } %>
+
+      <script>
+        setTimeout(function () { 
+          $(".common-notification-alert").slideUp(); }, 5000);	
+      </script>
+    <!-- end:header_inside -->
+
+    <script>
+       function myFunction() {
+  /* Get the text field */
+  var copyText = "<%- userCustomerSession.inviteCode %>";
+
+  /* Select the text field */
+  // copyText.select()
+  // copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+   /* Copy the text inside the text field */
+   navigator.clipboard.writeText(copyText);
+
+/* Alert the copied text */
+Swal.fire("Copied the text: " + copyText);
+}
+      $(document).ready(function(){
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+
+        
+
+      });
+
+      $.ajax({
+              type: "GET",
+              url: "<%- baseUrl %>header-profile",
+              success: function (data) {
+                if(data.userDetails.profileImage){
+                $("#my_image").attr("src",`<%-baseUrl%>uploads/profile/${data.userDetails.profileImage}`);
+                }
+              }
+            });
+
+             $.ajax({
+                type: "GET",
+                url: "<%- baseUrl %>unReadNotification",
+                success: function (data) {
+                  if(!data.response){
+                    $('.notification_indicator').css('display', 'block');
+                  }
+                }
+            });
+    </script>
+
+<!-- include sidebar -->
+<% include sidebar %>
+<!-- / end sidebar -->	

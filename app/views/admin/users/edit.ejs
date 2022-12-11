@@ -1,0 +1,56 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+	
+    <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Users</h3>
+              </div>
+			</div>
+
+            <div class="clearfix"></div>
+			<div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                 <div class="panel-body">
+					<form role="form" action="/admin/staff/update" role="form" method="post" class="login-form ">
+						<fieldset>
+							<div class="form-group">
+								<label for="username"  class="sr-only">Name</label>
+								<input type="text" name="name" id="username" class="form-control form-username" value="<%= userDetails.name  %>"  required  placeholder="Name" />
+							</div>
+							<div class="form-group" >
+								<label for="email"  class="sr-only">Email</label>
+								<input type="email" name="mail" id="email" class="form-control  form-username"  required placeholder="Email"  value="<%= userDetails.mail  %>"/>
+							</div>
+			   
+							
+							<input type="hidden" name="_id" value="<%= userDetails._id  %>">
+							
+							<!-- Change this to a button or input when using this as a form -->
+							<button type="submit" class="btn btn-success">Update</button>
+						</fieldset>
+					</form> 
+					<!-- /.table-responsive -->
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+           
+ <!-- Datatable -->
+   
+<script src="<%- baseUrl %>admin/vendors/datatables.net/js/jquery.dataTables.min.js"></script>    
+<link href="<%- baseUrl %>datatable/jquery.dataTables.min.css" rel="stylesheet">  
+<script>
+	$(document).ready(function() {
+		$('#example').DataTable();
+	} );
+</script>      
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

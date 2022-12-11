@@ -1,0 +1,116 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+
+<div>
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Faq's</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Edit Faq's</h2>
+					<div class="clearfix"></div>
+				</div>
+				<form name="discountCouponForm"
+					action="/admin/faq/update" role="form" method="post"
+					class="login-form form-horizontal form-label-left">
+					<fieldset>
+						<div class="col-sm-12">
+							<span class="section">Information</span>
+						</div>
+                        <div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Question <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<input type="text" name="question" id="question" value="<%= result.question %>" class="form-control" required
+									placeholder="Enter your question " />
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Answer <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+									<input class="form-control" required type="textarea" name="answer" id="answer" value="<%= result.answer %>"
+										 placeholder="Enter your answer" /> 
+							</div>
+						</div>
+                       
+						
+                       
+
+					</fieldset>
+
+
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<input type="hidden" name="_id" value="<%= result._id  %>" />
+									<button type="submit" class="btn btn-primary">Submit</button>
+									<a href="<%- baseUrl %>admin/faq" class="btn btn-primary">Cancel</a>
+								</div>
+							</div>
+				</form>
+				<!-- /.table-responsive -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(function () {
+		$("form[name='discountCouponForm']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 40,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+					remote: {
+						url: "<%- baseUrl %>admin/faq/checknameexistexceptthis",
+						type: "post",
+						data: {
+							name: function () {
+								return $('input[name="name"]').val();
+							},
+							user_id: function () {
+								return $('input[name="_id"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					}
+				},
+			},
+
+			messages: {
+				name: {}
+			
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

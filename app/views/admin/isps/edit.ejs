@@ -1,0 +1,552 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+<!-- Datepicker -->
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/timepicker/jquery.timepicker.min.css">
+<script src="<%- baseUrl %>admin/vendors/timepicker/jquery.timepicker.min.js"></script>
+<style>
+	textarea {
+		resize: none !important;
+		width: 99.9% !important;
+	}
+</style>
+
+<div>
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Business Owners</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Edit Business Owners</h2>
+					<div class="clearfix"></div>
+				</div>
+
+				<form enctype="multipart/form-data" role="form" name="customerForm" action="/admin/isps/update"
+					role="form" method="post" class="login-form form-horizontal form-label-left">
+					<fieldset>
+						<div class="col-sm-12">
+							<span class="section">Basic Information</span>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status <span
+									class="text-error">*</span></label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<select id="status" name="status" class="form-control" placeholder="Role" required />
+								<option value="">Select status</option>
+								<option value="active" <% if (result.status == "active") {%> selected <% } %>>Active
+								</option>
+								<option value="inactive" <% if (result.status == "inactive") {%> selected <% } %>>
+									Inactive</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Full Name <span
+									class="text-error">*</span></label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" name="name" value="<%= result.name  %>" id="name"
+									class="form-control" required placeholder="Full Name" />
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="profileImage">Profile
+									Image</label>
+								<div class="col-md-7 col-sm-7 col-xs-12 file-upload-wrapper-profileImage">
+									<div class="file-upload-wrapper" data-text="">
+										<input class="file-upload-field" type="file" name="profileImage"
+											id="profileImage" style="margin-top: 6px;" placeholder="Profile Image" accept="image/jpeg,image/png,jpg|png"/>
+									</div>
+								</div>
+								<div class="col-md-2 col-sm-2">
+									<% if (result.profileImage == '' || result.profileImage == 'null' || result.profileImage == 'Null') {%>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="profileImage"
+											style="visibility: hidden;">Image</label>
+											<a href="javascript:void(0)" data-image-path="<%= baseUrl%>admin/images/user.png" class="imageLargeView" title="Click to view large." 
+												><img class="img-thumbnail" src="<%= baseUrl%>admin/images/user.png"
+											class="form-control" style="width:40px;height:34px;" ></a>
+										<input type="hidden" name="uploaded_profileImage" value="" accept="image/jpeg,image/png,jpg|png" />
+									<%}else{%>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="profileImage"
+											style="visibility: hidden;">Image</label>
+											<a href="javascript:void(0)" data-image-path="<%= baseUrl%>uploads/profile/<%= result.profileImage %>" class="imageLargeView" title="Click to view large." 
+											><img
+												class="img-thumbnail"
+												src="<%= baseUrl%>uploads/profile/<%= result.profileImage %>"
+												class="form-control" style="width:40px;height:34px;"></a>
+										<input type="hidden" name="uploaded_profileImage" accept="image/jpeg,image/png,jpg|png"
+											value="<%= result.profileImage %>" />
+									<%}%>
+								</div>	
+												
+							</div>
+						</div>
+
+						
+
+						<!-- Modal -->
+						<div id="myModal" class="modal fade" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Image</h4>
+									</div>
+									<div class="modal-body">
+										<center><img id="imageLargeViewImg" src="" class="img-thumbnail" class="form-control" style="width:100%; height:auto;"></center>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email </label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="email" name="mail" value="<%= result.mail  %>" id="email"
+									class="form-control" placeholder="Email" disabled />
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="mobile">Mobile <span
+									class="text-error">*</span></label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" name="mobile" value="<%= result.mobile  %>" id="mobile"
+									class="form-control" placeholder="Mobile" />
+							</div>
+						</div> 
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Gender <span
+									class="text-error">*</span></label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<select id="gender" name="gender" class="form-control" placeholder="Role" required >
+								<option value="">Select Gender</option>
+								<option value="male" <% if (result.gender == "male") {%> selected <% } %>>Male
+								</option>
+								<option value="female" <% if (result.gender == "female") {%> selected <% } %>>
+									Female</option>
+								<option value="other" <% if (result.gender == "other") {%> Other <% } %>>
+									Other</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-sm-12">
+							<span class="section">Other Information</span>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="business_name">Business
+								Name </label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" name="business_name" value="<%= result.business_name  %>"
+									id="business_name" class="form-control" placeholder="Business Name" />
+							</div>
+						</div>
+
+						<!-- <div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="business_category">c </label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" name="business_category" value="<%= result.business_category  %>"
+									id="business_category" class="form-control" placeholder="Business Category" />
+							</div>
+						</div> -->
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Business Category <span
+									class="text-error">*</span></label>
+						<div class="col-md-9 col-sm-9 col-xs-12">
+							<select id="business_category" name="business_category" class="form-control" placeholder="Role" required />
+							<option value="">Select Category</option>
+							<% for(var i=0; i<service_categories.length; i++) { %>
+								<option <% if (result.business_category == service_categories[i].id) {%> selected value="<%=service_categories[i].id %>" <% } else{ %> value="<%=service_categories[i].id %>" <%} %>><%= service_categories[i].name %>
+								</option>
+							<!-- <option value="<%= service_categories[i].name %>"> <%= service_categories[i].name %></option> -->
+							<% } %>
+							</select>
+						</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="signedUpOn">Signed Up On
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text"
+									value="<%= dateFormat(result.created_date, "mm-dd-yyyy h:MM TT"); %>"
+									id="signedUpOn" class="form-control" placeholder="Signed Up On" disabled />
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="lastActiveOn">Last Active
+								On
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" value="<%= dateFormat(result.login_time, "mm-dd-yyyy h:MM TT"); %>"
+									id="lastActiveOn" class="form-control" placeholder="Last Active On" disabled />
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="paymentPlan">Subscription Plan
+
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" value="Monthly Subscription" id="subscription" name="plan_name"
+									class="form-control" placeholder="Plan Name" readonly />
+								<!-- <select id="subscription" name="subscription" class="form-control" placeholder="subscription" />
+									<option value="">Select Plan</option>
+									<% for(var i=0; i<plans.length; i++) { %>
+										<option <% if (result.plan_name == 'Monthly Subscription') {%> selected value="<%= result.plan_name %>" <% } else { %> value="<%= result.plan_name %>" <%} %>><%= result.plan_name %>
+										</option>
+									<% } %>
+								</select>	 -->
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="lastPaidAmount">Last Paid
+								Amount
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" value="<%= result.last_paid_amount  %>" id="lastPaidAmount"
+									class="form-control" placeholder="Last Paid	Amount" disabled />
+							</div>
+						</div>
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="subscriptionEndDate">Subscription End Date 
+
+							</label>
+							
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<% if(result.plan_end_date == null){ %>
+									<input type="text"
+										value=""
+										id="subscriptionEndDate" class="form-control" placeholder="Subscription End Date"
+										disabled />
+								<% }else{ %>		
+									<input type="text"
+									value="<%= dateFormat(result.plan_end_date, "mm-dd-yyyy h:MM TT"); %>"
+									id="subscriptionEndDate" class="form-control" placeholder="Subscription End Date"
+									disabled />
+								<% } %>	
+							</div>
+						</div>
+
+
+						<div class="col-sm-12">
+							<span class="section">Location Information</span>
+						</div>
+
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-1 col-sm-1 col-xs-12" for="autocomplete">Address
+								<span class="text-error">*</span></label>
+							<div class="col-md-11 col-sm-11 col-xs-12">
+								<input type="text" id="autocomplete" name="address" onFocus="geolocate()"
+									onkeypress="return event.keyCode != 13;" class="form-control"
+									placeholder="Enter your location" value="<%= result.address  %>" />
+							</div>
+						</div>
+
+						<div class="form-group col-sm-6" style="display:none">
+							<label class="control-label">Latitude <span class="text-danger">*</span></label>
+							<input name="lat" id="latitude" class="form-control" type="text" placeholder="Latitude"
+								value="<%= result.location.coordinates[0]  %>">
+						</div>
+						<div class="form-group col-sm-6" style="display:none">
+							<label class="control-label">Longitude <span class="text-danger">*</span></label>
+							<input name="lng" id="longitude" class="form-control" type="text" placeholder="Longitude"
+								value="<%= result.location.coordinates[1]  %>">
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">City </label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input name="city" id="locality" class="form-control" type="text" placeholder="City"
+									value="<%= result.city  %>">
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">State/Province
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input name="state" id="administrative_area_level_1" class="form-control" type="text"
+									placeholder="State" value="<%= result.state  %>">
+
+								<input type="hidden" class="field" id="street_number" disabled="true"></input>
+								<input type="hidden" class="field" id="route" disabled="true"></input>
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="postal_code">Zip/Postal
+								Code
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input name="postal_code" id="postal_code" type="text" class="form-control"
+									placeholder="Zip/Postal" value="<%= result.zipcode  %>">
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Country
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input name="country" id="country" type="text" class="form-control"
+									placeholder="Country" value="<%= result.country  %>">
+							</div>
+						</div>
+					</fieldset>
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<!-- Change this to a button or input when using this as a form -->
+							<input type="hidden" name="_id" value="<%= result._id  %>" />
+							<button disabled type="submit" class="btn btn-primary">Update</button>
+							<a href="<%- baseUrl %>admin/isps" class="btn btn-primary">Cancel</a>
+						</div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+		<!-- /.table-responsive -->
+	</div>
+</div>
+</div>
+</div>
+
+<style>
+	.border_dotted_top {
+		padding-top: 20px;
+		border-top: 1px dotted #8a6d3b;
+		height: 71px !important;
+	}
+
+	.remove_preference_time {
+		line-height: 36px;
+	}
+</style>
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(document).ready(function () {
+		$('.imageLargeView').click(function(){
+			var imageSrc = $(this).attr('data-image-path');
+			$('#imageLargeViewImg').attr("src",imageSrc);
+			$('#myModal').modal('show');
+
+		});
+
+
+		var lastDate = new Date();
+		jQuery.validator.setDefaults({
+			errorPlacement: function (error, element) {
+				if (element.attr("name") == "profileImage") {
+					error.appendTo('.file-upload-wrapper-profileImage');
+				} else {
+					error.insertAfter(element);
+				}
+			}
+		});
+	});
+
+
+	$(function () {
+		$("form[name='customerForm']").validate({
+
+			rules: {
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 50,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+				},
+				profileImage: {
+					extension: "png|jpeg|jpg",
+					filesize: 5242880,  // in megabytes
+					//required:true
+				},
+				mail: {
+					required: true,
+					email: true,
+					noSpace: true,
+					remote: {
+						url: "<%- baseUrl %>user/checkemailexistexceptthis",
+						type: "post",
+						data: {
+							mail: function () {
+								return $('input[name="mail"]').val();
+							},
+							user_id: function () {
+								return $('input[name="_id"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					}
+
+				},
+				mobile: {
+					required: true,
+					number: true,
+					noSpace: true,
+					minlength: 10,
+					maxlength: 10,
+				},
+				password: {
+					noSpace: true,
+					alphanumericspecial: true,
+					minlength: 8,
+					maxlength: 8
+				},
+				zipcode: {
+					number: true,
+					maxlength: 10,
+				},
+				business_name:{
+					required:true,
+					maxlength:50
+				}
+
+
+			},
+			messages: {
+				name: {
+					required: "Please enter full name.",
+					maxlength: "Maximum length is 50"
+				},
+				profileImage: {
+					extension: 'File must be JPEG, JPG or PNG',
+					filesize :'Please upload a picture less than 5MB.',
+					required:'Please  select an image.'
+				},
+				mail: {
+					required: "Please enter your email.",
+					email: "Incorrect email.",
+					remote: "This email already exist in our system, Please use another."
+				},
+
+				mobile: {
+					minlength: "Minimum length is 10.",
+					maxlength: "Maximum length is 10.",
+					number: "It should be number only."
+				},
+				password: {
+					required: "Please enter your password.",
+					minlength: "Minimum length is 8.",
+					maxlength: "Maximum length is 8.",
+				},
+				zipcode: {
+					number: "It should ne number only.",
+				},
+				business_name:{
+                    required:"Please enter business name.",
+					maxlength:"Maximum length is 50 ."
+				}
+			},
+
+			debug: true,
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+<!-- SOCIAL Places API KEY -->
+<script>
+	// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+	var placeSearch, autocomplete;
+	var componentForm = {
+		street_number: 'short_name',
+		route: 'long_name',
+		locality: 'long_name',
+		administrative_area_level_1: 'short_name',
+		country: 'long_name',
+		postal_code: 'short_name'
+	};
+
+	function initAutocomplete() {
+		// Create the autocomplete object, restricting the search to geographical
+		// location types.
+		autocomplete = new google.maps.places.Autocomplete(
+          /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+			{ types: ['geocode'] });
+
+		// When the user selects an address from the dropdown, populate the address
+		// fields in the form.
+		autocomplete.addListener('place_changed', fillInAddress);
+	}
+
+	function fillInAddress() {
+		// Get the place details from the autocomplete object.
+		var place = autocomplete.getPlace();
+		document.getElementById('latitude').value = place.geometry.location.lat();
+		document.getElementById('longitude').value = place.geometry.location.lng();
+
+
+		for (var component in componentForm) {
+			document.getElementById(component).value = '';
+			document.getElementById(component).disabled = false;
+		}
+
+		// Get each component of the address from the place details
+		// and fill the corresponding field on the form.
+		for (var i = 0; i < place.address_components.length; i++) {
+			var addressType = place.address_components[i].types[0];
+			if (componentForm[addressType]) {
+				var val = place.address_components[i][componentForm[addressType]];
+				document.getElementById(addressType).value = val;
+			}
+		}
+		var fullAddress = autocomplete.getPlace().formatted_address;
+		var addressArray = fullAddress.split(',');
+		addressArray.splice(addressArray.length - 3);
+		document.getElementById('autocomplete').value = fullAddress.toString();
+	}
+
+	// Bias the autocomplete object to the user's geographical location,
+	// as supplied by the browser's 'navigator.geolocation' object.
+	function geolocate() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function (position) {
+				var geolocation = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				};
+				var circle = new google.maps.Circle({
+					center: geolocation,
+					radius: position.coords.accuracy
+				});
+				autocomplete.setBounds(circle.getBounds());
+			});
+		}
+	}
+</script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJ6uwVCSWkHJlZD-qZ8hmG--apu2Q76L4&libraries=places&callback=initAutocomplete"
+	async defer></script>
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

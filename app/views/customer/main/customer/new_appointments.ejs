@@ -1,0 +1,54 @@
+<!-- include header -->
+<% include ../../common/loggedIn-header %>
+<!-- / end include -->
+
+      <div class="main_content">
+        <div class="container-fluid">
+          <div class="home_detail_more">
+            <section class="home_white_blocks">
+              <div class="white_block_head">
+                <h3>Appointments</h3>
+              </div>
+              <div class="white_block_body">
+                <% for(var i=0; i<appointments.length; i++) { %>
+                    <div class="white_block_box">
+                        <div class="white_block_img">
+                          <img src="<%= baseUrl%>uploads/profile/<%= appointments[i].ispProfile %>" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p>Hi <%= appointments[i].name %>, This is a friendly reminder for your <%= appointments[i].title %> appointment on <span class="cusDate<%= appointments[i]._id %>"></span> at <span class="cusTime<%= appointments[i]._id %>"></span> with <%= appointments[i].ispName %>.</p>
+                          <div class="white_box_btn_group">
+                            <a data-toggle="tooltip" title="<%= appointments[i].ispPhone %>" href="tel:<%= appointments[i].ispPhone %>" class="btn_sty_1"><i class="icofont-phone"></i> Call</a>
+                            <a href="mailto:<%= appointments[i].ispEmail %>" class="btn_sty_1"><i class="icofont-email"></i> Email</a>
+                          </div>
+                        </div>
+                    </div>
+                    <script>
+                      var finalTimeZone = moment.tz.guess();
+                      var appointmentStartTime = moment("<%= appointments[i].utc_start%>").format();
+                      var dateTz = moment.tz(appointmentStartTime, "GMT");
+                      var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                      var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                      $(".cusDate<%= appointments[i]._id %>").html(newDate);
+                      $(".cusTime<%= appointments[i]._id %>").html(newTime);
+                    </script>
+                <% } %>
+                <% if (appointments.length == 0) { %>
+                  <div class="white_block_box">
+                    <div class="white_info_box">
+                      <p>No data available</p>
+                    </div>
+                  </div>
+                <% } %>
+                <!-- end:white_block_box -->            
+              </div>
+            </section>
+            <!-- end:home_white_blocks -->
+          </div>
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+  </body>
+</html>

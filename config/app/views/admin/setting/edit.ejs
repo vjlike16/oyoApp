@@ -1,0 +1,114 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+
+<div>
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Setting</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Edit Settings</h2>
+					<div class="clearfix"></div>
+				</div>
+
+				<fieldset>
+					<div class="col-sm-12">
+						<span class="section">Maximum services Business Owner <span class="text-error">*</span></span>
+					</div>
+					<form name="serviceCategoryForm" action="/admin/setting/update" method="post">
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<input type="number" id="maximum_service_isp" name="maximum_service_isp" value=""
+								class="form-control" required placeholder="Enter Value" />
+							<br>
+							<input type="hidden" name="key_name" value="maximum_service_isp" />
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+
+					</form>
+				</fieldset>
+				<br><br>
+
+
+				<fieldset>
+					<div class="col-sm-12">
+						<span class="section">Maximum allowed customers in a service <span
+								class="text-error">*</span></span>
+					</div>
+					<form action="/admin/setting/update" method="post">
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<input type="number" id="maximum_allowed_customers" name="maximum_allowed_customers"
+								value="" class="form-control" required placeholder="Enter Value" />
+
+
+							<br>
+							<input type="hidden" name="key_name" value="maximum_allowed_customers" />
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+
+					</form>
+				</fieldset>
+				<br><br>
+
+
+
+				<fieldset>
+					<div class="col-sm-12">
+						<span class="section">Set GA tracking code <span class="text-error">*</span></span>
+					</div>
+					<form name="" action="/admin/setting/update" role="form" method="post">
+						<div class="col-sm-12 col-xs-12 item form-group">
+
+							<input type="number" id="tracking_code" name="tracking_code" value="" class="form-control"
+								required placeholder="Enter Value" />
+
+
+							<br>
+							<input type="hidden" name="key_name" value="tracking_code" />
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+
+					</form>
+				</fieldset>
+				<br><br>
+
+
+				<fieldset>
+					<div class="col-sm-12">
+						<span class="section">Set From email address <span class="text-error">*</span></span>
+					</div>
+					<form action="/admin/setting/update" role="form" method="post">
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<input type="email" id="from_email" name="from_email" value="" class="form-control" required
+								placeholder="Enter Value" />
+
+							<br>
+							<input type="hidden" name="key_name" value="from_email" />
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+
+					</form>
+				</fieldset>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	<% for (var i = 0; i < result.length; i++) { %>
+		$('#<%- result[i].key_name %>').val('<%- result[i].value %>');		
+	<% }; %>
+</script>
+
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="<%-baseUrl%>img/logo.png"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="<%-baseUrl%>css/icofont.css">
+    <link rel="stylesheet" href="<%-baseUrl%>css/style-owner.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>   
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="<%- baseUrl %>admin/vendors/moment/moment.js"></script>
+     <!-- validation -->
+	<script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+	<script src="<%- baseUrl %>validation/custom.validate.js"></script>
+  <title>OYO</title>
+    <div class="right_col" role="main">
+      <% if (error.length > 0) { %>
+      <div class="alert alert-danger common-notification-alert text-center"
+        style="margin-bottom: 0px;padding: 7px 0;"><%- error %></div>
+      <% } %>
+
+      <% if (success.length > 0) { %>
+      <div class="alert alert-success common-notification-alert text-center"
+        style="margin-bottom: 0px;padding: 7px 0;"><%- success %></div>
+      <% } %>
+
+      <script>
+        setTimeout(function () { 
+          $(".common-notification-alert").slideUp(); }, 5000);	
+      </script>
+  </head>
+  <body>
+    <div class="onboarding">
+      <div class="container">
+        <div class="onboarding_title">
+          <img src="<%-baseUrl%>img/logo.png" alt="">
+          <h2>Payment Information</h2>
+        </div>
+        <div class="onboarding_block" style="max-width: 700px;">  
+          <form action="/account-card-save" name="card" method="POST">
+            <div class="row">
+
+              <div class="col-md-12 mt-1">
+                <label class="payment_info_popup_title">Add Payment Card</label>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-control" name="name" id="name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Card Number</label>
+                  <input type="text" class="form-control cardNumber" name="cardNumber" id="cardNumber"
+                    placeholder="0000-0000-0000-0000">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Expires</label>
+                  <input type="text" class="form-control datePicker" name="expires" id="expires" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>CVV</label>
+                  <input type="password" class="form-control" name="cvv" id="cvv">
+                </div>
+              </div>
+              
+              <div class="col-md-12">
+                <div class="form-group mb-0">
+                  <button type="submit" class="btn_sty_1" style="min-width: 135px;">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- end:onboarding_block -->
+
+        <div class="onboarding_skip">
+          <a href="<%- baseUrl %>subscribe-to-plan">Skip</a>
+        </div>
+      </div>
+    </div>
+    
+
+   
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+     <!-- Datepicker -->
+  <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+  <link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+
+  <script>
+     var lastDate = new Date();
+      $(function () {
+        $(".datePicker").datepicker({
+          changeMonth: true,
+          changeYear: true,
+          showButtonPanel: true,
+          minDate: lastDate,
+          dateFormat: 'mm-yy',
+          onClose: function (dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+          },
+          // beforeShow: function (input, inst) {
+          //   if ((datestr = $(this).val()).length > 0) {
+          //     actDate = datestr.split('-');
+          //     year = actDate[0];
+          //     month = actDate[1] - 1;
+          //     $(this).datepicker('option', 'defaultDate', new Date(year, month));
+          //     $(this).datepicker('setDate', new Date(year, month));
+          //   }
+          // }
+        })
+      });
+  </script>
+<script>
+ $(document).ready(function () {
+      $("form[name='card']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        name: {
+          required: true,
+          maxlength: 50,
+          //noSpace: true,
+          normalizer: function (value) {
+            return $.trim(value);
+          }
+        },
+        cardNumber: {
+          required: true,
+          // number: true,
+          // minlength: 16,
+          // maxlength: 16,
+          creditNum: true
+        },
+        expires: {
+          required: true,
+        },
+        cvv: {
+          required: true,
+          number: true,
+          minlength: 3,
+          maxlength: 4,
+        }
+      },
+      messages: {
+        account_holder_name: {
+          required: 'Please enter account holder  name.',
+        },
+        account_number: {
+          required: 'Please enter account number.',
+        },
+        re_account_number: {
+          required: 'Please enter account number again.',
+        },
+        routing_number: {
+          required: 'Please enter routing number.',
+        },
+        name: {
+          required: 'Please enter card holder  name.',
+          maxlength: 'Maximum length is 50.',
+        },
+        cardNumber: {
+          required: 'Please enter card number.',
+          minlength: "Minimum length is 14.",
+          maxlength: "Maximum length is 16.",
+        },
+        expires: {
+          required: 'Please enter the expiration date.'
+        },
+        cvv: {
+          required: 'Please enter cvv.',
+          minlength: 'Minimum length is 3.',
+          maxlength: 'Maximum length is 4.',
+          number: 'Please enter numbers.'
+        },
+      },
+
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+  });
+</script>
+<script>
+  $('.cardNumber').on('keypress change', function () {
+    $(this).val(function (index, value) {
+      return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+    });
+  });
+</script>
+
+  <script type='text/javascript'>
+    var loginpageurl1 = "<%- baseUrl %>";
+    var loginpageurl2 = "<%- baseUrl %>complete-profile";
+    var lastPage = document.referrer;
+    console.log("lastpage----",lastPage)
+    console.log('--------------document.referrer',loginpageurl2);
+    if (document.referrer == loginpageurl1 || document.referrer == loginpageurl2) {
+     // alert("0k");
+      (function (global) {
+    
+      if (typeof (global) === "undefined") {
+        throw new Error("window is undefined");
+      }
+    
+      var _hash = "!";
+      var noBackPlease = function () {
+        global.location.href += "#";
+    
+        // making sure we have the fruit available for juice....
+        // 50 milliseconds for just once do not cost much (^__^)
+        global.setTimeout(function () {
+        global.location.href += "!";
+        }, 50);
+      };
+    
+      // Earlier we had setInerval here....
+      global.onhashchange = function () {
+        if (global.location.hash !== _hash) {
+        global.location.hash = _hash;
+        }
+      };
+    
+      global.onload = function () {
+    
+        noBackPlease();
+    
+        // disables backspace on page except on input fields and textarea..
+        document.body.onkeydown = function (e) {
+        var elm = e.target.nodeName.toLowerCase();
+        if (e.which === 8 && (elm !== 'input' && elm !== 'textarea')) {
+          e.preventDefault();
+        }
+        // stopping event bubbling up the DOM tree..
+        e.stopPropagation();
+        };
+    
+      };
+    
+      })(window);
+    }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,196 @@
+<!-- include header -->
+<% include customer/common/header %>
+  <!-- / end include -->
+
+
+  <section class="banner">
+    <div class="b_info">
+      <h2>Find a business owner</h2>
+      <p>Organize Your Opportunities by finding and connecting with a business owner today.</p>
+
+      <div class="search_sec">
+        <form action="/customSearch" name="customSearch" method="POST">
+          <div class="search-row">
+            <div class="search_wrap">
+              <input type="text" class="form-control" name="name_category" id="name_category"
+                placeholder="Name, Category or Invite Code">
+              <input type="text" class="form-control" name="location" id="location" placeholder="Location or Zip Code">
+            </div>
+
+            <div class="search_btn_wrap">
+              <button type="submit" class="search_btn"><a style="text-decoration: none;"
+                  href="<%= baseUrl%>service-providers"><i class="icofont-search-1"
+                    style="color: goldenrod;"></i></a></button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <!-- end:search_sec -->
+    </div>
+
+    <ul class="banner_slider">
+      <li style="background-image:url(img/banner_1.jpg);"></li>
+      <li style="background-image:url(img/banner_2.jpg);"></li>
+    </ul>
+  </section>
+  <!-- end:banner -->
+  
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+  <script type="text/javascript">
+    if (window.location.hash && window.location.hash == '#_=_') {
+        window.location.hash = '';
+    }
+  </script>
+
+  <script>
+    // function closefn(){
+    //     $("#signupModal_isp").modal("show");  
+    //    }
+    $(document).ready(function () {
+      var url_string = location.href;
+      var url = new URL(url_string);
+      var c = url.searchParams.get("inviteCode")
+      var isp_id = url.searchParams.get("isp_id") 
+      console.log("invite code ... " , isp_id);
+      if(isp_id){
+        $('#loginModal').modal('show');
+        $("#inviteCode").append(`
+        <div class="form-group">
+							<label>Confirm Password</label>
+							<input type="hidden" class="form-control" name="inviteCode"  value="inviteCode">
+              <input type="hidden" class="form-control" name="isp_id"  value='${isp_id}'>
+				</div>
+        `)
+      }
+
+      $('.search-link').addClass('nav-active');
+      // $("#termsModal").modal({
+      //   show: false,
+      //   backdrop: 'static'
+      // });
+      // $("#termsModal").click(function () {
+      //     let val = $("#account_isp").val();
+      //     if (val == "customer") {
+      //       $("#signupModal_customer").modal('show');
+      //     }
+      //     else {
+      //       $("#signupModal_isp").modal('show');
+      //     }
+      // });
+      $('.banner_slider').slick({
+        arrows: false,
+        dots: false,
+        infinite: true,
+        autoplay: true,
+        speed: 500,
+        fade: true,
+        pauseOnHover: false,
+        cssEase: 'linear'
+      });
+      $("form[name='customSearch']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+          name_category: {
+            //		required: true,
+          },
+          location: {
+            //  required: true
+          }
+        },
+        messages: {
+          name_category: {
+            required: 'Please enter name.'
+          },
+          location: {
+            required: 'Please enter location.'
+          },
+        },
+
+        submitHandler: function (form) {
+          $(":submit").attr("disabled", true);
+          form.submit();
+        }
+      });
+    });
+  </script>
+  <script>
+    $(document).on('click', '.search_btn', function(){
+      console.log("Done");
+      var finalTimeZone = moment.tz.guess();
+      console.log("finalTimeZone",finalTimeZone);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>getTimeZone`,
+        data: {
+          timezone: function () {
+            return finalTimeZone;
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          console.log("data",data);
+        }
+      });
+    });
+  </script>
+  <!-- <p id="token" hidden></p> 
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-messaging.js"></script>
+<script>
+ var firebaseConfig = {
+    apiKey: "AIzaSyBknM87YF_6scofTVWZMFwHFtSVCBh2Fus",
+    authDomain: "pro01-29e4b.firebaseapp.com",
+    projectId: "pro01-29e4b",
+    storageBucket: "pro01-29e4b.appspot.com",
+    messagingSenderId: "716669500088",
+    appId: "1:716669500088:web:496098fdb040e20581124d"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(
+      firebaseConfig
+    );
+
+    const messaging = firebase.messaging();
+    function intionlzeFirebaseMessaging(){
+      messaging.requestPermission().then(function(){
+        console.log("Notification Permission");
+        return messaging.getToken();
+      }).then(function(token){
+        $.ajax({
+           type: "POST",
+           url: "<%- baseUrl %>firebase-token",
+           data: {"token":token},
+         });
+       console.log("token  :"+token);
+     //  document.getElementById("token").innerHTML() = token;
+      }).catch(function(err){
+        console.log(err);
+      })
+    }
+    messaging.onMessage(function(payload){
+      console.log(payload);
+    })
+    messaging.onTokenRefresh(function(){
+      messaging.getToken(function(newToken){
+       console.log("new token :"+newToken);
+      }).catch(function(err){
+        console.log(err);
+      })
+    })
+   intionlzeFirebaseMessaging();
+
+
+</script> -->
+
+  <!-- include footer -->
+  <% include customer/common/footer %>
+    <!-- / end footer --> 

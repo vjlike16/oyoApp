@@ -1,0 +1,121 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+
+<div>
+
+
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Service Category</h3>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Add Service Category</h2>
+					<div class="clearfix"></div>
+				</div>
+				<form enctype="multipart/form-data" role="form" name="serviceCategoryForm"
+					action="/admin/service_category/save" role="form" method="post"
+					class="login-form form-horizontal form-label-left">
+					<fieldset>
+						<div class="col-sm-12">
+							<span class="section">Information</span>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Category Name <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<input type="text" name="name" id="name" class="form-control" required
+									placeholder="Category Name" />
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Category Icon<span
+									class="text-error">*</span></label>
+							<div class="col-md-9 col-sm-9 col-xs-12 file-upload-wrapper-profileImage">
+								<div class="file-upload-wrapper" data-text="">
+									<input class="file-upload-field" type="file" name="profileImage" id="profileImage"
+										style="margin-top: 6px;" placeholder="Profile Image" />
+								</div>
+							</div>
+						</div>
+					</fieldset>
+
+
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<!-- Change this to a button or input when using this as a form -->
+							<button type="submit" class="btn btn-primary">Submit</button>
+							<a href="<%- baseUrl %>admin/service_category" class="btn btn-primary">Cancel</a>
+						</div>
+					</div>
+				</form>
+				<!-- /.table-responsive -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(function () {
+		$("form[name='serviceCategoryForm']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 40,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+					remote: {
+						url: "<%- baseUrl %>admin/service_category/checknameexist",
+						type: "post",
+						data: {
+							name: function () {
+								return $('input[name="name"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					},
+				},
+				profileImage: {
+					extension: "png|jpeg|jpg",
+					filesize: 5242880  // in megabytes
+				}
+			},
+
+			messages: {
+				name: {
+					required: "Please enter name.",
+					maxlength: "Maximum length is 40.",
+					remote: "This name already exist in our system, Please use another."
+				},
+				profileImage: "File must be JPEG, JPG or PNG, less than 5MB.",
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

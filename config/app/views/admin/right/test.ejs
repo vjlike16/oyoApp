@@ -1,0 +1,89 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+
+		
+		<div>
+         
+		
+			<div class="page-title">
+              <div class="title_left">
+                <h3>Manage Static Content</h3>
+              </div>
+            </div>
+			
+			
+			<div class="row">
+			      <div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="x_panel">
+							<div class="x_title">
+								<h2>Add Static Content</h2>
+								<div class="clearfix"></div>
+							</div>
+							<form role="form" name="staticcontentForm" action="/admin/static_content/test_save" role="form" method="post" class="login-form form-horizontal form-label-left">
+								<fieldset>
+									<div class="col-sm-12">
+										<span class="section">Information</span>
+									</div> 
+									<div class="col-sm-12 col-xs-12 item">	
+										<label class="control-label col-md-1 col-sm-1 col-xs-12" for="content">Page Content</label>	
+										<div class="col-md-11 col-sm-11 col-xs-12" >
+											<textarea type="text" name="pagecontent" id="editor1" class="form-control" placeholder="Page Content"></textarea>
+										</div>
+									</div>
+								</fieldset>
+								
+								
+								<div class="ln_solid"></div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<!-- Change this to a button or input when using this as a form -->
+										<button type="submit" class="btn btn-primary">Submit</button>
+										<a href="<%- baseUrl %>admin/static_content" class="btn btn-primary">Cancel</a>
+									</div>	
+								</div>
+							</form> 
+							<!-- /.table-responsive -->
+					   </div>
+			</div>
+      </div>
+</div>
+
+<script src="<%- baseUrl %>ckeditor/ckeditor.js">
+	CKEDITOR.editorConfig = function( config ) {
+	config.language = 'es';
+	config.uiColor = '#F7B42C';
+	config.height = 300;
+	config.toolbarCanCollapse = true;
+	};
+</script>
+<script>
+	CKEDITOR.replace( 'editor1' );
+</script>
+
+
+	  
+<script>
+	$(function() {
+	  $("form[name='staticcontentForm']").validate({
+		rules: {
+		     name: "required",
+		     pagecontent: "required",
+		},
+		
+		messages: {
+		    name: "Please enter name",
+		     pagecontent: "Please Enter page Content",
+		},
+	   
+		submitHandler: function(form) {
+		  form.submit();
+		}
+	  });
+	});
+</script>             
+
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

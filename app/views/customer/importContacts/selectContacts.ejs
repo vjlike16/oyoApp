@@ -1,0 +1,115 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->
+
+  <div class="main_content">
+    <div class="container-fluid"> 
+      
+      <!-- end:welcome_message -->
+      
+      <section class="import_contacts"> 
+        
+        <!-- import contact -->
+        <div class="container-fluid">
+          <div class="mt-4">
+            <div class="imt_contact_top_info">
+              <h3>Select which contacts you want to import</h3>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input select_all" id="customCheck" name="example1">
+                <label class="custom-control-label" for="customCheck">Select All</label>
+              </div>
+            </div>
+            <div class="imt_contact_list">
+              <form action="importContacts" method="POST">
+                <div class="row">
+                  <% for(var i=0; i < importContact.length; i++) { %>
+                      <div class="col-md-4">
+                        <div data-user-id='<%- importContact[i]._id %>' class="imt_contact_box">
+                          <div class="contact_pic"><img src="<%- importContact[i].coverPhotos %>" alt=""></div>
+                          <div class="contact_name"><%- importContact[i].name %></div>
+                          <div class="contact_check">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23">
+                              <g id="Group_7204" data-name="Group 7204" transform="translate(-522 -351)">
+                                <circle id="Ellipse_267" data-name="Ellipse 267" cx="11.5" cy="11.5" r="11.5" transform="translate(522 351)" fill="#27ae60"/>
+                                <path id="checked" d="M0,68.746l3.621,3.628,6.953-6.946-1-.984L3.621,70.391.984,67.754Z" transform="translate(528 294.557)" fill="#fff"/>
+                              </g>
+                            </svg>
+                          </div>
+                          <!-- end:contact_check -->
+                        </div>
+                      </div>             
+                  <% } %>
+                  <div class="selectedId" id="selectedId"></div>
+                  <div class="col-md-12">
+                    <div class="form-group mb-0">
+                      <button type="submit" class="btn_sty_1" style="min-width: 320px;">Import Contacts</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!-- end:imt_contact_list --> 
+            
+          </div>
+        </div>
+        
+        <!-- end:import contact --> 
+      </section>
+    </div>
+  </div>
+  <!-- end:main_content --> 
+</div>
+<!-- end:middle_block -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS --> 
+
+<script>
+      $(document).ready(function(){
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+    </script> 
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS --> 
+
+<script>
+      $(document).ready(function(){
+        $(".select_all").click(function () {
+          if($(this).prop("checked") == true){
+            $('#selectedId').html("");
+            $(".imt_contact_box").each(function() {
+            $(this).addClass("selected");
+              var userId = $(this).data('user-id');
+              $('#selectedId').append(`
+                <input type="hidden" name="contactId[]" class="${userId}" id="contactId" value="${userId}">
+              `);
+            });
+          } else {
+            $('#selectedId').html("");
+            $(".imt_contact_box").each(function() {
+            $(this).removeClass("selected");
+            });
+          }
+        });
+        $(".imt_contact_box").click(function(){
+          $(this).toggleClass("selected");
+          var userId = $(this).data('user-id');
+          var isSelected = $(this).attr('class');
+          if(isSelected.includes('selected')){
+          $('#selectedId').append(`
+            <input type="hidden" name="contactId[]" class="${userId}" id="contactId" value="${userId}">
+          `);
+          } else {
+            $("." + userId).remove();
+            $('.select_all').prop('checked', false);
+          }
+        });
+      });
+    </script>
+</body>
+</html>

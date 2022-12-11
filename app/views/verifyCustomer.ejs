@@ -1,0 +1,135 @@
+<!-- include header -->
+<% include customer/common/header %>
+<!-- / end include -->
+
+<section class="banner">
+	<div class="b_info">
+		<h2>Find a business owner</h2>
+		<p>
+			Organize Your Opportunities by finding and connecting with a business
+			owner today.
+		</p>
+
+		<div class="search_sec">
+			<div class="search-row">
+				<div class="search_wrap">
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Name, Category or Invite Code"
+					/>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Location or Zip Code"
+					/>
+				</div>
+
+				<div class="search_btn_wrap">
+					<button type="submit" class="search_btn">
+						<a href="<%= baseUrl%>service-providers"
+							><i class="icofont-search-1"></i
+						></a>
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- end:search_sec -->
+	</div>
+
+	<ul class="banner_slider">
+		<li style="background-image: url(img/banner_1.jpg)"></li>
+		<li style="background-image: url(img/banner_2.jpg)"></li>
+	</ul>
+</section>
+<!-- end:banner -->
+
+<!-- terms and condition start -->
+<div class="modal" id="termsModal">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">Terms of Service</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					<i class="icofont-close"></i>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body">
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+					ullamcorper nisl a molestie hendrerit. Curabitur sed sodales urna, at
+					pellentesque ipsum. Donec quis lectus viverra, tincidunt turpis eget,
+					lacinia enim. Nullam in commodo massa. Integer at mauris sit amet est
+					convallis vestibulum. Aenean sodales eros sed massa blandit efficitur.
+					In accumsan vitae neque sit amet accumsan. Etiam in libero sapien.
+				</p>
+
+				<p>
+					Sed quis dapibus diam. Etiam ac velit tellus. Morbi id scelerisque
+					nisi. Nulla id commodo nibh. Praesent volutpat, mauris gravida
+					ullamcorper accumsan, ante purus vulputate orci, sit amet suscipit
+					velit magna non nunc. Curabitur non velit leo. Cras et dolor sed nulla
+					semper ultrices ac ac orci. Aenean viverra suscipit massa ut finibus.
+					Nullam tristique pellentesque mattis. Quisque vitae tincidunt dui. Nam
+					sed aliquet arcu, et mollis enim.
+				</p>
+
+				<p>
+					Proin commodo feugiat aliquet. Morbi ac mi massa. Ut sit amet urna
+					est. Curabitur eros sem, porttitor nec arcu eget, egestas convallis
+					sem. Pellentesque sit amet ipsum id ipsum sodales suscipit. Sed eget
+					libero imperdiet, volutpat augue in, viverra odio. Suspendisse a lacus
+					at tellus ullamcorper gravida. Phasellus vestibulum vitae elit ut
+					sodales. Aliquam viverra auctor dolor nec ullamcorper.
+				</p>
+
+				<p>
+					Morbi malesuada risus justo, ut egestas dolor scelerisque nec.
+					Vestibulum scelerisque risus convallis dolor vulputate aliquam.
+					Pellentesque sit amet lectus aliquet, fermentum massa sed, molestie
+					urna. Vivamus gravida molestie dolor, sed malesuada odio rhoncus at.
+					Maecenas sagittis pharetra quam et volutpat. Pellentesque faucibus
+					tortor nec erat feugiat, suscipit iaculis diam commodo. Sed imperdiet,
+					erat sed tempus ultrices, massa nulla efficitur dui, eget efficitur
+					est justo ut ligula. Vivamus in eros nec tortor volutpat viverra id id
+					quam.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- terms and condition end -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"
+></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+<script
+	type="text/javascript"
+	src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
+></script>
+
+<script>
+	$(document).ready(function () {
+		$('#verifyModal').modal('show');
+		$('.banner_slider').slick({
+			arrows: false,
+			dots: false,
+			infinite: true,
+			autoplay: true,
+			speed: 500,
+			fade: true,
+			pauseOnHover: false,
+			cssEase: 'linear',
+		});
+	});
+</script>
+
+<!-- include footer -->
+<% include customer/common/footer %>
+<!-- / end footer -->

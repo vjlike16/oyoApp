@@ -1,0 +1,113 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+<style>
+	#datatable_filter {
+		display: none !important;
+	}
+</style>
+
+
+<div class="page-title">
+	<div class="title_left">
+		<h3>Manage CMS</h3>
+	</div>
+</div>
+<div class="form-inline text-right">
+	<div class="form-group">
+		<label style="display: block;text-align: left;">Search: </label>
+		<input class="form-control input-sm" id="searchCustomInput" placeholder="Search">
+	</div>
+	
+	<div class="form-group">
+		<label style="display: block;visibility: hidden;margin-bottom: 10px;">button</label>
+		<a class="btn btn-primary btn-sm" href="<%- baseUrl %>admin/service_category/add"
+			style="    border-radius: 0;">+ Add More Questions</a>
+	</div>
+	<div class="form-group">
+		<label style="display: block;visibility: hidden;margin-bottom: 10px;">button</label>
+		<a class="btn btn-primary btn-sm" href="<%- baseUrl %>admin/faq/add"
+			style="    border-radius: 0;">Help</a>
+	</div>
+</div>
+<br />
+
+<div class="row">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>View All Faq's</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="table-responsive listing-tbl">
+			<table id="datatable" class="datatable-responsive table table-striped table-bordered dt-responsive nowrap"
+				cellspacing="0" width="100%">
+				<thead class="bg-green">
+					<tr>
+						<th class="column-title" data-field-name="name">Question</th>
+						<th class="column-title" data-field-name="status">Answer</th>
+						<th class="column-title">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% for(var i=0; i<result.length; i++) { %>
+					<tr>
+						<td class="datatable-text-wrap"><span
+								class="hidden"><%= lowerCase(trim(result[i].question)); %></span><%= result[i].question %></td>
+								
+								<td class="datatable-text-wrap"><span
+									class="hidden"><%= lowerCase(trim(result[i].answer)); %></span><%= result[i].answer %></td>
+								
+					
+						<td>
+							<div class="ac_action"><i class="fa fa-cogs"></i>
+								<div>
+									<a href="<%- baseUrl %>admin/faq/edit/<%- result[i]._id %>"><i
+											class="fa fa-pencil-square-o"></i> Edit</a>
+									
+
+									<a class="deleteButton"
+										onclick="return confirm('Do you really want to remove this record.');"
+										href="<%- baseUrl %>admin/service_category/delete/<%- result[i]._id %>"><i
+											class="glyphicon glyphicon-remove-sign"></i> Delete</a>
+								</div>
+							</div>
+						</td>
+
+
+					</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- /.table-responsive -->
+</div>
+
+
+<!-- Datatable -->
+<script src="<%- baseUrl %>admin/vendors/datatables.net/jquery.dataTables.min.js"></script>
+<link href="<%- baseUrl %>admin/vendors/datatables.net/jquery.dataTables.min.css" rel="stylesheet">
+<script src="<%- baseUrl %>admin/vendors/datatables.net/natural.js"></script>
+<script>
+	$(document).ready(function () {
+		oTable = $('#datatable').DataTable({
+			//order: [[2, 'desc']],
+			order: false,
+			"columnDefs": [{ "orderable": false, "targets": 3 }, { targets: 0, type: "natural" }],
+			"dom": '<"top"i>rt<"bottom"flp><"clear">',
+		});
+
+		$('#sortByStatus').change(function () {
+			var term = $(this).val(),
+				regex = '\\b' + term + '\\b';
+			oTable.columns(1).search(regex, true, false).draw();
+		});
+		$('#searchCustomInput').keyup(function () {
+			oTable.search($(this).val()).draw();
+		});
+	});
+</script>
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

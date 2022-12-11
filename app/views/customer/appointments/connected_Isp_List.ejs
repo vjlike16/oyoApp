@@ -1,0 +1,161 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->	      
+
+      <div class="main_content">
+        <div class="search_info_bar">
+          <div class="container-fluid">
+            <div class="sib_left">
+              <h3 class="sib_left_title">Business Owners</h3>
+            </div>
+            <form action="/customer/customSearch" name="customSearch" method="POST">
+              <div class="sib_right">
+                <div class="search_wrap"> 
+                  <input type="text" class="form-control" placeholder="Name, Category or Invite Code" value="<%-name_category%>" name="name_category" id="name_category">
+                  <input type="text" class="form-control" placeholder="Location or Zip Code" value="<%-address%>" name="location" id="location">
+                </div>
+        
+                <div class="search_btn_wrap">
+                  <button type="submit" class="search_btn"><i class="icofont-search-1"></i></button>
+                </div>
+        
+                <div class="view_toggle">
+                  <a href="<%- baseUrl %>connectedIspMap"><img src="<%- baseUrl %>img/google-maps.svg" alt="google-maps-logo"
+                    style="width: 25px !important; height: 25px !important;"></a>
+                </div>
+        
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="container-fluid">
+          <!-- <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation"><a href="#">Connected</a></li>
+            <li role="presentation" class="active"><a href="<%- baseUrl %>allIspList">Not Connected</a></li>
+          </ul> -->
+          <% for(var i=0; i<result.length; i++) { %>
+          <div class="isp_list_block size" data-size="<%= result[i].business_category %>">
+            <div class="isp_list_box">
+              <a href="<%- baseUrl %>connectedIspDetail/<%= result[i]._id %>" class="isp_list_anchor">
+                <div class="isp_list_pic">
+                  <% if (result.profileImage == '' || result.profileImage == 'null' || result.profileImage == 'Null') {%>
+                    <img src="<%= baseUrl%>admin/images/user.png"> 
+                    <%}else{%>
+                    <img src="<%= baseUrl%>uploads/profile/<%= result[i].profileImage %>">
+                    <%}%>
+                </div>
+                <div class="isp_list_info">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h3 class="isp_list_name"><%= result[i].name %></h3>
+                      <input type="hidden" class="stars" value="<%= result[i].avgRating || 0 %>">
+                      <div class="rating rating_review_isp_details" data-rateyo-rating="<%= result[i].avgRating || 0 %>" style="z-index: -1;"></div>
+                      <br/>
+                      <h5><%= result[i].business_category %></h5>
+                      <% if(result[i].connectedSince != undefined) { %>
+                        <!-- <h5>Connected Since: <%= dateFormat(result[i].connectedSince, "mmmm dd yyyy"); %></h5> -->
+                        <h5>Connected Since: 
+                          <script>
+                            var dateTz = moment("<%= result[i].connectedSince %>").format("MMMM DD YYYY");
+                            document.write(dateTz);
+                          </script>
+                        </h5>
+                      <% } else { %>
+                        <h5>Connected Since: Not Yet</h5>
+                      <% } %>
+                    </div>
+                    <div class="col-md-6">
+                      <% if (result[i].status == "success") { %>
+                        <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span class="isp_status connected"></span>Connected</h5>
+                      <% } else { %>
+                        <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span class="isp_status disconnected"></span>Not Connected</h5>
+                      <% } %>
+                      <% if (result[i].address != '') { %>
+                        <h5 class="isp_listinfo_al_right">Address: <%= result[i].address %></h5>
+                      <% } else { %>
+                        <h5 class="isp_listinfo_al_right">Address: Not Yet</h5>
+                      <% } %>
+                      <% if(result[i].lastTrasaction != undefined) { %>
+                        <h5 class="isp_listinfo_al_right">Last Transacted: <%= dateFormat(result[i].lastTrasaction, "mmmm dd yyyy"); %></h5>
+                      <% } else { %>
+                        <h5 class="isp_listinfo_al_right">Last Transacted: Not Yet</h5>
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            </div>
+            <% } %>
+          </div>
+          <!-- isp_list_block -->
+
+          <!-- <div class="alphabet_bar"> -->
+            <div class="alphabet_bar_new">
+            <a class="<%-urlQuery == 'all' ? 'active_alphabet_bar' : '' %>" href="/connectedIspList">All</a>
+            <a class="<%-urlQuery == 'a' ? 'active_alphabet_bar' : '' %>" href="?filterby=a">A</a>
+            <a class="<%-urlQuery == 'b' ? 'active_alphabet_bar' : '' %>" href="?filterby=b">B</a>
+            <a class="<%-urlQuery == 'c' ? 'active_alphabet_bar' : '' %>" href="?filterby=c">C</a>
+            <a class="<%-urlQuery == 'd' ? 'active_alphabet_bar' : '' %>" href="?filterby=d">D</a>
+            <a class="<%-urlQuery == 'e' ? 'active_alphabet_bar' : '' %>" href="?filterby=e">E</a>
+            <a class="<%-urlQuery == 'f' ? 'active_alphabet_bar' : '' %>" href="?filterby=f">F</a>
+            <a class="<%-urlQuery == 'g' ? 'active_alphabet_bar' : '' %>" href="?filterby=g">G</a>
+            <a class="<%-urlQuery == 'h' ? 'active_alphabet_bar' : '' %>" href="?filterby=c">H</a>
+            <a class="<%-urlQuery == 'i' ? 'active_alphabet_bar' : '' %>" href="?filterby=i">I</a>
+            <a class="<%-urlQuery == 'j' ? 'active_alphabet_bar' : '' %>" href="?filterby=j">J</a>
+            <a class="<%-urlQuery == 'k' ? 'active_alphabet_bar' : '' %>" href="?filterby=k">K</a>
+            <a class="<%-urlQuery == 'l' ? 'active_alphabet_bar' : '' %>" href="?filterby=l">L</a>
+            <a class="<%-urlQuery == 'm' ? 'active_alphabet_bar' : '' %>" href="?filterby=m">M</a>
+            <a class="<%-urlQuery == 'n' ? 'active_alphabet_bar' : '' %>" href="?filterby=n">N</a>
+            <a class="<%-urlQuery == 'o' ? 'active_alphabet_bar' : '' %>" href="?filterby=o">O</a>
+            <a class="<%-urlQuery == 'p' ? 'active_alphabet_bar' : '' %>" href="?filterby=p">P</a>
+            <a class="<%-urlQuery == 'q' ? 'active_alphabet_bar' : '' %>" href="?filterby=q">Q</a>
+            <a class="<%-urlQuery == 'r' ? 'active_alphabet_bar' : '' %>" href="?filterby=r">R</a>
+            <a class="<%-urlQuery == 's' ? 'active_alphabet_bar' : '' %>" href="?filterby=s">S</a>
+            <a class="<%-urlQuery == 't' ? 'active_alphabet_bar' : '' %>" href="?filterby=t">T</a>
+            <a class="<%-urlQuery == 'u' ? 'active_alphabet_bar' : '' %>" href="?filterby=u">U</a>
+            <a class="<%-urlQuery == 'v' ? 'active_alphabet_bar' : '' %>" href="?filterby=v">V</a>
+            <a class="<%-urlQuery == 'w' ? 'active_alphabet_bar' : '' %>" href="?filterby=w">W</a>
+            <a class="<%-urlQuery == 'x' ? 'active_alphabet_bar' : '' %>" href="?filterby=x">X</a>
+            <a class="<%-urlQuery == 'y' ? 'active_alphabet_bar' : '' %>" href="?filterby=y">Y</a>
+            <a class="<%-urlQuery == 'z' ? 'active_alphabet_bar' : '' %>" href="?filterby=z">Z</a>
+          </div>
+          <!-- end:alphabet_bar -->
+         
+          
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script>
+      var rating = $('.stars').val();
+      $(function () {
+        $(".rating").rateYo({
+            // rating: "4",
+            // rating: rating,
+            readOnly: true,
+            starWidth: "15px",
+            ratedFill: "#fe724c"
+        });
+        $(".rating").rateYo();
+      });
+    </script>
+    <script>
+      $(document).ready(function(){
+        $('.service-link').addClass('nav-active'); 
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+    </script>
+
+ <% include ../common/footer %>

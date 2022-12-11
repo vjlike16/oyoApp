@@ -1,0 +1,1420 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->
+ 
+  <div class="main_content">
+    <div class="container-fluid">
+      <section class="">
+            <div class="row">
+                <div class="col-md-12 mt-3">
+                    <div class="isp_titile_block">
+                        <h3 class="isp_detail_head_2">Make page public</h3>
+                    </div>
+                    <!-- <div class="view_id_btn_wrap">
+                    <label class="switch">
+                        <input type="checkbox" class="publicChecked">
+                        <span class="slider round"></span> </label>
+                    </div> -->
+                    <% if (userDetails.makePagePublic == true) { %>
+                        <div class="view_id_btn_wrap">
+                            <label class="switch" for="customCheck">
+                            <input type="checkbox" class="custom-control-input checked" id="customCheck" name="example1" checked>
+                            <span class="slider round"></span></label>
+                        </div>
+                    <% } else { %>
+                        <div class="view_id_btn_wrap">
+                            <label class="switch" for="customCheck">
+                            <input type="checkbox" class="custom-control-input checked" id="customCheck" name="example1">
+                            <span class="slider round"></span></label>
+                        </div>
+                    <% } %>
+                    <p>Public: New customers in OYOapp can find you and your Services when a search is performed.</p>
+                </div>
+            </div>
+        <form action="/setAlert" name="setAlert" method="POST">
+            <div class="row">
+                <div class="col-md-12 mt-4">
+                    <div class="isp_titile_block">
+                    <h3 class="isp_detail_head_2">Set Alerts</h3>
+                    </div>
+                </div>
+                <% if (setAlert == undefined) { %>
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="true" name="email">
+                            On email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="true" name="notifications">
+                            App notifications</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">&nbsp;</div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Appointment Reminder</label>
+                        <select class="form-control" name="hours" id="hours">
+                            <option value="">Set hours</option>
+                            <option value="0">0 hr</option>
+                            <option value="1">1 hr</option>
+                            <option value="2">2 hr</option>
+                            <option value="3">3 hr</option>
+                            <option value="4">4 hr</option>
+                            <option value="5">5 hr</option>
+                            <option value="6">6 hr</option>
+                            <option value="7">7 hr</option>
+                            <option value="8">8 hr</option>
+                            <option value="9">9 hr</option>
+                            <option value="10">10 hr</option>
+                            <option value="11">11 hr</option>
+                            <option value="12">12 hr</option>
+                            <option value="13">13 hr</option>
+                            <option value="14">14 hr</option>
+                            <option value="15">15 hr</option>
+                            <option value="16">16 hr</option>
+                            <option value="17">17 hr</option>
+                            <option value="18">18 hr</option>
+                            <option value="19">19 hr</option>
+                            <option value="20">20 hr</option>
+                            <option value="21">21 hr</option>
+                            <option value="22">22 hr</option>
+                            <option value="23">23 hr</option>
+                            <option value="24">1 day</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>&nbsp;</label>
+                        <div class="form-group">
+                        <select class="form-control" name="min" id="min">
+                            <option value="">Set minutes</option>
+                            <option value="0">0 min</option>
+                            <option value="5">5 min</option>
+                            <option value="10">10 min</option>
+                            <option value="15">15 min</option>
+                            <option value="20">20 min</option>
+                            <option value="25">25 min</option>
+                            <option value="30">30 min</option>
+                            <option value="35">35 min</option>
+                            <option value="40">40 min</option>
+                            <option value="45">45 min</option>
+                            <option value="55">55 min</option>
+                        </select>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="true" name="email" <% if (setAlert.email) {%> checked <% } %>>
+                            On email </label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="true" name="notifications" <% if (setAlert.notifications) {%> checked <% } %>>
+                            App notifications</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">&nbsp;</div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Appointment Reminder</label>
+                        <select class="form-control" name="hours" id="hours">
+                            <option <%= (setAlert.hours == "0") ? "selected" : "" %> value="0">0 hr</option>
+                            <option <%= (setAlert.hours == "1") ? "selected" : "" %> value="1">1 hr</option>
+                            <option <%= (setAlert.hours == "2") ? "selected" : "" %> value="2">2 hr</option>
+                            <option <%= (setAlert.hours == "3") ? "selected" : "" %> value="3">3 hr</option>
+                            <option <%= (setAlert.hours == "4") ? "selected" : "" %> value="4">4 hr</option>
+                            <option <%= (setAlert.hours == "5") ? "selected" : "" %> value="5">5 hr</option>
+                            <option <%= (setAlert.hours == "6") ? "selected" : "" %> value="6">6 hr</option>
+                            <option <%= (setAlert.hours == "7") ? "selected" : "" %> value="7">7 hr</option>
+                            <option <%= (setAlert.hours == "8") ? "selected" : "" %> value="8">8 hr</option>
+                            <option <%= (setAlert.hours == "9") ? "selected" : "" %> value="9">9 hr</option>
+                            <option <%= (setAlert.hours == "10") ? "selected" : "" %> value="10">10 hr</option>
+                            <option <%= (setAlert.hours == "11") ? "selected" : "" %> value="11">11 hr</option>
+                            <option <%= (setAlert.hours == "12") ? "selected" : "" %> value="12">12 hr</option>
+                            <option <%= (setAlert.hours == "13") ? "selected" : "" %> value="13">13 hr</option>
+                            <option <%= (setAlert.hours == "14") ? "selected" : "" %> value="14">14 hr</option>
+                            <option <%= (setAlert.hours == "15") ? "selected" : "" %> value="15">15 hr</option>
+                            <option <%= (setAlert.hours == "16") ? "selected" : "" %> value="16">16 hr</option>
+                            <option <%= (setAlert.hours == "17") ? "selected" : "" %> value="17">17 hr</option>
+                            <option <%= (setAlert.hours == "18") ? "selected" : "" %> value="18">18 hr</option>
+                            <option <%= (setAlert.hours == "19") ? "selected" : "" %> value="19">19 hr</option>
+                            <option <%= (setAlert.hours == "20") ? "selected" : "" %> value="20">20 hr</option>
+                            <option <%= (setAlert.hours == "21") ? "selected" : "" %> value="21">21 hr</option>
+                            <option <%= (setAlert.hours == "22") ? "selected" : "" %> value="22">22 hr</option>
+                            <option <%= (setAlert.hours == "23") ? "selected" : "" %> value="23">23 hr</option>
+                            <option <%= (setAlert.hours == "24") ? "selected" : "" %> value="24">1 day</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>&nbsp;</label>
+                        <div class="form-group">
+                        <select class="form-control" name="min" id="min">
+                            <option <%= (setAlert.min == "0") ? "selected" : "" %> value="0">0 min</option>
+                            <option <%= (setAlert.min == "5") ? "selected" : "" %> value="5">5 min</option>
+                            <option <%= (setAlert.min == "10") ? "selected" : "" %> value="10">10 min</option>
+                            <option <%= (setAlert.min == "15") ? "selected" : "" %> value="15">15 min</option>
+                            <option <%= (setAlert.min == "20") ? "selected" : "" %> value="20">20 min</option>
+                            <option <%= (setAlert.min == "25") ? "selected" : "" %> value="25">25 min</option>
+                            <option <%= (setAlert.min == "30") ? "selected" : "" %> value="30">30 min</option>
+                            <option <%= (setAlert.min == "35") ? "selected" : "" %> value="35">35 min</option>
+                            <option <%= (setAlert.min == "40") ? "selected" : "" %> value="40">40 min</option>
+                            <option <%= (setAlert.min == "45") ? "selected" : "" %> value="45">45 min</option>
+                            <option <%= (setAlert.min == "55") ? "selected" : "" %> value="55">55 min</option>
+                        </select>
+                        </div>
+                    </div>
+                <% } %>
+                <div class="col-md-12 mb-3">
+                    <button type="submit" class="btn_sty_1 mr-1 mb-2">Save</button>
+                </div>
+            </div>
+        </form>
+        <form action="/businessHours" name="businessHours" method="POST">
+            <div class="row">
+                <div class="col-md-12 mt-4">
+                    <div class="isp_titile_block">
+                    <h3 class="isp_detail_head_2">Business Hours</h3>
+                    </div>
+                </div>
+                <% if (businessHours == undefined) { %>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Monday</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="Start Time" name="monday_start_time" id="monday_start_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="closed_checkbox"> 
+                            <input type="checkbox" class="monday_closed">
+                            Closed</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="End Time" name="monday_end_time" id="monday_end_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Tuesday</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="Start Time" name="tuesday_start_time" id="tuesday_start_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="closed_checkbox ">
+                            <input type="checkbox" class="tuesday_closed">
+                            Closed</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="End Time" name="tuesday_end_time" id="tuesday_end_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Wednesday</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="Start Time" name="wednesday_start_time" id="wednesday_start_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="closed_checkbox ">
+                            <input type="checkbox" class="wednesday_closed">
+                            Closed</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="End Time" name="wednesday_end_time" id="wednesday_end_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Thursday</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="Start Time" name="thrusday_start_time" id="thrusday_start_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="closed_checkbox ">
+                            <input type="checkbox" class="thrusday_closed">
+                            Closed</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="End Time" name="thrusday_end_time" id="thrusday_end_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Friday</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="Start Time" name="friday_start_time" id="friday_start_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="closed_checkbox ">
+                            <input type="checkbox" class="friday_closed">
+                            Closed</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="End Time" name="friday_end_time" id="friday_end_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Saturday</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="Start Time" name="saturday_start_time" id="saturday_start_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="closed_checkbox ">
+                            <input type="checkbox" class="saturday_closed">
+                            Closed</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="End Time" name="saturday_end_time" id="saturday_end_time" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label>Sunday</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="Start Time" name="sunday_start_time" id="sunday_start_time" disabled readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="closed_checkbox ">
+                            <input type="checkbox" class="sunday_closed" checked>
+                            Closed</label>
+                        <input type="text" class="form-control timepicker" autocomplete="off" placeholder="End Time" name="sunday_end_time" id="sunday_end_time" disabled readonly>
+                        </div>
+                    </div>
+                <% } else { %>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Monday</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.mondayStartTime %>" name="monday_start_time" id="monday_start_time" <% if (businessHours.mondayStartTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="closed_checkbox ">
+                        <input type="checkbox" class="monday_closed" <% if (businessHours.mondayStartTime == "Closed") {%> checked <% } %>>
+                        Closed</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.mondayEndTime %>" name="monday_end_time" id="monday_end_time" <% if (businessHours.mondayEndTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Tuesday</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.tuesdayStartTime %>" name="tuesday_start_time" id="tuesday_start_time" <% if (businessHours.tuesdayStartTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="closed_checkbox ">
+                        <input type="checkbox" class="tuesday_closed" <% if (businessHours.tuesdayStartTime == "Closed") {%> checked <% } %>>
+                        Closed</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.tuesdayEndTime %>" name="tuesday_end_time" id="tuesday_end_time" <% if (businessHours.tuesdayEndTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Wednesday</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.wednesdayStartTime %>" name="wednesday_start_time" id="wednesday_start_time" <% if (businessHours.wednesdayStartTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="closed_checkbox ">
+                        <input type="checkbox" class="wednesday_closed" <% if (businessHours.wednesdayStartTime == "Closed") {%> checked <% } %>>
+                        Closed</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.wednesdayEndTime %>" name="wednesday_end_time" id="wednesday_end_time" <% if (businessHours.wednesdayEndTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Thursday</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.thrusdayStartTime %>" name="thrusday_start_time" id="thrusday_start_time" <% if (businessHours.thrusdayStartTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="closed_checkbox ">
+                        <input type="checkbox" class="thrusday_closed" <% if (businessHours.thrusdayStartTime == "Closed") {%> checked <% } %>>
+                        Closed</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.thrusdayEndTime %>" name="thrusday_end_time" id="thrusday_end_time" <% if (businessHours.thrusdayEndTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Friday</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.fridayStartTime %>" name="friday_start_time" id="friday_start_time" <% if (businessHours.fridayStartTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="closed_checkbox ">
+                        <input type="checkbox" class="friday_closed" <% if (businessHours.fridayStartTime == "Closed") {%> checked <% } %>>
+                        Closed</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.fridayEndTime %>" name="friday_end_time" id="friday_end_time" <% if (businessHours.fridayEndTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Saturday</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.saturdayStartTime %>" name="saturday_start_time" id="saturday_start_time" <% if (businessHours.saturdayStartTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="closed_checkbox ">
+                        <input type="checkbox" class="saturday_closed" <% if (businessHours.saturdayStartTime == "Closed") {%> checked <% } %>>
+                        Closed</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.saturdayEndTime %>" name="saturday_end_time" id="saturday_end_time" <% if (businessHours.saturdayEndTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Sunday</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.sundayStartTime %>" name="sunday_start_time" id="sunday_start_time" <% if (businessHours.sundayStartTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="closed_checkbox ">
+                        <input type="checkbox" class="sunday_closed" <% if (businessHours.sundayStartTime == "Closed") {%> checked <% } %>>
+                        Closed</label>
+                    <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.sundayEndTime %>" name="sunday_end_time" id="sunday_end_time" <% if (businessHours.sundayEndTime == "Closed") {%> disabled <% } %> readonly>
+                    </div>
+                </div>
+                <% } %>
+                <div class="col-md-12 mb-3">
+                    <input type="hidden" id="timezone" name="timezone" value="">
+                    <script>
+                        var finalTimeZone = moment.tz.guess();
+                        document.getElementById("timezone").value = finalTimeZone;
+                    </script>
+
+                    <button type="submit" class="btn_sty_1 mr-1 mb-2">Save</button>
+                </div>
+            </div>
+        </form>
+        <form action="/addBreakHours" name="addBreakHours" method="POST">
+        <div class="checkBreakHoursInput">
+            <div class="row">
+                <div class="col-md-12 mt-4">
+                    <div class="isp_titile_block">
+                        <h3 class="isp_detail_head_2">Add Break Hours</h3>
+                    </div>
+                    <p class="mb-2">Please select the break hours it will apply to business hours and customer will not be able to book your services during those hours.</p>
+                </div>
+                <% if (businessHours == undefined) { %>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input autofocus="off" type="text" class="form-control timepicker" autocomplete="off" placeholder="Start Time" name="breakStartTime" id="breakStartTime" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input autofocus="off" type="text" class="form-control timepicker" autocomplete="off" placeholder="End Time" name="breakEndTime" id="breakEndTime" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" style="margin-top: 18px;">
+                          <span style="cursor: pointer;" class="addMoreBtn btn-link">Add more break hours</span>
+                        </div>
+                    </div>
+                    <input type="hidden" class="breakCounts">
+                <% } else { %>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.breakStartTime %>" name="breakStartTime" id="breakStartTime" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.breakEndTime %>" name="breakEndTime" id="breakEndTime" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" style="margin-top: 18px;">
+                          <span style="cursor: pointer;" class="addMoreBtn btn-link">Add more break hours</span>
+                        </div>
+                    </div>
+                    <input type="hidden" class="breakCounts">
+                <% } %>
+            </div>
+            <% if (businessHours != undefined) { %>
+                <% if (businessHours.breakStartTime1 != undefined) { %>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.breakStartTime1 %>" name="breakStartTime1" id="breakStartTime1" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.breakEndTime1 %>" name="breakEndTime1" id="breakEndTime1" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" style="margin-top: 18px;">
+                                <a href="javascript:void(0);" class="btn-link breakTimeDelete">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" class="breakCounts" >
+                <% } %>
+                <% if (businessHours.breakStartTime2 != undefined) { %>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.breakStartTime2 %>" name="breakStartTime2" id="breakStartTime2" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control timepicker" autocomplete="off" value="<%= businessHours.breakEndTime2 %>" name="breakEndTime2" id="breakEndTime2" readonly>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="form-group" style="margin-top: 18px;">
+                                <span style="cursor: pointer;" class="btn-link">Delete</span>
+                            </div>
+                        </div> -->
+                    </div>
+                    <input type="hidden" class="breakCounts" >
+                <% } %>
+            <% } %>
+            <div id="add_Break_Hours"></div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <button type="submit" class="btn_sty_1 mr-1 mb-2">Save</button>
+                </div>
+            </div>
+        </div>
+        </form>
+        <form action="/offDay" name="offDay" method="POST">
+        <div class="checkOffDayInput">
+            <div class="">
+                <div class="">
+                    <div class="isp_titile_block">
+                        <h3 class="isp_detail_head_2">Off Day</h3>
+                    </div>
+                    <input type="hidden" id="businessOwnerId" value="<%- userCustomerSession._id %>">
+                    <p class="mb-2">If for some reason you will not be able to open for any specific day please select that date so customer will not be able to book your services for that day</p>
+                </div>
+                <% if (businessHours == undefined) { %>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                
+                                    <div class="wrap_form_control_icon">
+                                        <input type="text" class="form-control datePicker" 
+                                            autocomplete="off"
+                                            placeholder="Please Select"
+                                            name="offDate[]" required
+                                            keydown="return false;">
+                                        <div class="input_icon"><i class="icofont-ui-calendar"></i></div>
+                                    </div>
+                                    <input type="hidden" class="offCounts">
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" style="margin-top: 18px;">
+                            <span style="cursor: pointer;" class="addMoreOffDay btn-link">Add more off days</span>
+                            </div>
+                        </div>
+                    </div>
+                <% }  %>
+            <% if (businessHours != undefined) { %>
+                <% if (businessHours.offDates.length == 0) { %>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                
+                                    <div class="wrap_form_control_icon">
+                                        <input type="text" class="form-control datePicker" 
+                                            autocomplete="off"
+                                            placeholder="Please Select"
+                                            name="offDate[]" required
+                                            keydown="return false;">
+                                        <div class="input_icon"><i class="icofont-ui-calendar"></i></div>
+                                    </div>
+                                    <input type="hidden" class="offCounts">
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" style="margin-top: 18px;">
+                            <span style="cursor: pointer;" class="addMoreOffDay btn-link">Add more off days</span>
+                            </div>
+                        </div>
+                    </div>
+                <% }  %>
+            <% }  %>
+
+            <% if (businessHours != undefined) { %>
+                <% for(var i=0; i < businessHours.offDates.length; i++) { %>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="wrap_form_control_icon" style="margin-bottom: 10px;">
+                                    <input type="text" class="form-control datePicker" 
+                                        autocomplete="off"
+                                        placeholder="Please Select"
+                                        value="<%= dateFormat(businessHours.offDates[i], 'mm-dd-yyyy'); %>"
+                                        name="offDate[]" required
+                                        keydown="return false;">
+                                    <div class="input_icon"><i class="icofont-ui-calendar"></i></div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <% if (i == 0) { %>
+                            <div class="col-md-6">
+                                <div class="form-group" style="margin-top: 18px;">
+                                <span style="cursor: pointer;" class="addMoreOffDay btn-link">Add more off days</span>
+                                </div>
+                            </div>
+                        <% }else{ %>
+                            <div class="col-md-6">
+                                <div class="form-group" style="margin-top: 18px;">
+                                    <a href="javascript:void(0);" class="btn-link deleteMoreOffDayRow ">Delete</a>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                    <input type="hidden" class="offCounts">
+                <% } %>
+            <% } %>
+			 </div> 
+			 
+            <div id="add_Off_Day"></div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <button type="submit" class="btn_sty_1 mr-1 mb-2">Save</button>
+                </div>
+            </div>
+        </div>
+        </form>
+        <form action="/cancelSubscription" name="cancelSubscription" method="POST" onsubmit="confirmFormAlert(this,'To confirm, are you sure you want to cancel? ','submit'); return false">
+            <div class="row">
+                <div class="col-md-12 mt-4">
+                    <div class="isp_titile_block">
+                        <h3 class="isp_detail_head_2">Subscription Info</h3>
+                    </div>
+                    <% if (userDetails.auto_renew == "on") { %>
+                        <p class="mb-2">Your <%- userCustomerSession.plan_name %> will expire on <%= dateFormat(userDetails.plan_end_date, 'mmm dd yyyy'); %>. Your subscription will be Auto-Renewed.</p>
+                    <% } else { %>
+                        <script>
+                            var dateTz = moment("<%= userDetails.plan_end_date %>").format("MM-DD-YYYY");
+                            var currentDate = moment(new Date()).format("MM-DD-YYYY");
+                            // document.write(dateTz+' '+currentDate + '  : '+ moment(currentDate,"MM-DD-YYYY") + ' | ' + moment(dateTz,"MM-DD-YYYY") + ' | ' + moment(currentDate).isBefore(moment(dateTz)));
+                            if(moment(currentDate,"MM-DD-YYYY").isBefore(moment(dateTz,"MM-DD-YYYY"))){
+                                document.write(`<p class="mb-2">Your <%- userCustomerSession.plan_name %> will expire on <%= dateFormat(userDetails.plan_end_date, 'mmm dd yyyy'); %>. Your subscription will not be Auto-Renewed.</p>`);
+                            }else{
+                                if(moment(currentDate,"MM-DD-YYYY").isSame(moment(dateTz,"MM-DD-YYYY"))){
+                                    document.write(`<p class="mb-2">Your <%- userCustomerSession.plan_name %> has expired. Please renew your subscription.</p>`);
+                                }else{
+                                    document.write(`<p class="mb-2">Your <%- userCustomerSession.plan_name %> has expired on <%= dateFormat(userDetails.plan_end_date, 'mmm dd yyyy'); %>. Please renew your subscription.</p>`);
+                                }
+                            }
+                        </script>
+                    <% } %>
+                    <% if (!userDetails.subscriptionValidity) { %>
+                        <a href="<%-baseUrl%>upgradeToIsp/<%- userCustomerSession._id %>" class="btn_sty_1 mr-1 mb-2">Renew subscription</a>
+                    <% } else { %>
+                        <% if (userDetails.cancelSubscription) { %>
+                            <a href="<%-baseUrl%>upgradeToIsp/<%- userCustomerSession._id %>" class="btn_sty_1 mr-1 mb-2">Renew subscription</a>
+                        <% } else { %>
+                            <button type="submit" class="btn_sty_1 mr-1 mb-2">Cancel subscription</button>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </form>
+        <form action="/changePassword" name="changePassword" method="POST">
+            <div class="row">
+                <div class="col-md-12 mt-4">
+                    <div class="isp_titile_block">
+                    <h3 class="isp_detail_head_2">Change Password</h3>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" class="form-control" name="currentPassword" id="currentPassword">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" class="form-control" name="newPassword" id="newPassword">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" class="form-control" name="confirmPassword" id="confirmPassword">
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <button type="submit" class="btn_sty_1 mr-1 mb-2">Save</button>
+                </div>
+            </div>
+        </form>
+      </section>
+    </div>
+  </div>
+  <!-- end:main_content --> 
+  
+</div>
+<!-- end:middle_block -->
+
+
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
+<script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+<script src="<%- baseUrl %>validation/custom.validate.js"></script>
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script src="<%- baseUrl %>js/sweetalert2.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.settings-link').addClass('nav-active');
+    });  
+
+    const confirmFormAlert = async function (events,msg,type) {
+        const sweetConfirm = await Swal.fire({
+          title: msg,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          confirmButtonColor: 'limegreen',
+          cancelButtonText: 'No',
+          cancelButtonColor:'red'
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            if(type == 'click'){
+              window.location=document.getElementById('noShow').href;
+            }else{
+              events.submit();
+            }
+          }else{
+            return false;
+          }
+        });
+        return sweetConfirm;
+      }
+    
+    jQuery.validator.addMethod("checkhours", function(value, element, params) {
+      var hours = $('#hours').val();
+      var min = $('#min').val();
+      if(hours == 0){
+        if(hours == min){
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return true
+      }
+    }, 'Time must be greater than 0 min.');
+    function is_check_hours_zero() {
+      return $('[name="hours"]').val().length > 0;
+    }
+    $("form[name='setAlert']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        hours: {
+            required: true,
+        },
+        min: {
+            required: true,
+            checkhours:{
+                depends: is_check_hours_zero,
+                param: $('input[name="hours"]').val(),
+            },
+        },
+      },
+      messages: {
+        hours: {
+          required: 'Please enter hours',
+        },
+        min: {
+          required: 'Please enter minutes',
+        }
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    
+    $("form[name='changePassword']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        currentPassword: {
+            required: true,
+            remote: {
+                url: "<%- baseUrl %>checkCurrentPassword",
+                type: "post",
+                data: {
+                    email: function () {
+                        return $("#currentPassword").val();
+                    }
+                },
+                beforeSend: function () {
+                },
+                complete: function (data) {
+                }
+            }
+        },
+        newPassword: {
+            required: true,
+            noSpace: true,
+            atLeastOneLowercaseLetter: true,
+            atLeastOneUppercaseLetter: true,
+            atLeastOneNumber: true,
+            atLeastOneSymbol: true,
+            minlength: 8,
+            maxlength: 15
+        },
+        confirmPassword: {
+            required: true,
+            noSpace: true,
+            atLeastOneLowercaseLetter: true,
+            atLeastOneUppercaseLetter: true,
+            atLeastOneNumber: true,
+            atLeastOneSymbol: true,
+            minlength: 8,
+            maxlength: 15,
+			equalTo: "#newPassword"
+        }
+      },
+      messages: {
+        currentPassword: {
+          required: 'Please enter your password.',
+          remote: 'Please enter correct password.'
+        },
+        newPassword: {
+          required: 'Please enter password.',
+        },
+        confirmPassword: {
+          required: 'Please enter password to confirm.'
+        }
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    jQuery.validator.addMethod("fromToTimeCompare12Hours",
+    function (value, element, params) {
+      var val = value;
+      var par = $(params).val();
+      if(moment(par,'HH:mm A').isBefore(moment(val,'HH:mm A'))){
+        return true;
+      }else{
+          return false;
+      }
+    }, 'To Time must be greater than From Time.');
+    function is_monday_start_time() {
+      return $('[name="monday_start_time"]').val().length > 0;
+    }function is_tuesday_start_time() {
+      return $('[name="tuesday_start_time"]').val().length > 0;
+    }function is_wednesday_start_time() {
+      return $('[name="wednesday_start_time"]').val().length > 0;
+    }function is_thrusday_start_time() {
+      return $('[name="thrusday_start_time"]').val().length > 0;
+    }function is_friday_start_time() {
+      return $('[name="friday_start_time"]').val().length > 0;
+    }function is_saturday_start_time() {
+      return $('[name="saturday_start_time"]').val().length > 0;
+    }function is_sunday_start_time() {
+      return $('[name="sunday_start_time"]').val().length > 0;
+    }
+    $("form[name='businessHours']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        monday_start_time: {
+            required: true,
+        },
+        monday_end_time: {
+            required: true,
+            fromToTimeCompare12Hours:{
+                depends: is_monday_start_time,
+                param: $('input[name="monday_start_time"]'),
+            }
+        },
+        tuesday_start_time: {
+            required: true,
+        },
+        tuesday_end_time: {
+            required: true,
+            fromToTimeCompare12Hours:{
+                depends: is_tuesday_start_time,
+                param: $('input[name="tuesday_start_time"]'),
+            }
+        },
+        wednesday_start_time: {
+            required: true,
+        },
+        wednesday_end_time: {
+            required: true,
+            fromToTimeCompare12Hours:{
+                depends: is_wednesday_start_time,
+                param: $('input[name="wednesday_start_time"]'),
+            }
+        },
+        thrusday_start_time: {
+            required: true,
+        },
+        thrusday_end_time: {
+            required: true,
+            fromToTimeCompare12Hours:{
+                depends: is_thrusday_start_time,
+                param: $('input[name="thrusday_start_time"]'),
+            }
+        },
+        friday_start_time: {
+            required: true,
+        },
+        friday_end_time: {
+            required: true,
+            fromToTimeCompare12Hours:{
+                depends: is_friday_start_time,
+                param: $('input[name="friday_start_time"]'),
+            }
+        },
+        saturday_start_time: {
+            required: true,
+        },
+        saturday_end_time: {
+            required: true,
+            fromToTimeCompare12Hours:{
+                depends: is_saturday_start_time,
+                param: $('input[name="saturday_start_time"]'),
+            }
+        },
+        sunday_start_time: {
+            required: true,
+        },
+        sunday_end_time: {
+            required: true,
+            fromToTimeCompare12Hours:{
+                depends: is_sunday_start_time,
+                param: $('input[name="sunday_start_time"]'),
+            }
+        }
+      },
+      messages: {
+        monday_start_time: {
+            required: "Please enter start time",
+        },
+        monday_end_time: {
+            required: "Please enter end time",
+        },
+        tuesday_start_time: {
+            required: "Please enter start time",
+        },
+        tuesday_end_time: {
+            required: "Please enter end time",
+        },
+        wednesday_start_time: {
+            required: "Please enter start time",
+        },
+        wednesday_end_time: {
+            required: "Please enter end time",
+        },
+        thrusday_start_time: {
+            required: "Please enter start time",
+        },
+        thrusday_end_time: {
+            required: "Please enter end time",
+        },
+        friday_start_time: {
+            required: "Please enter start time",
+        },
+        friday_end_time: {
+            required: "Please enter end time",
+        },
+        saturday_start_time: {
+            required: "Please enter start time",
+        },
+        saturday_end_time: {
+            required: "Please enter end time",
+        },
+        sunday_start_time: {
+            required: "Please enter start time",
+        },
+        sunday_end_time: {
+            required: "Please enter end time",
+        }
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    jQuery.validator.addMethod("fromToTimeCompareHours",
+    function (value, element, params) {
+        // var val = value;
+        var val = $('#breakEndTime').val();
+        console.log("val",val);
+    //   var dateIdName = ($(element).data('row') == undefined) ? 'breakStartTime1' : 'breakStartTime'+$(element).data('row');
+    //   console.log("dateIdName",dateIdName);
+    //   var dateInputValue = $('#'+dateIdName).val();
+        var dateInputValue = $('#breakStartTime').val();
+        par = dateInputValue;
+        console.log("par",par);
+        if (val.length > 0) {
+            var val = new Date("November 13, 2013 " + val);
+            val = val.getTime();
+            var par = new Date("November 13, 2013 " + par);
+            par = par.getTime();
+            return val > par;
+        }
+    }, 'To Time must be greater than From Time.');
+    
+
+    $("form[name='addBreakHours']").validate({
+      ignore: [],
+      debug: true,
+      rules: {
+        breakStartTime: {
+            required: true,
+        },
+        breakEndTime: {
+            required: true,
+            remote: {
+                url: "<%- baseUrl %>checkToFromTime",
+                type: "POST",
+                data: {
+                    toTime: function () {
+                        console.log("to time ", $('input[name="breakEndTime"]').val());
+                        return $('input[name="breakEndTime"]').val();
+                    },
+                    fromTime: function () {
+                        console.log("from time", $('input[name="breakStartTime"]').val());
+                        return $('input[name="breakStartTime"]').val();
+                    }
+                },
+            },
+        },
+        breakStartTime1: {
+            required: true,
+        },
+        breakEndTime1: {
+            required: true,
+            remote: {
+                url: "<%- baseUrl %>checkToFromTime",
+                type: "POST",
+                data: {
+                    toTime: function () {
+                        console.log("to time end time1", $('input[name="breakEndTime1"]').val());
+                        return $('input[name="breakEndTime1"]').val();
+                    },
+                    fromTime: function () {
+                        console.log("from time end time1", $('input[name="breakEndTime1"]').val());
+                        return $('input[name="breakStartTime1"]').val();
+                    }
+                },
+            },
+        },
+        breakStartTime2: {
+            required: true,
+        },
+        breakEndTime2: {
+            required: true,
+            remote: {
+                url: "<%- baseUrl %>checkToFromTime",
+                type: "POST",
+                data: {
+                    toTime: function () {
+                        return $('input[name="breakEndTime2"]').val();
+                    },
+                    fromTime: function () {
+                        return $('input[name="breakStartTime2"]').val();
+                    }
+                },
+            },
+        }
+      },
+      messages: {
+        breakStartTime: {
+            required: "Please enter start time",
+        },
+        breakEndTime: {
+            required: "Please enter end time",
+            remote: "To Time must be greater than From Time.",
+        },
+        breakStartTime1: {
+            required: "Please enter start time",
+        },
+        breakEndTime1: {
+            required: "Please enter end time",
+            remote: "To Time must be greater than From Time.",
+        },
+        breakStartTime2: {
+            required: "Please enter start time",
+        },
+        breakEndTime2: {
+            required: "Please enter end time",
+            remote: "To Time must be greater than From Time.",
+        },
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        let row = $('.breakCounts').size();
+        $("form[name='addBreakHours']").append('<input name="breakCountsValue" type="hidden" value="'+row+'">');
+        form.submit();
+      }
+    });
+    
+    $("form[name='offDay']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+	    
+      },
+      messages: {
+        
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        let row = $('.offCounts').size();
+        $("form[name='offDay']").append('<input name="offCountsValue" type="hidden" value="'+row+'">');
+        form.submit();
+      }
+    });
+</script>
+<script>
+    $('.breakTimeDelete').click(function () {
+        $(this).parent().parent().parent().next().remove();
+        $(this).parent().parent().parent().remove();
+    });    
+
+    $('.deleteMoreOffDayRow').click(function () {
+        $(this).parent().parent().parent().next().remove();
+        $(this).parent().parent().parent().remove();
+    }); 
+
+    $(".monday_closed").click(function () {
+        if($(this).prop("checked") == true){
+            $('#monday_start_time').prop('disabled', true);
+            $('#monday_end_time').prop('disabled', true);
+        } else {
+            $('#monday_start_time').prop('disabled', false);
+            $('#monday_end_time').prop('disabled', false);
+        }
+    });
+    $(".tuesday_closed").click(function () {
+        if($(this).prop("checked") == true){
+            $('#tuesday_start_time').prop('disabled', true);
+            $('#tuesday_end_time').prop('disabled', true);
+        } else {
+            $('#tuesday_start_time').prop('disabled', false);
+            $('#tuesday_end_time').prop('disabled', false);
+        }
+    });
+    $(".wednesday_closed").click(function () {
+        if($(this).prop("checked") == true){
+            $('#wednesday_start_time').prop('disabled', true);
+            $('#wednesday_end_time').prop('disabled', true);
+        } else {
+            $('#wednesday_start_time').prop('disabled', false);
+            $('#wednesday_end_time').prop('disabled', false);
+        }
+    });
+    $(".thrusday_closed").click(function () {
+        if($(this).prop("checked") == true){
+            $('#thrusday_start_time').prop('disabled', true);
+            $('#thrusday_end_time').prop('disabled', true);
+        } else {
+            $('#thrusday_start_time').prop('disabled', false);
+            $('#thrusday_end_time').prop('disabled', false);
+        }
+    });
+    $(".friday_closed").click(function () {
+        if($(this).prop("checked") == true){
+            $('#friday_start_time').prop('disabled', true);
+            $('#friday_end_time').prop('disabled', true);
+        } else {
+            $('#friday_start_time').prop('disabled', false);
+            $('#friday_end_time').prop('disabled', false);
+        }
+    });
+    $(".saturday_closed").click(function () {
+        if($(this).prop("checked") == true){
+            $('#saturday_start_time').prop('disabled', true);
+            $('#saturday_end_time').prop('disabled', true);
+        } else {
+            $('#saturday_start_time').prop('disabled', false);
+            $('#saturday_end_time').prop('disabled', false);
+        }
+    });
+    $(".sunday_closed").click(function () {
+        if($(this).prop("checked") == true){
+            $('#sunday_start_time').prop('disabled', true);
+            $('#sunday_end_time').prop('disabled', true);
+        } else {
+            $('#sunday_start_time').prop('disabled', false);
+            $('#sunday_end_time').prop('disabled', false);
+        }
+    });
+</script>
+<script>
+  $(document).ready(function(){
+    $('.timepicker').timepicker({
+        timeFormat: 'h:mm p',
+        interval: 60,
+        minTime: '12:00am',
+        maxTime: '11:00pm',
+        startTime: '00:00',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true,
+        change: function(time) {
+            var currentInput = $(this).attr('name');
+            console.log(currentInput,"######::::")
+
+            if(currentInput == 'breakStartTime' || currentInput == 'breakEndTime'){
+                if(moment($(this).closest("form").find('input[name=breakStartTime]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=breakEndTime]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }else if(currentInput == 'breakStartTime1' || currentInput == 'breakEndTime1'){
+                if(moment($(this).closest("form").find('input[name=breakStartTime1]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=breakEndTime1]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }else if(currentInput == 'monday_start_time' || currentInput == 'monday_end_time'){
+                if(moment($(this).closest("form").find('input[name=monday_start_time]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=monday_end_time]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label#monday_end_time-error').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }else if(currentInput == 'tuesday_start_time' || currentInput == 'tuesday_end_time'){
+                if(moment($(this).closest("form").find('input[name=tuesday_start_time]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=tuesday_end_time]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label#tuesday_end_time-error').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }else if(currentInput == 'wednesday_start_time' || currentInput == 'wednesday_end_time'){
+                if(moment($(this).closest("form").find('input[name=wednesday_start_time]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=wednesday_end_time]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label#wednesday_end_time-error').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }else if(currentInput == 'thrusday_start_time' || currentInput == 'thrusday_end_time'){
+                if(moment($(this).closest("form").find('input[name=thrusday_start_time]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=thrusday_end_time]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label#thrusday_end_time-error').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }else if(currentInput == 'friday_start_time' || currentInput == 'friday_end_time'){
+                if(moment($(this).closest("form").find('input[name=friday_start_time]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=friday_end_time]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label#friday_end_time-error').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }else if(currentInput == 'saturday_start_time' || currentInput == 'saturday_end_time'){
+                if(moment($(this).closest("form").find('input[name=saturday_start_time]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=saturday_end_time]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label#saturday_end_time-error').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }
+            else if(currentInput == 'sunday_start_time' || currentInput == 'sunday_end_time'){
+                if(moment($(this).closest("form").find('input[name=sunday_start_time]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=sunday_end_time]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label#sunday_end_time-error').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }
+        }
+    });
+  });
+</script>
+<script>
+    $(document).ready(function () {
+        var lastDate = new Date();
+        $(function () {
+            $(".datePicker").datepicker({
+				dateFormat: "mm-dd-yy",
+				changeMonth: true,
+				changeYear: true,
+				minDate:lastDate,
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $(".checked").click(function () {
+          if($(this).prop("checked") == true){
+            let permission = "true";
+            $.ajax({
+                url: "<%- baseUrl %>updatePagePublic",
+                type: "post",
+                data: {"permission":permission},
+            })
+          } else {
+            let permission = "false";
+            $.ajax({
+                url: "<%- baseUrl %>updatePagePublic",
+                type: "post",
+                data: {"permission":permission},
+            })
+          }
+        });
+    });
+</script>
+<script>
+    $(document).on("click", ".deleteBreakHourRow", function(){
+        var rowId = $(this).attr('data-row-id');
+        $('.row'+rowId).remove();
+    });
+    $(document).on("click", ".addMoreBtn", function(){
+        let inputCount = $('.checkBreakHoursInput input').length;
+        let row = $('.breakCounts').size();
+
+        //alert($('.breakCounts').size());
+        // let breakCountValue = $('#breakCounts').val();
+        // $('#breakCounts').val(parseInt(breakCountValue)+1);
+        console.log("::::::",$("#breakStartTime").val(),$(".checkBreakHoursInput").find("#breakEndTime-error").text())
+        if($("#breakStartTime").val() == "None" || $("#breakStartTime").val() == "" || $("#breakEndTime").val() == "None" || $("#breakEndTime").val() == "" || $(".checkBreakHoursInput").find("#breakEndTime-error").text() == 'To Time must be greater than From Time.'){
+            Swal.fire("Please fill break Start and break end");
+            return false
+        }
+
+        if($('.breakCounts').size() > 1){
+            Swal.fire("You can not add more than two break hours");
+            return false
+        } 
+        $('#add_Break_Hours').append(`
+            <div class="row${row}">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input autofocus="false" type="text" placeholder="Start Time" class="form-control timepicker" data-row="${row}" name="breakStartTime${row}" id="breakStartTime${row}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input autofocus="off" type="text" placeholder="End Time" class="form-control timepicker" data-row="${row}" name="breakEndTime${row}" id="breakEndTime${row}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" style="margin-top: 18px;">
+                            <span style="cursor: pointer;" data-row-id="${row}" class="deleteBreakHourRow btn-link" style="color: red; !important">Delete</span>
+                        </div>
+                    </div>
+                </div>
+            <div>
+            <input type="hidden" class="breakCounts">
+        `);
+        $('.timepicker').timepicker({
+            timeFormat: 'h:mm p',
+            interval: 60,
+            minTime: '12:00am',
+            maxTime: '11:00pm',
+            startTime: '00:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true,
+            change: function(time) {
+            var currentInput = $(this).attr('name');
+            console.log(currentInput,"######::::,;;;;")
+
+            if(currentInput == 'breakStartTime' || currentInput == 'breakEndTime'){
+                if(moment($(this).closest("form").find('input[name=breakStartTime]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=breakEndTime]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }else{
+                if(moment($(this).closest("form").find('input[name=breakStartTime1]').val(),'HH:mm A').isBefore(moment($(this).closest("form").find('input[name=breakEndTime1]').val(),'HH:mm A'))){
+                    console.log("Time Okay")
+                    $(this).closest("form").find('label').remove()
+                }else{
+                    console.log("Invalid Time Format")
+                }
+            }
+        }
+        });
+    });
+</script>
+<script>
+    $(document).on("click", ".deleteMoreOffDayRow", function(){
+        var offDayRowId = $(this).attr('data-row-id');
+        $('.add_Off_Day_Row'+offDayRowId).remove();
+    });
+    $(document).on("click", ".addMoreOffDay", function(){
+        //let offDayRow = $('.checkOffDayInput input').length;
+        let offDayRow = $('.offCounts').size();
+		
+		
+        if($('.offCounts').size() > 2){
+            Swal.fire("You can not add more than three Off Days");
+            return false
+        } 
+		
+        $('#add_Off_Day').append(`
+        <div class="add_Off_Day_Row${offDayRow}">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="wrap_form_control_icon" style="margin-bottom: 10px;">
+                            <input type="text" class="form-control datePicker" 
+                                placeholder="Please Select"
+                                name="offDate[]"  
+                                required  onkeydown="return false;" readonly>
+                            <div class="input_icon"><i class="icofont-ui-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="margin-top: 18px;">
+                        <span style="cursor: pointer;" data-row-id="${offDayRow}" class="deleteMoreOffDayRow btn-link" style="color: red; !important">Delete</span>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" class="offCounts">
+        </div>`);
+        var lastDate = new Date();
+        $(function () {
+            $(".datePicker").datepicker({
+            dateFormat: "mm-dd-yy",
+            changeMonth: true,
+            changeYear: true,
+            minDate:lastDate,
+            });
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

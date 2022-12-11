@@ -1,0 +1,1434 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+  <!-- / end include -->
+<style>
+  .gobtn {
+ color: black;
+ border-radius: 5px;
+ padding: 8px;
+ width: 42px;
+ border:  1px solid;
+  }
+  .ui-datepicker  {
+
+z-index: 9999999999999999999 !important;
+
+}
+</style>
+  <div class="main_content">
+    <div class="inner_fixed_tbar">
+      <div class="container-fluid">
+        <div style="display: none;" id="type"><%- type%></div>
+        <ul class="nav nav-tabs pt-2 pb-2" role="tablist">
+          <li class="nav-item"> <a class="nav-link first_tab_link" id="sales" href="<%-baseUrl%><%=top_filter_sale %>">Sales</a>
+          </li>
+          <li class="nav-item"> <a class="nav-link" id="tips" href="<%-baseUrl%><%=top_filter_tip %>">Tips</a> </li>
+          <li class="nav-item"> <a class="nav-link" id="customers" href="<%-baseUrl%><%=top_filter_customer %>">Customer Satisfaction</a> </li>
+          <li class="nav-item"> <a class="nav-link second_tab_link" id="visits" href="<%-baseUrl%><%=top_filter_visit %>">Visit Overview</a>
+          </li>
+        </ul>
+        <form action="<%-baseUrl%><%-filterUrl%>" name="searchForm" method="POST">
+        <div class="row">
+          <div class="col-md-9">
+            <% if(type == "sales"){ %>
+            <h4>Sales Overview</h4>
+            <% }else if(type == "tips"){ %>
+            <h4>Tips Overview</h4>
+            <% }else if(type == "customer_satisfaction"){ %>
+              <h4>Customer Satisfaction Overview</h4>
+            <% }else if(type == "visit"){ %>
+              <h4>Visit Overview</h4>
+            <% } %>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <select class="form-control" id="oyoAppTransactionDropDown">
+                <option value="non-oyyo">OYOapp Transaction</option>
+                <option value="non-oyo">Non OYOapp Transaction</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="white_block_head2"></div>
+          </div>
+          <% if(type == "sales"){ %>
+          <div class="col-md-7">
+            <ul class="nav nav-tabs tabs_revert pt-2" role="tablist">
+              <li class="nav-item"> <a class="nav-link tab_min_width first_tab_link" id="days"
+                  href="<%-baseUrl%><%=day_url %>">Day</a> </li>
+              <li class="nav-item"> <a class="nav-link tab_min_width" id="weeks" href="<%-baseUrl%><%-week_url%>">Weeks</a> </li>
+              <li class="nav-item"> <a class="nav-link tab_min_width" id="months" href="<%-baseUrl%><%-month_url%>">Months</a> </li>
+              <li class="nav-item"> <a class="nav-link tab_min_width second_tab_link" id="years"
+                  href="<%-baseUrl%><%-year_url%>">Years</a> </li>
+            </ul>
+          </div>
+          <% }else if(type == "tips"){ %>
+          <div class="col-md-7">
+            <ul class="nav nav-tabs tabs_revert pt-2" role="tablist">
+              <li class="nav-item"> <a class="nav-link tab_min_width first_tab_link" id="days"
+                  href="<%-baseUrl%><%=day_url %>">Day</a> </li>
+              <li class="nav-item"> <a class="nav-link tab_min_width" id="weeks" href="<%-baseUrl%><%-week_url%>">Weeks</a> </li>
+              <li class="nav-item"> <a class="nav-link tab_min_width" id="months" href="<%-baseUrl%><%-month_url%>">Months</a> </li>
+              <li class="nav-item"> <a class="nav-link tab_min_width second_tab_link" id="years"
+                  href="<%-baseUrl%><%-year_url%>">Years</a> </li>
+            </ul>
+          </div>
+          <% }else if(type == "customer_satisfaction"){ %>
+            <div class="col-md-7">
+              <ul class="nav nav-tabs tabs_revert pt-2" role="tablist">
+                <li class="nav-item"> <a class="nav-link tab_min_width first_tab_link" id="days"
+                    href="<%-baseUrl%><%=day_url %>">Day</a> </li>
+                <li class="nav-item"> <a class="nav-link tab_min_width" id="weeks" href="<%-baseUrl%><%-week_url%>">Weeks</a> </li>
+                <li class="nav-item"> <a class="nav-link tab_min_width" id="months" href="<%-baseUrl%><%-month_url%>">Months</a> </li>
+                <li class="nav-item"> <a class="nav-link tab_min_width second_tab_link" id="years"
+                    href="<%-baseUrl%><%-year_url%>">Years</a> </li>
+              </ul>
+            </div>
+            <% }else if(type == "visit"){ %>
+            <div class="col-md-7">
+              <ul class="nav nav-tabs tabs_revert pt-2" role="tablist">
+                <li class="nav-item"> <a class="nav-link tab_min_width first_tab_link" id="days"
+                    href="<%-baseUrl%><%=day_url %>">Day</a> </li>
+                <li class="nav-item"> <a class="nav-link tab_min_width" id="weeks" href="<%-baseUrl%><%-week_url%>">Weeks</a> </li>
+                <li class="nav-item"> <a class="nav-link tab_min_width" id="months" href="<%-baseUrl%><%-month_url%>">Months</a> </li>
+                <li class="nav-item"> <a class="nav-link tab_min_width second_tab_link" id="years"
+                    href="<%-baseUrl%><%-year_url%>">Years</a> </li>
+              </ul>
+            </div>
+            <% } %>
+          <div class="col-md-2">
+            <div class="form-group pt-2">
+              <input type="text" class="form-control from_datePicker" name="from" id="from" value="<%- from ? from : '' %>" placeholder="Select From Date"
+              readonly>
+              <!-- <select class="form-control">
+                <option class="datePicker">From: Oct 2020</option>
+                
+              </select> -->
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group pt-2">
+              <input type="text" class="form-control to_datePicker" name="to" value="<%- to ? to : '' %>" id="to" placeholder="Select To Date"
+              readonly>
+
+              <!-- <button type="submit" class="float-right">Go</button> -->
+              <!-- <select class="form-control">
+                <option>To: Mar 2021</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="col-md-1">
+            <button class="primary mt-2 pxy-4 gobtn" style="background-color: black; color: white;" type="submit">Go</button>
+          </div>
+        
+        </div>
+       </form> 
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="tab-content page_tab_content">
+        <% if(type == "sales"){ %>
+        <div id="Sales" class="tab-pane active">
+          <div class="row">
+            <div class="col-md-11">
+              <ul class="total_sale_tran pt-3">
+                <li><span>Total Sales</span>
+                  <h2 id="totalSales">$</h2>
+                </li>
+                <li><span>Total Transactions</span>
+                  <h2 id="totalTransactions"></h2>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-1 pt-3"><a href="#!" data-toggle="modal" data-target="#transAction" >
+              <img src="<%-baseUrl%>img/edit_c2.svg" height="55" width="55" alt="" /> 
+            </a></div>
+            <div class="col-lg-3 col-md-2 col-sm-1 col-0"></div>
+            <div class="col-lg-6 col-md-8 col-sm-10 col-12">
+            <canvas id="myChart" width="300" height="200"></canvas>
+            <div id="salesReport" style="display:none;"><%- JSON.stringify(salesReports) %></div>
+            </div>
+            <div class="col-lg-3 col-md-2 col-sm-1 col-0"></div>
+            <div id="sales_data" style="display:none;"><%- JSON.stringify(result) %></div>
+            <script>
+              $(document).ready(function () {
+                var sales_data = $("#sales_data").html();
+                sales_data = JSON.parse(sales_data);
+                var type = '<%- tipType%>';
+
+                if(type == "Month"){
+                  $("#months").addClass("active");
+                  $("#years").removeClass("active");
+                  $("#days").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(type == "Year"){
+                  $("#years").addClass("active");
+                  $("#months").removeClass("active");
+                  $("#days").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(type == "Day"){
+                  $("#days").addClass("active");
+                  $("#years").removeClass("active");
+                  $("#months").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(type == "Week"){
+                  $("#days").removeClass("active");
+                  $("#years").removeClass("active");
+                  $("#months").removeClass("active");
+                  $("#weeks").addClass("active");
+                }
+              })
+            </script>
+        <% if(result.length>0){ %>   
+            <% for(var i=0; i<result.length; i++) { %>
+              <% if(result[i].monthName){ %>
+                <div class="col-md-12">
+                  <!-- <h6 class="text-center">March 2021</h6>  -->
+                  <h6 class="text-center">
+                    <%= result[i].monthName %>
+                  </h6>
+                  <table class="table custom_table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" width="40%">Services</th>
+                        <th scope="col" width="30%"># Sold</th>
+                        <th scope="col" width="30%">Amount Received</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(var j=0; j<result[i].data.length; j++) { %>
+                        <tr>
+                          <td scope="row">
+                            <%- result[i].data[j].title %>
+                          </td>
+                          <td>
+                            <%- result[i].data[j].count %>
+                          </td>
+                          <td>$ <%- result[i].data[j].amount %>
+                          </td>
+                        </tr>
+                        <% } %>
+                          <!-- <tr>
+                            <th class="custom_tr_view_moreback" colspan="3" align="center" scope="row"><a href="">View
+                                More</a></th>
+                          </tr> -->
+                    </tbody>
+                  </table>
+                  
+                </div>
+                <% }else if(result[i].yearName){  %>
+                    <div class="col-md-12">
+                      <!-- <h6 class="text-center">March 2021</h6>  -->
+                      <h6 class="text-center">
+                        <%= result[i].yearName %>
+                      </h6>
+                      <table class="table custom_table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col" width="40%">Services</th>
+                            <th scope="col" width="30%"># Sold</th>
+                            <th scope="col" width="30%">Amount Received</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for(var j=0; j<result[i].data.length; j++) {%>
+                            <tr>
+                              <td scope="row">
+                                <%- result[i].data[j].title %>
+                              </td>
+                              <td>
+                                <%- result[i].data[j].count %>
+                              </td>
+                              <td>$ <%- result[i].data[j].amount %>
+                              </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                      </table>
+
+                    </div>
+                    <% }else if(result[i].yearMonthDay){ %>
+                        <div class="col-md-12">
+                          <!-- <h6 class="text-center">March 2021</h6>  -->
+                          <h6 class="text-center">
+                            <%= dateFormat(result[i].yearMonthDay, "mm-dd-yyyy"); %>
+                          </h6>
+                          <table class="table custom_table">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col" width="40%">Services</th>
+                                <th scope="col" width="30%"># Sold</th>
+                                <th scope="col" width="30%">Amount Received</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% for(var j=0; j<result[i].data.length; j++) { %>
+                                <tr>
+                                  <td scope="row">
+                                    <%- result[i].data[j].title %>
+                                  </td>
+                                  <td>
+                                    <%- result[i].data[j].count %>
+                                  </td>
+                                  <td>$ <%- result[i].data[j].amount %>
+                                  </td>
+                                </tr>
+                                <% } %>
+                                  <!-- <tr>
+                                    <th class="custom_tr_view_moreback" colspan="3" align="center" scope="row"><a
+                                        href="">View More</a></th>
+                                  </tr> -->
+                            </tbody>
+                          </table>
+
+                        </div>
+                        
+                        <% }else if(result[i].weekName){ %>
+                          <%  if(result[i].data.length > 0){ %>
+                          <div class="col-md-12">
+                            <!-- <h6 class="text-center">March 2021</h6>  -->
+                            <h6 class="text-center">
+                              <%= result[i].weekName %>
+                            </h6>
+                            <table class="table custom_table">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th scope="col" width="40%">Services</th>
+                                  <th scope="col" width="30%"># Sold</th>
+                                  <th scope="col" width="30%">Amount Received</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% for(var j=0; j<result[i].data.length; j++) { %>
+                                  <tr>
+                                    <td scope="row">
+                                      <%- result[i].data[j].title %>
+                                    </td>
+                                    <td>
+                                      <%- result[i].data[j].count %>
+                                    </td>
+                                    <td>$ <%- result[i].data[j].amount %>
+                                    </td>
+                                  </tr>
+                                  <% } %>
+                                    <!-- <tr>
+                                      <th class="custom_tr_view_moreback" colspan="3" align="center" scope="row"><a
+                                          href="">View More</a></th>
+                                    </tr> -->
+                              </tbody>
+                            </table>
+  
+                          </div>
+                          <% } %>
+                          <% }else{ %>
+                            <h3 style="text-align: center;">No Data Available</h3>
+                            <% } %>
+                            <% } %>
+                          <% } %>
+                          <% } %>
+          </div>
+        </div>
+
+        <!-- end:Sales -->
+        <% if(type == "tips"){ %>
+        <div id="Tips" class="tab-pane">
+          <div class="row pl-3 pr-3">
+          <script>
+                $(document).ready(function () {
+                    var totalTip = 0.0;
+                    var totalTransaction = 0;
+                    var data = $('#salesReport').html();
+                    
+                    data = JSON.parse(data);
+                    data.forEach(element => {
+                    //  for(let i=0; i<data.length; i++){
+                      totalTip+= element.value1;
+                      totalTransaction+= parseInt(element.value2);
+                      //}
+                    });
+                    $('#totalTips').html('$'+parseFloat(totalTip));
+                    $('#totalTransaction').html(parseInt(totalTransaction));
+                });
+            
+                var tipsType = '<%- tipType %>'
+                if(tipsType == 'Day'){
+                  $("#months").removeClass("active");
+                  $("#years").removeClass("active");
+                  $("#days").addClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Month'){
+                  $("#years").removeClass("active");
+                  $("#months").addClass("active");
+                  $("#days").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Year'){
+                  $("#days").removeClass("active");
+                  $("#years").addClass("active");
+                  $("#months").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Week'){
+                  $("#days").removeClass("active");
+                  $("#years").removeClass("active");
+                  $("#months").removeClass("active");
+                  $("#weeks").addClass("active");
+                }
+            </script>
+            <div class="col-md-11">
+              <ul class="total_sale_tran pt-3">
+                <li><span>Total Tips</span>
+                  <h2 id="totalTips">$</h2>
+                </li>
+                <li><span>Total Transactions</span>
+                  <h2 id="totalTransaction"></h2>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-1 pt-3"><a href="#!"  data-toggle="modal" data-target="#transAction"  >
+              <img src="<%-baseUrl%>img/edit_c2.svg" height="55" width="55" alt="" /> 
+            </a></div>
+            <div class="col-lg-3 col-md-2 col-sm-1 col-0"></div>
+            <div class="col-lg-6 col-md-8 col-sm-10 col-12"> 
+            <canvas id="myChart" width="300" height="200"></canvas>
+            <div id="salesReport" style="display:none;"><%- JSON.stringify(salesReports) %></div>
+            <div id="tips_data" style="display:none;"><%- JSON.stringify(result) %></div>
+            </div>
+            <div class="col-lg-3 col-md-2 col-sm-1 col-0"></div>
+            <% if(tipType == "Day"){ %>
+            <div class="col-md-12">
+              <table class="table custom_table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" width="40%"><%- tipType %></th>
+                    <th scope="col" width="30%"># Of Tips</th>
+                    <th scope="col" width="30%">Amount Received</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(var i=0; i<result.length; i++) { %>
+                  <tr>
+                    <td scope="row"><%- dateFormat(result[i].title, "mm-dd-yyyy"); %></td>
+                    <td><%- result[i].tips %></td>
+                    <td>$<%- result[i].recieved %></td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+            <% } %>
+            <% if(tipType == "Month"){ %>
+              <div class="col-md-12">
+                <table class="table custom_table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" width="40%"><%- tipType %></th>
+                      <th scope="col" width="30%"># Of Tips</th>
+                      <th scope="col" width="30%">Amount Received</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i<result.length; i++) { %>
+                    <tr>
+                      <td scope="row"><%- result[i].title %></td>
+                      <td><%- result[i].tips %></td>
+                       <td>$<%- result[i].recieved %></td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+  
+              </div>
+              <% } %>
+
+              <% if(tipType == "Year"){ %>
+                <div class="col-md-12">
+                  <table class="table custom_table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" width="40%"><%- tipType %></th>
+                        <th scope="col" width="30%"># Of Tips</th>
+                        <th scope="col" width="30%">Amount Received</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(var i=0; i<result.length; i++) { %>
+                        <tr>
+                          <td scope="row"><%- result[i].title %></td>
+                          <td><%- result[i].tips %></td>
+                          <td>$<%- result[i].recieved %></td>
+                        </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+    
+                </div>
+                <% } %>
+
+                <% if(tipType == "Week"){ %>
+                    <div class="col-md-12">
+                      <table class="table custom_table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col" width="40%"><%- tipType %></th>
+                            <th scope="col" width="30%"># Of Tips</th>
+                            <th scope="col" width="30%">Amount Received</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for(var i=0; i<result.length; i++) { %>
+                            <tr>
+                              <td scope="row"><%- result[i].title %></td>
+                              <td><%- result[i].tips %></td>
+                              <td>$<%- result[i].recieved %></td>
+                            </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                  <% } %>
+            </div>
+        </div>
+        <% } %>
+        <!-- end:Tips -->
+        <% if(type == "customer_satisfaction"){ %>
+        <div id="Customer" class="tab-pane">
+          <div class="row pl-3 pr-3">
+            <script>
+              $(document).ready(function () {
+              var totalTip = 0;
+              var totalTransaction = 0;
+              var data = $('#salesReport').html();
+              
+              data = JSON.parse(data);
+              data.forEach(element => {
+                totalTip+= parseInt(element.value2);
+                totalTransaction+= parseInt(element.value1);
+              });
+               if(totalTransaction == 0){
+                $('#averegeRatings').html(0);
+               }else{
+               var avg = totalTransaction/totalTip
+              $('#averegeRatings').html(avg.toFixed(2));
+               }
+             // }
+              $('#totalRatings').html(parseInt(totalTip));
+            })
+            
+                var tipsType = '<%- tipType %>'
+                if(tipsType == 'Day'){
+                  $("#months").removeClass("active");
+                  $("#years").removeClass("active");
+                  $("#days").addClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Month'){
+                  $("#years").removeClass("active");
+                  $("#months").addClass("active");
+                  $("#days").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Year'){
+                  $("#days").removeClass("active");
+                  $("#years").addClass("active");
+                  $("#months").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Week'){
+                //  alert("noy")
+                  $("#weeks").addClass("active");
+                  $("#days").removeClass("active");
+                  $("#years").removeClass("active");
+                  $("#months").removeClass("active");
+                }
+            </script>
+            <div class="col-md-11">
+              <ul class="total_sale_tran pt-3">
+                <li><span>Industry Benchmark</span>
+                  <h2>3</h2>
+                </li>
+                <li><span>Average Ratings</span>
+                  <h2 id="averegeRatings"></h2>
+                </li>
+                <li><span>Ratings Count</span>
+                  <h2 id="totalRatings"></h2>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-1 pt-3"><a href="#!"  data-toggle="modal" data-target="#transAction" >
+              <img src="<%-baseUrl%>img/edit_c2.svg" height="55" width="55" alt="" /> 
+            </a></div>
+            <div class="col-lg-3 col-md-2 col-sm-1 col-0"></div>
+            <div class="col-lg-6 col-md-8 col-sm-10 col-12">
+            <canvas id="myChart" width="300" height="200"></canvas>
+            <div id="salesReport" style="display:none;"><%- JSON.stringify(salesReports) %></div>
+            <div id="customer_data" style="display:none;"><%- JSON.stringify(result) %></div>
+            </div>
+            <div class="col-lg-3 col-md-2 col-sm-1 col-0"></div>
+            <% if(tipType){ %>
+              <div class="col-md-12">
+                <table class="table custom_table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" width="40%"><%- tipType  %></th>
+                      <th scope="col" width="30%"># of Ratings</th>
+                      <th scope="col" width="30%">Ratings</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i<result.length; i++) { %>
+                    <tr>
+                      <% if(result[i].tipType == "Day" ){ %>
+                      <td scope="row"><%- dateFormat(result[i].title, "mm-dd-yyyy"); %></td>
+                      <% } else { %>
+                      <td scope="row"><%- result[i].title %></td>
+                      <% } %>
+                      <% if(result[i].total > 1 ){ %>
+                        <td><%- (result[i].total).toFixed(2) %></td>
+                        <% } else { %>
+                          <td>0</td>
+                        <% } %>
+                      <% if(result[i].total > 4 ){ %>
+                        <td>Excellent</td>
+                      <% } else if(result[i].total > 3 ){ %>
+                        <td>Very Good</td>
+                      <% } else if(result[i].total > 2 ){ %>
+                          <td>Good </td>
+                        <% } else if(result[i].total > 1 ){ %>
+                          <td>Bad</td>
+                        <% } else { %>
+                          <td>Very Bad</td>
+                        <% } %>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+              <% } %>
+            <!-- <% if(tipType  == "Month"){ %>
+              <div class="col-md-12">
+                <table class="table custom_table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" width="40%"><%- tipType  %></th>
+                      <th scope="col" width="30%"># of Ratings</th>
+                      <th scope="col" width="30%">Ratings</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i<result.length; i++) { %>
+                    <tr>
+                      <td scope="row"><%- result[i].title %></td>
+                      <% if(result[i].total > 1 ){ %>
+                      <td><%- result[i].total.toFixed(2) %></td>
+                      <% } else { %>
+                        <td>0</td>
+                      <% } %>
+                      <% if(result[i].total > 1 ){ %>
+                        <td>Rated</td>
+                        <% } else { %>
+                          <td>Not yet</td>
+                        <% } %>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+              <% } %>
+              <% if(tipType  == "Year"){ %>
+                <div class="col-md-12">
+                  <table class="table custom_table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" width="40%"><%- tipType  %></th>
+                        <th scope="col" width="30%"># of Ratings</th>
+                        <th scope="col" width="30%">Ratings</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(var i=0; i<result.length; i++) { %>
+                      <tr>
+                        <td scope="row"><%- result[i].title %></td>
+                        <% if(result[i].total > 1 ){ %>
+                          <td><%- result[i].total/result[i].transactions %></td>
+                          <% } else { %>
+                            <td>0</td>
+                          <% } %>
+                        <% if(result[i].total > 1 ){ %>
+                          <td>Rated</td>
+                          <% } else { %>
+                            <td>Not yet</td>
+                          <% } %>
+                      </tr>
+                      <% } %> -->
+                    </tbody>
+                  </table>
+                </div>
+                <% } %>
+          </div>
+        </div>
+        <% } %>
+        <!-- end Customer -->
+        <% if(type == "visit"){ %>
+        <div id="Visits" class="tab-pane">
+          <div class="row pl-3 pr-3">
+            <script>
+              $(document).ready(function () {
+              var totalAppointments = 0;
+              var totalCancellation = 0;
+              var totalNoshows = 0;
+              var data = $('#salesReport').html();
+              
+              data = JSON.parse(data);
+              data.forEach(element => {
+              //  for(let i=0; i<data.length; i++){
+                totalAppointments+= element.value1;
+                totalCancellation+= element.value2;
+                totalNoshows+= element.value3;
+      
+                //}
+              });
+              $('#totalAppointments').html(totalAppointments);
+              $('#totalCancellation').html(totalCancellation);
+              $('#totalNoshows').html(totalNoshows);
+            })
+            
+                var tipsType = '<%- tipType %>'
+              //  alert(tipsType)
+                if(tipsType == 'Day'){
+                 // alert("noy")
+                  $("#months").removeClass("active");
+                  $("#years").removeClass("active");
+                  $("#days").addClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Month'){
+                  $("#years").removeClass("active");
+                  $("#months").addClass("active");
+                  $("#days").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Year'){
+                  $("#days").removeClass("active");
+                  $("#years").addClass("active");
+                  $("#months").removeClass("active");
+                  $("#weeks").removeClass("active");
+                }else if(tipsType == 'Week'){
+                //  alert("noy")
+                  $("#weeks").addClass("active");
+                  $("#days").removeClass("active");
+                  $("#years").removeClass("active");
+                  $("#months").removeClass("active");
+                }
+            </script>
+            <div class="col-md-11">
+              <ul class="total_sale_tran pt-3">
+                <li><span>Total Appointments</span>
+                  <h2 id="totalAppointments"></h2>
+                </li>
+                <li><span>Cancellations</span>
+                  <h2 id="totalCancellation"></h2>
+                </li>
+                <li><span>No Shows</span>
+                  <h2 id="totalNoshows"></h2>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-1 pt-3"><a href="#!"  data-toggle="modal" data-target="#transAction" >
+              <img src="<%-baseUrl%>img/edit_c2.svg" height="55" width="55" alt="" /> 
+            </a></div>
+            <div class="col-lg-3 col-md-2 col-sm-1 col-0"></div>
+            <div class="col-lg-6 col-md-8 col-sm-10 col-12">
+            <canvas id="myChart" width="300" height="200"></canvas>
+            <div id="salesReport" style="display:none;"><%- JSON.stringify(salesReports) %></div>
+            </div>
+            <div class="col-lg-3 col-md-2 col-sm-1 col-0"></div>
+            <div id="salesReport" style="display:none;"><%- JSON.stringify(salesReports) %></div>
+            <div id="customer_data1" style="display:none;"><%- JSON.stringify(result) %></div>
+            </div>
+            <div class="col-md-12">
+              <table class="table custom_table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" width="40%"><%- tipType  %></th>
+                    <th scope="col" width="20%">Total Appointments</th>
+                    <th scope="col" width="20%">Cancellations</th>
+                    <th scope="col" width="20%">No Shows</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for(var i=0; i<result.length; i++) { %>
+                  <tr>
+                 
+                      <!-- <td scope="row"><%- result[i].title %></td> -->
+                  
+                      <td scope="row"><%- result[i].title %></td>
+                   
+                    <td><%- result[i].total %></td>
+                    <td><%- result[i].cancelled %></td>
+                    <td><%- result[i].noShows %></td>
+                  </tr>
+                  <% } %>
+                  <!-- <tr>
+                    <td scope="row">February 2021</td>
+                    <td>13</td>
+                    <td>3</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td scope="row">January 2021</td>
+                    <td>13</td>
+                    <td>3</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td scope="row">December 2020</td>
+                    <td>13</td>
+                    <td>3</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td scope="row">Total Ratings</td>
+                    <td>13</td>
+                    <td>3</td>
+                    <td>1</td>
+                  </tr> -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+  <!-- end:main_content -->
+
+  <!-- share start -->
+  <div class="modal" id="share_connectionModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Share connection link</h4>
+          <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="invitation_code_sec">
+            <label>Invitation Code</label>
+            <div class="invitation_code">075ACP</div>
+          </div>
+          <div class="share_seprator"> <span>Share Link</span> </div>
+          <ul class="social_share">
+            <li> <a href="#"> <img src="<%-baseUrl%>img/whatsapp.png" alt=""> <span>WhatsApp</span> </a> </li>
+            <li> <a href="#"> <img src="<%-baseUrl%>img/facebook.png" alt=""> <span>Facebook</span> </a> </li>
+            <li> <a href="#"> <img src="<%-baseUrl%>img/twitter.png" alt=""> <span>Twitter</span> </a> </li>
+            <li> <a href="#"> <img src="<%-baseUrl%>img/email.png" alt=""> <span>E-Mail</span> </a> </li>
+            <li> <a href="#"> <img src="<%-baseUrl%>img/sms.png" alt=""> <span>SMS</span> </a> </li>
+            <li> <a href="#"> <img src="<%-baseUrl%>img/copy-code.png" alt=""> <span>Copy</span> </a> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- share end -->
+
+  <!-- make payment start -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Payment</h4>
+          <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="">
+            <h5 class="payment_select_card">Select Card</h5>
+            <div class="row">
+              <div class="col-xl-12">
+                <div class="payment_cart">
+                  <div class="card_logo"> <img src="<%-baseUrl%>img/visa.png" alt=""> </div>
+                  <div class="card_info">
+                    <h4 class="card_number">**** **** **** 3589</h4>
+                    <h5 class="card_expire">Expires 10/27</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form_seprator">
+              <div class="sep_or">OR</div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label class="payment_info_popup_title">Pay using new card</label>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Card Number</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Expires</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>CVV</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">Save this card for future use</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button type="submit" class="btn_sty_1">Make Payment</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- make payment end -->
+
+  <!-- End Enter Transaction Popup-->
+
+<div class="modal" id="transAction" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content"> 
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Enter Cash Transaction details</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form name="enterTransaction" method="post" action="<%-baseUrl%>enter-transaction" id="enterTransaction">
+          <div class="row">
+            <div class="col-md-12">
+              <p>Is this a</p>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="custom-control">
+                  <input type="checkbox" id="checkbox_sale" checked>
+                  <label for="customCheck">Sale</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="custom-control ">
+                  <input type="checkbox"  id="checkbox_tip" name="example1">
+                  <label for="customCheck">Tip</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Date</label>
+                <input type="text" class="form-control transaction_datePicker" name="date" placeholder="Enter transaction date" readonly>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Customer Name</label>
+                <input type="text" class="form-control" name="name">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" class="form-control" name="mail">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Provided Service</label>
+                <input type="text" class="form-control" name="providded_service">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group" id="sale_div">
+                <label>Sale Amount (USD)</label>
+                <input type="text" class="form-control" id="price1" name="amount"  min="0" pattern="^\d*(\.\d{0,2})?$" title="Only 2 digits allowed after decimal">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group" id="tip_div">
+                <label>Tip Amount (USD)</label>
+                <input type="text" class="form-control" id="price2" name="tip"  min="0" pattern="^\d*(\.\d{0,2})?$" title="Only 2 digits allowed after decimal">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <button  class="btn_sty_1">Submit</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End Enter Transaction --> 
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Datepicker -->
+    <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+    <script src="<%- baseUrl %>js/sweetalert2.js"></script>
+    <link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+    <script>
+  var type = '<%- sideDropDown %>';
+  // if(type == "all"){
+  // $("#importContactsDropdown").val("all");
+  // }else{
+  $("#oyoAppTransactionDropDown").val(type);
+  //}
+   $("#oyoAppTransactionDropDown").change(function () {
+        var selectedValue = this.value;
+        if(selectedValue == "both"){
+          window.location.href = "<%- baseUrl %>performance"; 
+        }else if(selectedValue == "non-oyyo"){
+          window.location.href = "<%- baseUrl %>oyyo/performance"; 
+        }else if(selectedValue == "non-oyo"){
+          window.location.href = "<%- baseUrl %>oyo/performance"; 
+        }
+    });
+
+      $(document).ready(function () {
+        $('#checkbox_sale').change(function () {
+          if($('#checkbox_sale').is(":checked")){
+          var div = document.getElementById('sale_div');
+          div.style.visibility = "visible";
+        //  div.style.display = "true";
+          }else{
+          var div = document.getElementById('sale_div');
+          div.style.visibility = "hidden";
+         // div.style.display = "none";
+          }
+        })
+        var div = document.getElementById('tip_div');
+        div.style.visibility = "hidden";
+        $('#checkbox_tip').change(function () {
+          if($('#checkbox_tip').is(":checked")){
+          var div = document.getElementById('tip_div');
+          div.style.visibility = "visible";
+        //  div.style.display = "true";
+          }else{
+          var div = document.getElementById('tip_div');
+          div.style.visibility = "hidden";
+         // div.style.display = "none";
+          }
+        })
+
+        $('#price1').keypress(function (e) {
+            var character = String.fromCharCode(e.keyCode)
+            var newValue = this.value + character;
+            if (isNaN(newValue) || parseFloat(newValue) * 100 % 1 > 0) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        $('#price2').keypress(function (e) {
+            var character = String.fromCharCode(e.keyCode)
+            var newValue = this.value + character;
+            if (isNaN(newValue) || parseFloat(newValue) * 100 % 1 > 0) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        //Amount Required
+        $.validator.addMethod(
+          "amountRequired", 
+          function(value, element) {
+              if($('#checkbox_sale').is(":checked") && $("#price1").val() ==''){
+                return false;
+              }else{
+                return true;
+              }
+          },
+          "Please enter amount."
+      );
+
+      //Tip Required
+      $.validator.addMethod(
+          "tipRequired", 
+          function(value, element) {
+              if($('#checkbox_tip').is(":checked") && $("#price2").val() ==''){
+                return false;
+              }else{
+                return true;
+              }
+          },
+          "Please enter amount."
+      );
+
+      $("form[name='enterTransaction']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        date: {
+          required: true,
+        },
+        name: {
+          required: true,
+        },
+        mail: {
+          required: true,
+        },
+        providded_service: {
+          required: true,
+        },
+        tip: {
+          tipRequired: true,
+            number: true,
+						noSpace: true,
+        },
+        amount: {
+          number: true,
+						noSpace: true,
+            amountRequired: true,
+        },
+      },
+      messages: {
+        date: {
+          required: 'Please enter date.'
+        },
+        name: {
+          required: 'Please enter name.',
+        },
+        mail: {
+          required: 'Please enter email address',
+        },
+        providded_service: {
+          required: 'Please enter provided service name.'
+        },
+        tip: {
+          tipRequired: 'Please enter tip.',
+        },
+        amount: {
+          amountRequired: 'Please enter amount.',
+        }
+      },
+
+      submitHandler: function (form) {
+       $(":submit").attr("disabled", true);
+       form.submit();
+      }
+    });
+  });
+      $(document).ready(function () {
+      //  alert('<%- filterUrl%>')
+        var lastDate = new Date();
+        lastDate.setDate(lastDate.getDate()-1);
+        $(function () {
+          $(".from_datePicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: new Date(),
+          //  maxDate: lastDate,
+            //	minDate:lastDate,
+            yearRange: '1940:' + new Date().getFullYear(),
+          });
+        });
+        $(function () {
+          $(".to_datePicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            maxDate: new Date(),
+           // maxDate: lastDate,
+            //	minDate:lastDate,
+            yearRange: '1940:' + new Date().getFullYear(),
+            // onSelect: function () {
+            //  $("#my_profile_form").valid();
+            // }
+          });
+        });
+        $(function () {
+          $(".transaction_datePicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+           maxDate: new Date(),
+            //	minDate:lastDate,
+            yearRange: '1940:' + new Date().getFullYear(), 
+            onSelect: function () {
+        $("#enterTransaction").valid();
+          }
+          });
+        });
+      });
+    </script>
+
+  <script>
+   
+
+   $(document).ready(function () {
+    $.validator.addMethod(
+        "equaltoOrGreather", 
+        function(value, element) {
+            return $(".from_datePicker").val() <= $(".to_datePicker").val();
+        },
+        "To date should greater than or equal to from date."
+    );
+
+      $("form[name='searchForm']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        from: {
+          required: true,
+        },
+        to: {
+          required: true,
+          equaltoOrGreather: true
+        },
+      },
+      messages: {
+        from: {
+          required: 'Please enter from date.'
+        },
+        to: {
+          required: 'Please enter to date.',
+          equaltoOrGreather:'To date should greater than or equal to From date.'
+        }
+      },
+
+      submitHandler: function (form) {
+       // $(":submit").attr("disabled", true);
+        var type = '<%-tipType %>';
+     //   alert(type);
+        var startDate = $('#from').val();
+        var endDate = $('#to').val();
+        var date1 = new Date(startDate);
+        var date2 = new Date(endDate);
+        let startYear = date1.getFullYear();
+        let endYear = date2.getFullYear();
+        // To calculate the time difference of two dates
+var Difference_In_Time = date2.getTime() - date1.getTime();
+  
+  // To calculate the no. of days between two dates
+  var diffDays = Difference_In_Time / (1000 * 3600 * 24);
+       // var diffDays = date2.getDate() - date1.getDate(); 
+//alert(Difference_In_Days);
+        if(type == "Day"){
+         if(diffDays>29){
+           Swal.fire("Diff between dates should be 30 days or less");
+         }
+         else{
+           form.submit();
+         }
+        }else if(type == "Week"){
+          if(diffDays> 59){
+           Swal.fire("Diff between dates should be 60 days or less");
+         }else if(diffDays<15){
+          Swal.fire("Diff between dates should be greater than 16 days");
+         }
+         else{
+           form.submit();
+         }
+        }else if(type == "Month"){
+          if(diffDays> 300){
+            Swal.fire("Diff between dates should be 300 days or less");
+         }
+         else{
+           form.submit();
+         }
+        }else if(type == "Year"){
+          form.submit();
+          // if(startYear !== endYear){
+          //  alert("Start year and end year should be same");
+          // }
+          // else{
+          //  form.submit();
+          // }
+        }
+      //  alert(startDate)
+       // form.submit();
+      }
+    });
+  });
+    $(document).ready(function () {   
+      $('.performance-link').addClass('nav-active'); 
+
+      // var sales_data = $("#sales_data").html();
+      // sales_data = JSON.parse(sales_data);
+
+      // if(sales_data[0].monthName){
+      //   $("#months").addClass("active");
+      //   $("#years").removeClass("active");
+      //   $("#days").removeClass("active");
+      // }else if(sales_data[0].yearName){
+      //   $("#years").addClass("active");
+      //   $("#months").removeClass("active");
+      //   $("#days").removeClass("active");
+      // }else if(sales_data[0].yearMonthDay){
+      //   $("#days").addClass("active");
+      //   $("#years").removeClass("active");
+      //   $("#months").removeClass("active");
+      // }
+
+      var type = $('#type').html();
+         // type =   JSON.parse(type)
+          if(type == 'sales'){
+            $("#sales").addClass("active");
+            $("#tips").removeClass("active");
+            $("#customers").removeClass("active");
+            $("#visits").removeClass("active");
+          }else if(type == 'tips'){
+            $("#sales").removeClass("active");
+            $("#tips").addClass("active");
+            $("#customers").removeClass("active");
+            $("#visits").removeClass("active");
+          }else if(type == 'customer_satisfaction'){
+            $("#sales").removeClass("active");
+            $("#tips").removeClass("active");
+            $("#customers").addClass("active");
+            $("#visits").removeClass("active");
+          }else if(type == 'visit'){
+            $("#sales").removeClass("active");
+            $("#tips").removeClass("active");
+            $("#customers").removeClass("active");
+            $("#visits").addClass("active");
+          }
+
+      // $(".mobile_menu_btn").click(function () {
+      //   $(".mobile_menu").addClass("menu_open");
+      // });
+
+      // $(".menu_close").click(function () {
+      //   $(".mobile_menu").removeClass("menu_open");
+      // });
+    });
+  </script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="<%- baseUrl %>admin/vendors/chart.js/chart.min.3.9.1.js"></script>
+  <script type="text/javascript">
+    var totalTransactions = 0;
+    var totalSales = 0.0;
+    var userData = [];
+    var salesReport = $("#salesReport").html();
+    salesReport = JSON.parse(salesReport);
+       for (var i = 0; i < salesReport.length; i++) {
+           var temp = [];
+           totalSales+= parseFloat(salesReport[i].value1);
+           totalTransactions+=salesReport[i].value2;
+           if('<%-type %>' == 'visit'){
+            temp.push(salesReport[i].key); //userData[i].MonthValue
+            temp.push(salesReport[i].value1);
+            temp.push(salesReport[i].value2);
+            temp.push(salesReport[i].value3);
+           }else if('<%-type %>' == 'customer_satisfaction'){
+            temp.push(salesReport[i].key); //userData[i].MonthValue
+            temp.push(isNaN(salesReport[i].value1/salesReport[i].value2)==true?0:salesReport[i].value1/salesReport[i].value2);
+           }else{
+              temp.push(salesReport[i].key); //userData[i].MonthValue
+              temp.push(salesReport[i].value1);
+              //temp.push(salesReport[i].value2);
+           }
+           userData.push(temp);
+        }
+        $("#totalSales").html('$'+parseFloat(totalSales));
+        $("#totalTransactions").html(parseInt(totalTransactions));
+    const ctx = document.getElementById('myChart')
+    var chartjsLabel=[];
+    var chartjsValue1=[];
+    var chartjsValue2=[];
+    var chartjsValue3=[];
+    for(let i=0;i<userData.length;i++){
+      chartjsLabel.push(userData[i][0]);
+      chartjsValue1.push(userData[i][1]);
+      chartjsValue2.push(userData[i][2]);
+      chartjsValue3.push(userData[i][3]);
+    }
+    var chartjsDataset;
+    if('<%-type%>' == 'customer_satisfaction'){
+      chartjsDataset= [
+        {
+          label: 'Rating',
+          data: chartjsValue1,
+          borderColor: '#008000',
+          borderWidth: 1.5
+        },
+      ];
+    }else if('<%-type%>' == 'visit'){
+      chartjsDataset= [
+        {
+         label: 'Total Appointments',
+           data: chartjsValue1,
+           borderColor: '#008000',
+           borderWidth: 1.5
+        },
+        {
+           label: 'Cancellation',
+           data: chartjsValue2,
+          borderColor: '#ff0000',
+           borderWidth: 1.5
+        },
+        {
+          label: 'No Show',
+          data: chartjsValue3,
+          borderColor: '#800080',
+          borderWidth: 1.5
+        },
+      ];
+    }else{
+      chartjsDataset= [
+        {
+          label: 'Amount ($)',
+          data: chartjsValue1,
+          borderColor: '#008000',
+          borderWidth: 1.5
+        },
+      ];
+    }
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: chartjsLabel,
+          datasets: chartjsDataset
+      },
+    });
+    </script>
+    <script>
+      $("#price1").keypress(function(e) {
+        if (String.fromCharCode(e.which).match(/[^0-9.]/)) {
+          e.preventDefault();
+        }
+      });
+      $("#price2").keypress(function(e) {
+        if (String.fromCharCode(e.which).match(/[^0-9.]/)) {
+          e.preventDefault();
+        }
+      });
+    </script>
+
+         <!-- validation -->
+	<script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+	<script src="<%- baseUrl %>validation/custom.validate.js"></script>
+  </body>
+
+  </html>

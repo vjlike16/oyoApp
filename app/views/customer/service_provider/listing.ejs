@@ -1,0 +1,121 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->	
+
+<div class="connect_block_wrap">
+<div class="search_info_bar">
+    <div class="container">
+      <div class="sib_left">
+        <h3 class="sib_left_title">Found <%= result.length %> Business Owner</h3>
+      </div>
+      <form action="/customSearch" name="customSearch" method="POST">
+      <div class="sib_right">
+        <div class="search_wrap">
+          <input type="text" class="form-control" placeholder="Name, Category or Invite Code" value="<%-name_category%>" name="name_category" id="name_category">
+          <input type="text" class="form-control" placeholder="Location or Zip Code" value="<%-address%>" name="location" id="location">
+        </div>
+
+        <div class="search_btn_wrap">
+          <button type="submit" class="search_btn"><i class="icofont-search-1"></i></button>
+        </div>
+
+        <div class="view_toggle">
+          <a href="<%- baseUrl %>google-map">
+            <img src="<%- baseUrl %>img/google-maps.svg" alt="google-maps-logo"
+            style="width: 25px !important; height: 25px !important;"></a>
+        </div>
+
+      </div>
+    </form>
+
+    </div>
+  </div>
+  <!-- end:search_info_bar -->
+
+  <div class="g_service_provider">
+    <div class="container">
+      <div class="row">
+        <% for(var i=0; i<result.length; i++) { %>
+        <div class="col-lg-4 col-md-6">
+          <div class="g_isp_box">
+            <a href="<%- baseUrl %>service-provider/<%= result[i]._id %>">
+              <div class="g_imp_img">
+                <% if (result.profileImage == '' || result.profileImage == 'null' || result.profileImage == 'Null') {%>
+                  <img src="<%= baseUrl%>admin/images/user.png"  style="height: 250px;"> 
+                  <%}else{%>
+                  <img src="<%= baseUrl%>uploads/profile/<%= result[i].profileImage %>"  style="height: 250px;">
+                  <%}%>
+              </div>
+              <div class="g_isp_info">
+                <div class="g_isp_top">
+                  <h3 class="g_isp_title"><span><%= result[i].name %></span></h3>
+                  <h5 class="g_isp_ext_info"><%= result[i].services.name %></h5>
+                </div>
+                
+                <div class="g_isp_bottom">
+                  <input type="hidden" class="stars" value="<%= result[i].avgRating || 0 %>">
+                  <div class="rating rating_review_isp_details" data-rateyo-rating="<%= result[i].avgRating || 0 %>" style="z-index: -1;"></div>
+                  <br/>
+                  <h5 class="g_isp_ext_info"><span class="hidden-xs" style="  display: inline-block;
+                    width: 150px;
+                    white-space: nowrap;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis;"><%= result[i].address %></span></h5>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <% } %>
+        
+      </div>
+    </div>
+  </div>
+  <!-- end:g_service_provider -->
+
+</div>
+  <script>
+     $(document).ready(function(){
+      $("form[name='customSearch']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name_category: {
+			//		required: true,
+				},
+        location: {
+        //  required: true
+        }
+			},
+			messages:{
+				name_category:{
+				    required: 'Please enter name.'
+				},
+        location:{
+				    required: 'Please enter location.'
+				},
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+		 	}
+		 });    
+    });
+  </script>
+  <script>
+    var rating = $('.stars').val();
+    $(function () {
+      $(".rating").rateYo({
+          // rating: "4",
+          // rating: rating,
+          readOnly: true,
+          starWidth: "15px",
+          ratedFill: "#fe724c"
+      });
+      $(".rating").rateYo();
+    });
+  </script>
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->	

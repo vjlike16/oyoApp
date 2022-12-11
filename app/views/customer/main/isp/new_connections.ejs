@@ -1,0 +1,86 @@
+<!-- include header -->
+<% include ../../common/loggedIn-header %>
+<!-- / end include -->
+
+      <div class="main_content">
+        <div class="container-fluid">
+          <div class="home_detail_more">
+            <section class="home_white_blocks">
+              <div class="white_block_head">
+                <h3>New Connections</h3>
+              </div>
+              <div class="white_block_body">
+                <% for(var i=0; i<connectedList.length; i++) { %>
+                  <% if (connectedList[i].status == "pending" && connectedList[i].ispId == userCustomerSession._id) { %>
+                    <div class="white_block_box">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].cusProfile %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p>Hi <%= connectedList[i].ispName %>, <%= connectedList[i].cusName %> has sent you a connection request.</p>
+                        <div class="white_box_btn_group">
+                          <a href="/accept/connection/<%= connectedList[i]._id %>" class="btn_sty_1">Accept</a>
+                          <a href="/deny/connection/<%= connectedList[i]._id %>" class="btn_red" style="width: 90px; text-align: center;">Deny</a>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if (connectedList[i].status == "pending" && connectedList[i].cusId == userCustomerSession._id) { %>
+                    <div class="white_block_box">
+                      <div class="white_block_box">
+                        <div class="white_block_img">
+                          <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p class="white_info_box_p">Hi <%= connectedList[i].cusName %>, connection request sent successfully to Business Owner "<%= connectedList[i].ispName %>".</p>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if (connectedList[i].status == "success" && connectedList[i].ispId == userCustomerSession._id) { %>
+                    <div class="white_block_box">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].cusProfile %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p class="white_info_box_p"><%= connectedList[i].cusName %> has joined your network.</p>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if (connectedList[i].status == "success" && connectedList[i].cusId == userCustomerSession._id) { %>
+                    <div class="white_block_box">
+                      <div class="white_block_box">
+                        <div class="white_block_img">
+                          <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p class="white_info_box_p">A new Business Owner <%= connectedList[i].ispName %> has been successfully connected.</p>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
+                <% } %>
+                <% if (connectedList.length == 0) { %>
+                  <div class="white_block_box">
+                    <div class="white_info_box">
+                      <p>No data available</p>
+                    </div>
+                  </div>
+                <% } %> 
+              </div>
+            </section>
+            <!-- end:home_white_blocks -->
+          </div>
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  </body>
+</html>

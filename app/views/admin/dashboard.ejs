@@ -1,0 +1,791 @@
+<!-- include header -->
+<% include common/header %>
+<link rel="stylesheet" href="<%- baseUrl %>css/icofont.css" />
+<style>
+	.dashfilter .form-group {
+		position: relative;
+	}
+	.dashfilter label.error {
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 100%;
+	}
+</style>
+<!-- / end include -->
+
+<!-- bootstrap-progressbar -->
+<!-- <script src="<%- baseUrl %>admin/vendors/bootstrap/js/bootstrap-progressbar.min.js"></script>
+<script src="<%- baseUrl %>admin/vendors/chart.js/chart.min.js"></script>
+<script src="<%- baseUrl %>admin/vendors/gauge.js/gauge.min.js"></script>
+<script src="<%- baseUrl %>admin/vendors/chart.js/jquery.sparkline.min.js"></script> -->
+
+<div id="paymentReports" style="display: none">
+	<%- JSON.stringify(paymentReports) %>
+</div>
+<div id="ispReports" style="display: none">
+	<%- JSON.stringify(ispReports) %>
+</div>
+<script type="text/javascript">
+	var loginpageurl1 = '<%- baseUrl %>';
+	var loginpageurl2 = '<%- baseUrl %>admin/';
+	var lastPage = document.referrer;
+	console.log('--------------document.referrer', lastPage, '<%- baseUrl %>');
+	if (
+		document.referrer == loginpageurl1 ||
+		document.referrer == loginpageurl2
+	) {
+		(function (global) {
+			if (typeof global === 'undefined') {
+				throw new Error('window is undefined');
+			}
+
+			var _hash = '!';
+			var noBackPlease = function () {
+				global.location.href += '#';
+
+				// making sure we have the fruit available for juice....
+				// 50 milliseconds for just once do not cost much (^__^)
+				global.setTimeout(function () {
+					global.location.href += '!';
+				}, 50);
+			};
+
+			// Earlier we had setInerval here....
+			global.onhashchange = function () {
+				if (global.location.hash !== _hash) {
+					global.location.hash = _hash;
+				}
+			};
+
+			global.onload = function () {
+				noBackPlease();
+
+				// disables backspace on page except on input fields and textarea..
+				document.body.onkeydown = function (e) {
+					var elm = e.target.nodeName.toLowerCase();
+					if (e.which === 8 && elm !== 'input' && elm !== 'textarea') {
+						e.preventDefault();
+					}
+					// stopping event bubbling up the DOM tree..
+					e.stopPropagation();
+				};
+			};
+		})(window);
+	}
+</script>
+
+<script
+	type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"
+></script>
+<script type="text/javascript">
+	google.charts.load('current', { packages: ['corechart'] });
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		var userData = [];
+		var ispReports = $('#ispReports').html();
+		ispReports = JSON.parse(ispReports);
+		for (var i = 0; i < ispReports.length; i++) {
+			var temp = [];
+			temp.push(ispReports[i].key); //userData[i].MonthValue
+			temp.push(ispReports[i].value);
+			temp.push(ispReports[i].value1);
+			userData.push(temp);
+		}
+		console.log('isp-data,,', userData);
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Months');
+		data.addColumn('number', 'Business-owners');
+		data.addColumn('number', 'Customers');
+		data.addRows(userData);
+
+		var options = {
+			width: 1000,
+			height: 500,
+			pointSize: 5,
+			axes: {
+				x: {
+					2: { side: 'bottom' },
+				},
+			},
+		};
+
+		var chart = new google.visualization.LineChart(
+			document.getElementById('line_top_x')
+		);
+
+		chart.draw(data, options);
+	}
+</script>
+<script type="text/javascript">
+	google.charts.load('current', { packages: ['line'] });
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		var userData = [];
+		var paymentReports = $('#paymentReports').html();
+		paymentReports = JSON.parse(paymentReports);
+		for (var i = 0; i < paymentReports.length; i++) {
+			var temp = [];
+			temp.push(paymentReports[i].key); //userData[i].MonthValue
+			temp.push(paymentReports[i].value);
+			userData.push(temp);
+		}
+
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Months');
+		data.addColumn('number', 'Revenue');
+
+		data.addRows(userData);
+
+		var options = {
+			width: 1000,
+			height: 500,
+			pointSize: 5,
+			axes: {
+				x: {
+					2: { side: 'bottom' },
+				},
+			},
+		};
+
+		var chart = new google.visualization.LineChart(
+			document.getElementById('line_top_x1')
+		);
+
+		chart.draw(data, options);
+	}
+</script>
+
+<div class="row">
+	<div class="col-lg-2 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-red">
+			<div class="inner">
+				<h3><%= ispsCount %></h3>
+				<p>Total Business Owners</p>
+			</div>
+			<div class="icon">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="4rem"
+					height="4rem"
+					viewBox="0 0 20.829 20.829"
+					fill="rgba(0,0,0,0.15)"
+				>
+					<g
+						id="Group_7524"
+						data-name="Group 7524"
+						transform="translate(342 -7372)"
+					>
+						<g
+							id="Group_7523"
+							data-name="Group 7523"
+							transform="translate(-342 7372)"
+						>
+							<g
+								id="Group_7518"
+								data-name="Group 7518"
+								transform="translate(7.854 0)"
+							>
+								<path
+									id="Path_4224"
+									data-name="Path 4224"
+									d="M24.22,3.777c0,1.823-1.172,3.3-2.56,3.3-1.432,0-2.56-1.475-2.56-3.3a2.569,2.569,0,1,1,5.12,0Z"
+									transform="translate(-19.1 -1)"
+								/>
+							</g>
+							<g
+								id="Group_7519"
+								data-name="Group 7519"
+								transform="translate(5.468 6.596)"
+							>
+								<path
+									id="Path_4225"
+									data-name="Path 4225"
+									d="M23.494,18.326v1.823H13.6V18.326a1.454,1.454,0,0,1,.824-1.3,10.193,10.193,0,0,1,2.864-.824,3.156,3.156,0,0,0,1.258.3,2.568,2.568,0,0,0,1.258-.3,11.738,11.738,0,0,1,2.864.781A1.539,1.539,0,0,1,23.494,18.326Z"
+									transform="translate(-13.6 -16.2)"
+								/>
+							</g>
+							<g
+								id="Group_7520"
+								data-name="Group 7520"
+								transform="translate(0 11.413)"
+							>
+								<path
+									id="Path_4226"
+									data-name="Path 4226"
+									d="M21.829,28.168v.955a.87.87,0,0,1-.868.868H1.868A.87.87,0,0,1,1,29.123v-.955a.87.87,0,0,1,.868-.868H20.961A.87.87,0,0,1,21.829,28.168Z"
+									transform="translate(-1 -27.3)"
+								/>
+							</g>
+							<g
+								id="Group_7521"
+								data-name="Group 7521"
+								transform="translate(2.17 15.014)"
+							>
+								<path
+									id="Path_4227"
+									data-name="Path 4227"
+									d="M22.49,35.6v5.381a.435.435,0,0,1-.434.434H6.434A.467.467,0,0,1,6,40.981V35.6Z"
+									transform="translate(-6 -35.6)"
+								/>
+							</g>
+							<g
+								id="Group_7522"
+								data-name="Group 7522"
+								transform="translate(3.726 2.994)"
+							>
+								<path
+									id="Path_4228"
+									data-name="Path 4228"
+									d="M12.847,7.9a4.543,4.543,0,0,0,1.172,2.907c-1.823.391-3.6,1-3.6,2.821v1.823H9.853L9.593,10.2a2.11,2.11,0,0,1,2.083-2.3Z"
+									transform="translate(-9.587 -7.9)"
+								/>
+								<path
+									id="Path_4229"
+									data-name="Path 4229"
+									d="M34.57,10.2l-.3,5.251H33.7V13.628c0-1.866-1.779-2.43-3.6-2.821A4.677,4.677,0,0,0,31.315,7.9H32.53A2.132,2.132,0,0,1,34.57,10.2Z"
+									transform="translate(-21.199 -7.9)"
+								/>
+							</g>
+						</g>
+					</g>
+				</svg>
+			</div>
+			<a
+				href="/admin/isps"
+				class="small-box-footer"
+				data-toggle="tooltip"
+				data-placement="bottom"
+				title="Total Business Owner"
+				data-original-title="Total Business Owner"
+				>Total Business Owners <i class="fa fa-arrow-circle-right"></i
+			></a>
+		</div>
+	</div>
+	<!-- ./col -->
+
+	<!-- ./col -->
+	<div class="col-lg-2 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-teal">
+			<div class="inner">
+				<h3><%= customerCount %></h3>
+				<p>Total Customers</p>
+			</div>
+			<div class="icon">
+				<i class="fa fa-users"></i>
+			</div>
+			<a
+				href="/admin/customer"
+				class="small-box-footer"
+				data-toggle="tooltip"
+				data-placement="bottom"
+				title="View All Customers"
+				>View All Customers <i class="fa fa-arrow-circle-right"></i
+			></a>
+		</div>
+	</div>
+	<div class="col-lg-2 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-teal">
+			<div class="inner">
+				<h3><%= subscriptionCount %></h3>
+				<p>Total subscriptions</p>
+			</div>
+			<div class="icon">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 297 297"
+					width="4rem"
+					height="4rem"
+					fill="rgba(0,0,0,0.15)"
+				>
+					<g>
+						<path
+							d="M252.347,0H44.653c-5.56,0-10.067,4.508-10.067,10.067v215.165c0,2.672,1.061,5.232,2.949,7.121l61.714,61.699   c1.889,1.887,4.449,2.947,7.118,2.947h145.979c5.56,0,10.067-4.508,10.067-10.067V10.067C262.414,4.508,257.906,0,252.347,0z    M68.963,235.301H96.3v27.33L68.963,235.301z M242.279,276.866H116.435v-51.634c0-5.559-4.508-10.066-10.067-10.066H54.721V20.135   h187.559V276.866z"
+						/>
+						<path
+							d="M79.269,72.049h86.537c5.56,0,10.066-4.507,10.066-10.066c0-5.56-4.507-10.067-10.066-10.067H79.269   c-5.56,0-10.066,4.507-10.066,10.067C69.202,67.542,73.709,72.049,79.269,72.049z"
+						/>
+						<path
+							d="M200.422,72.049h17.309c5.56,0,10.066-4.507,10.066-10.066c0-5.56-4.507-10.067-10.066-10.067h-17.309   c-5.56,0-10.067,4.507-10.067,10.067C190.354,67.542,194.862,72.049,200.422,72.049z"
+						/>
+						<path
+							d="M79.269,123.962h86.537c5.56,0,10.066-4.508,10.066-10.067c0-5.561-4.507-10.067-10.066-10.067H79.269   c-5.56,0-10.066,4.507-10.066,10.067C69.202,119.454,73.709,123.962,79.269,123.962z"
+						/>
+						<path
+							d="M200.422,123.962h17.309c5.56,0,10.066-4.508,10.066-10.067c0-5.561-4.507-10.067-10.066-10.067h-17.309   c-5.56,0-10.067,4.507-10.067,10.067C190.354,119.454,194.862,123.962,200.422,123.962z"
+						/>
+						<path
+							d="M79.269,175.87h86.537c5.56,0,10.066-4.507,10.066-10.066s-4.507-10.067-10.066-10.067H79.269   c-5.56,0-10.066,4.508-10.066,10.067S73.709,175.87,79.269,175.87z"
+						/>
+						<path
+							d="M200.422,175.87h17.309c5.56,0,10.066-4.507,10.066-10.066s-4.507-10.067-10.066-10.067h-17.309   c-5.56,0-10.067,4.508-10.067,10.067S194.862,175.87,200.422,175.87z"
+						/>
+						<path
+							d="M183.115,227.783h34.616c5.56,0,10.066-4.507,10.066-10.066c0-5.561-4.507-10.067-10.066-10.067h-34.616   c-5.56,0-10.066,4.507-10.066,10.067C173.049,223.276,177.556,227.783,183.115,227.783z"
+						/>
+					</g>
+				</svg>
+			</div>
+			<a
+				href="/admin/Payments"
+				class="small-box-footer"
+				data-toggle="tooltip"
+				data-placement="bottom"
+				title="View All subscriptions"
+				>View All subscriptions <i class="fa fa-arrow-circle-right"></i
+			></a>
+		</div>
+	</div>
+	<div class="col-lg-2 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-teal">
+			<div class="inner">
+				<h3><%= free_trialCount %></h3>
+				<p>Total free trial</p>
+			</div>
+			<div class="icon">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 512 512"
+					width="4rem"
+					height="4rem"
+					fill="rgba(0,0,0,0.15)"
+				>
+					<g>
+						<g>
+							<path
+								d="M256,0C114.843,0,0,114.843,0,256s114.843,256,256,256s256-114.843,256-256S397.157,0,256,0z M265.722,242.43    c34.571,24.766,73.756,52.836,73.756,97.049c0,40.316-28.724,74.04-66.783,81.795v18.379c0,9.223-7.473,16.696-16.696,16.696    c-9.223,0-16.696-7.473-16.696-16.696v-18.379c-38.058-7.756-66.783-41.48-66.783-81.795c0-9.223,7.473-16.696,16.696-16.696    s16.696,7.473,16.696,16.696c0,27.619,22.468,50.087,50.087,50.087s50.087-22.468,50.087-50.087    c0-27.06-29.055-47.87-59.809-69.908c-34.571-24.766-73.756-52.836-73.756-97.049c0-40.316,28.724-74.04,66.783-81.795V72.348    c0-9.223,7.473-16.696,16.696-16.696c9.223,0,16.696,7.473,16.696,16.696v18.379c38.058,7.756,66.783,41.48,66.783,81.795    c0,9.223-7.473,16.696-16.696,16.696c-9.223,0-16.696-7.473-16.696-16.696c0-27.619-22.468-50.087-50.087-50.087    s-50.087,22.468-50.087,50.087C205.913,199.582,234.968,220.392,265.722,242.43z"
+							/>
+						</g>
+					</g>
+				</svg>
+			</div>
+			<a
+				href="/admin/Payments"
+				class="small-box-footer"
+				data-toggle="tooltip"
+				data-placement="bottom"
+				title="View All free trial"
+				>View All free trial <i class="fa fa-arrow-circle-right"></i
+			></a>
+		</div>
+	</div>
+	<div class="col-lg-2 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-teal">
+			<div class="inner">
+				<h3><%= appointmentCount %></h3>
+				<p>Total Appointments</p>
+			</div>
+			<div class="icon">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="4rem"
+					height="4rem"
+					viewBox="0 0 20 22"
+					fill="rgba(0,0,0,0.15)"
+				>
+					<text
+						id="nav_appointments"
+						transform="translate(10 18)"
+						font-size="20"
+						font-family="icofont, IcoFont"
+					>
+						<tspan x="-10" y="0"></tspan>
+					</text>
+				</svg>
+			</div>
+			<a
+				href="/admin/appointments"
+				class="small-box-footer"
+				data-toggle="tooltip"
+				data-placement="bottom"
+				title="View All Appointments"
+				>View All Appointments <i class="fa fa-arrow-circle-right"></i
+			></a>
+		</div>
+	</div>
+
+	<div class="col-lg-2 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-teal">
+			<div class="inner">
+				<h3><%= cancellationsCount %></h3>
+				<p>Total Cancellations</p>
+			</div>
+			<div class="icon">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 230 230"
+					width="4rem"
+					height="4rem"
+					fill="rgba(0,0,0,0.15)"
+				>
+					<path
+						d="M115,230c63.411,0,115-51.589,115-115S178.411,0,115,0S0,51.589,0,115S51.589,230,115,230z M190,115  c0,41.355-33.645,75-75,75c-13.428,0-26.031-3.564-36.945-9.77L180.229,78.055C186.436,88.969,190,101.572,190,115z M115,40  c13.428,0,26.031,3.564,36.945,9.771L49.771,151.945C43.564,141.031,40,128.428,40,115C40,73.645,73.645,40,115,40z"
+					/>
+				</svg>
+			</div>
+			<a
+				href="/admin/appointments"
+				class="small-box-footer"
+				data-toggle="tooltip"
+				data-placement="bottom"
+				title="View All Cancellations "
+				>View All Cancellations <i class="fa fa-arrow-circle-right"></i
+			></a>
+		</div>
+	</div>
+	<!-- ./col -->
+</div>
+
+<!-- Line Graph Chart -->
+<div class="row">
+	<div class="col-md-12">
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Business Owners Growth Line Graph</h2>
+				<div class="clearfix">
+					<div class="form-inline text-right" style="margin-bottom: 5px">
+						<div class="form-group">
+							<form
+								name="ispFilter"
+								class="dashfilter"
+								action="/admin/dashboard/ispfilter"
+								role="form"
+								method="post"
+							>
+								<label style="display: block; text-align: left"
+									>Sign up date From & To:
+								</label>
+								<% if(isp_min== ''){%>
+								<div class="form-group text-left">
+									<input
+										class="form-control input-sm"
+										readonly
+										name="isp_min"
+										onchange="change()"
+										id="isp_min"
+										type="text"
+										placeholder="Select from date"
+									/><br />
+								</div>
+
+								<div class="form-group text-left">
+									<input
+										class="form-control input-sm"
+										name="isp_max"
+										readonly
+										onchange="change()"
+										id="isp_max"
+										type="text"
+										placeholder="Select to date"
+									/><br />
+								</div>
+								<button
+									type="submit"
+									style="margin-top: 4px"
+									class="btn btn-primary btn-sm"
+								>
+									<i class="fa fa-search"></i> Submit
+								</button>
+								<% } else{%>
+								<input
+									class="form-control input-sm"
+									readonly
+									name="isp_min"
+									value="<%=  dateFormat(isp_min, 'yyyy-mm-dd'); %>"
+									onchange="change()"
+									id="isp_min"
+									type="text"
+									placeholder="Select from date"
+								/>
+								<input
+									class="form-control input-sm"
+									name="isp_max"
+									value="<%=  dateFormat(isp_max, 'yyyy-mm-dd'); %>"
+									readonly
+									onchange="change()"
+									id="isp_max"
+									type="text"
+									placeholder="Select to date"
+								/>
+								<button
+									type="submit"
+									style="margin-top: 4px"
+									class="btn btn-primary btn-sm"
+								>
+									<i class="fa fa-search"></i> Submit
+								</button>
+								<% } %>
+								<a
+									title="Reset"
+									class="btn btn-primary btn-sm"
+									href="<%- baseUrl %>admin/dashboard"
+									style="border-radius: 0; margin-top: 4px"
+									><i class="fa fa-refresh" aria-hidden="true"> </i>
+								</a>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="x_content">
+				<div
+					class="row"
+					style="
+						border-bottom: 1px solid #e0e0e0;
+						padding-bottom: 5px;
+						margin-bottom: 5px;
+					"
+				>
+					<div class="col-md-12" style="overflow: hidden">
+						<div id="line_top_x"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Line Graph Chart -->
+<br />
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="x_panel tile">
+			<div class="x_title">
+				<h2>Subscriptions Graph</h2>
+				<div class="clearfix">
+					<div class="form-inline text-right" style="margin-bottom: 5px">
+						<div class="form-group">
+							<form
+								name="paymentFilter"
+								class="dashfilter"
+								action="/admin/dashboard/paymentfilter"
+								role="form"
+								method="post"
+							>
+								<label style="display: block; text-align: left"
+									>Sign up date From & To:
+								</label>
+								<% if(min== ''){%>
+								<div class="form-group text-left">
+									<input
+										class="form-control input-sm"
+										readonly
+										name="min"
+										onchange="change()"
+										id="min"
+										type="text"
+										placeholder="Select from date"
+									/><br />
+								</div>
+
+								<div class="form-group text-left">
+									<input
+										class="form-control input-sm"
+										name="max"
+										readonly
+										onchange="change()"
+										id="max"
+										type="text"
+										placeholder="Select to date"
+									/><br />
+								</div>
+								<button
+									type="submit"
+									style="margin-top: 4px"
+									class="btn btn-primary btn-sm"
+								>
+									<i class="fa fa-search"></i> Submit
+								</button>
+								<% } else{%>
+								<input
+									class="form-control input-sm"
+									readonly
+									name="min"
+									value="<%=  dateFormat(min, 'yyyy-mm-dd'); %>"
+									onchange="change()"
+									id="min"
+									type="text"
+									placeholder="Select from date"
+								/>
+								<input
+									class="form-control input-sm"
+									name="max"
+									value="<%=  dateFormat(max, 'yyyy-mm-dd'); %>"
+									readonly
+									onchange="change()"
+									id="max"
+									type="text"
+									placeholder="Select to date"
+								/>
+								<button
+									type="submit"
+									style="margin-top: 4px"
+									class="btn btn-primary btn-sm"
+								>
+									<i class="fa fa-search"></i> Submit
+								</button>
+								<% } %>
+								<a
+									title="Reset"
+									class="btn btn-primary btn-sm"
+									href="<%- baseUrl %>admin/dashboard"
+									style="border-radius: 0; margin-top: 4px"
+									><i class="fa fa-refresh" aria-hidden="true"> </i>
+								</a>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="x_content ver-graph">
+				<div id="line_top_x1"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- include footer -->
+<% include common/footer %>
+<!-- / end footer -->
+
+<!-- Datepicker -->
+<link
+	rel="stylesheet"
+	href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css"
+/>
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+
+<script>
+	function change() {
+		var min, max;
+		min = $('#min').datepicker('getDate');
+		max = $('#max').datepicker('getDate');
+		if (min != undefined && max != undefined && min != null && max != null) {
+			if (min > max) {
+				Swal.fire('From date should less than To date');
+				return false;
+			}
+			return true;
+		}
+	}
+	$(document).ready(function () {
+		$('#min').datepicker({
+			//minDate: new Date(),
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: 0,
+		});
+
+		$('#max').datepicker({
+			//minDate: new Date(),
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: 0,
+		});
+		$('#isp_min').datepicker({
+			//minDate: new Date(),
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: 0,
+		});
+
+		$('#isp_max').datepicker({
+			//minDate: new Date(),
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: 0,
+		});
+
+		$(function () {
+			$("form[name='paymentFilter']").validate({
+				ignore: [],
+				debug: false,
+				rules: {
+					name: {
+						required: true,
+						lettersonly: true,
+						maxlength: 40,
+						normalizer: function (value) {
+							return $.trim(value);
+						},
+					},
+					max: {
+						required: true,
+						greaterThan: '#min',
+					},
+					min: {
+						required: true,
+					},
+				},
+				messages: {
+					max: {
+						required: 'Please select To date.',
+						greaterThan: 'From date should less than To date.',
+					},
+					min: {
+						required: 'Please select From date.',
+						//	greaterThan:"Must be greater than {0}."
+					},
+				},
+
+				submitHandler: function (form) {
+					$(':submit').attr('disabled', true);
+					form.submit();
+				},
+			});
+		});
+		$(function () {
+			$("form[name='ispFilter']").validate({
+				ignore: [],
+				debug: false,
+				rules: {
+					name: {
+						required: true,
+						lettersonly: true,
+						maxlength: 40,
+						normalizer: function (value) {
+							return $.trim(value);
+						},
+					},
+					isp_max: {
+						required: true,
+						greaterThan: '#isp_min',
+					},
+					isp_min: {
+						required: true,
+					},
+				},
+				messages: {
+					isp_max: {
+						required: 'Please select To date.',
+						greaterThan: 'From date should less than To date.',
+					},
+					isp_min: {
+						required: 'Please select From date.',
+						//	greaterThan:"Must be greater than {0}."
+					},
+				},
+
+				submitHandler: function (form) {
+					$(':submit').attr('disabled', true);
+					form.submit();
+				},
+			});
+		});
+	});
+</script>

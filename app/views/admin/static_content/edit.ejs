@@ -1,0 +1,147 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+	
+		
+		<div>
+         
+		
+			<div class="page-title">
+              <div class="title_left">
+                <h3>Manage Static Content</h3>
+              </div>
+            </div>
+			
+			
+			<div class="row">
+			      <div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="x_panel">
+							<div class="x_title">
+								<h2>Edit Static Content</h2>
+								<div class="clearfix"></div>
+							</div>
+							<form role="form" name="staticcontentForm" action="/admin/static_content/update" role="form" method="post" class="login-form form-horizontal form-label-left">
+								<fieldset>
+									<div class="col-sm-12">
+										<span class="section">Information</span>
+									</div> 	
+										<div class="col-sm-12 col-xs-12 item form-group">
+											<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Page Name <span class="text-error">*</span></label>
+											<div class="col-md-10 col-sm-10 col-xs-12">
+												<input type="text" name="name" value="<%= result.name  %>" id="name" class="form-control"  required  placeholder="Page Name" />
+											</div>
+										</div>
+										<div class="col-sm-12 col-xs-12 item form-group hidden">	
+											<label class="control-label col-md-2 col-sm-2 col-xs-12" for="status">Status <span class="text-error">*</span></label>									
+											<div class="col-md-10 col-sm-10 col-xs-12">
+													<select id="status" name="status" class="form-control" placeholder="Role" required/>
+														<option value="">Select status</option>
+														<option value="active" <% if (result.status == "active") {%>
+														selected <% } %>>Active</option>
+														<option value="inactive" <% if (result.status == "inactive") {%>
+														selected <% } %>>Inactive</option>
+													</select>
+											</div>
+										</div>
+										<div class="col-sm-12 col-xs-12 item">
+											<label class="control-label col-md-2 col-sm-2 col-xs-12" for="pagecontent">Page Content <span class="text-error">*</span></label>
+											<div class="col-md-10 col-sm-10 col-xs-12 errorPlacement">
+												<textarea name="pagecontent"  id="pagecontent" class="form-control"  placeholder="Page Content"><%= result.pagecontent %></textarea>
+											</div>
+										</div>
+								</fieldset>
+								
+								
+								<div class="ln_solid"></div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<input type="hidden" name="_id" value="<%= result._id  %>"/>
+										<button type="submit" class="btn btn-primary">Submit</button>
+										<a href="<%- baseUrl %>admin/static_content" class="btn btn-primary">Cancel</a>
+									</div>	
+								</div>
+							</form> 
+							<!-- /.table-responsive -->
+					   </div>
+			</div>
+      </div>
+</div>
+        
+
+<script src="<%- baseUrl %>ckeditor/ckeditor.js"></script>     
+<script>
+	 $(document).ready(function() {
+			var CK = CKEDITOR.replace('pagecontent');
+			CK.config.tabSpaces = 4;
+			CK.config.removeButtons = 'Select,Button,Form,Print,HiddenField,Templates,Save,Textarea,Radio,Checkbox,TextField';
+			CK.config.font_defaultLabel = 'Verdana';
+			CK.config.fontSize_defaultLabel = '16px';
+			
+			
+	 });
+ </script> 		  
+<script>
+	jQuery.validator.setDefaults({
+		errorPlacement: function(error, element) {
+			if (element.attr("name") == "pagecontent") {
+				error.appendTo('.errorPlacement');
+			}else{
+				error.insertAfter(element);
+			}	
+		}
+	});
+	
+	$(function() {
+	  $("form[name='staticcontentForm']").validate({
+	    ignore: [],
+        debug: false,
+		rules: {
+		     name: {
+					 required: true,
+					 lettersonly:true,
+					 maxlength:40,
+					 normalizer: function( value ) {
+							return $.trim( value );
+					 },
+					 remote: {
+						url: "<%- baseUrl %>admin/static_content/checknameexistexceptthis",
+						type: "post",
+						data: {
+							name: function () {
+								return $('input[name="name"]').val();
+							},
+							user_id: function () {
+								return $('input[name="_id"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+								
+						}
+					}
+		     },	 
+		     pagecontent: "required",
+		},
+		
+		messages: {
+		     name: {
+						   required: "Please enter name.",
+						   maxlength:"Maximum length is 40.",
+						   remote: "This name already exist in our system, Please use another."
+						}, 
+		      pagecontent: "Please enter page content.",
+		},
+	   
+		submitHandler: function(form) {
+			$(":submit").attr("disabled", true);
+			form.submit();
+		}
+	  });
+	});
+</script>           
+
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

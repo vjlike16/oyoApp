@@ -1,0 +1,7 @@
+{
+    "client_id": "com.oyoapp.stage.signin",
+    "team_id": "5Z9V377ZUN",
+    "key_id": "D6R8X4MG6G",
+    "redirect_uri": "http://localhost:5503/auth/apple",
+    "scope": "name email"
+}

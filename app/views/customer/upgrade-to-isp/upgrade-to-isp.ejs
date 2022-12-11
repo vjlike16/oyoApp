@@ -1,0 +1,589 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->
+
+<div class="main_content">
+    <div class="container-fluid">
+      <section class="upgrade_isp_sec">
+        <div class="title_block">
+          <h3 class="title_sec_head">You are one step closer to making some money as a business owner!</h3>
+        </div>
+
+        <div class="isp_value_sec">
+          <ul class="isp_value_slider">
+            <li class="isp_value_slide">
+              <div class="isp_value_img">
+                <img src="<%= baseUrl%>img/isp_value_graphic1.jpg" alt="">
+              </div>
+              <div class="isp_value_info">
+                <h4>Business Owners Benefits</h4>
+                <p>○	Save time with how simple our system is easy to use<br>
+                  ○	Take advantage of automated appointment confirmations with our modernized booking feature<br>
+                  ○	Transact with our automated payment processor<br>
+                  ○	Outperform your competitors with our business intelligence and state of the art performance dashboard where &nbsp &nbsp &nbsp you can track your sales, tips, client satisfaction, cancellations and no shows<br>
+                  ○	Easily connect with customers and other business owners like never before to boost your growth
+                  </p>
+              </div>
+            </li>
+
+            <li class="isp_value_slide">
+              <div class="isp_value_img">
+                <img src="<%= baseUrl%>img/plan_price.png" alt="">
+              </div>
+              <div class="isp_value_info">
+                <h4>More Business Owners Benefits </h4>
+                <p>○	Maintain your privacy <br>
+                  ○	Automated reminders and notification <br>
+                  ○	Integrated calendars: Google, Microsoft <br>
+                  ○	Easily migrate old customers with our import function 
+                  </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- end:isp_value_sec -->
+
+        <div class="join_isp_sec">
+          <h3>Join as a business owner</h3>
+          <p>Hi <%- userCustomerSession.name %>, Start your <%-subscription.trial_duration %> days trial today!</p>
+
+          <div class="join_isp_box">
+            <div class="join_isp_left">
+              <div class="join_isp_left_wrap">
+                <h4>$<%-subscription.monthly_price%><sub>Per month</sub></h4>
+                <!-- <h5>When billed annually</h5>
+                <h6>($<%-annual_price %> /monthly)</h6> -->
+              </div>
+            </div>
+
+            <div class="join_isp_rgt">
+              <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ullamcorper nisl a molestie hendrerit. Curabitur sed sodales urna.</p> -->
+              <div class="auto_renew">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="auto_renew" name="auto_renew" checked>
+                  <label class="custom-control-label" for="auto_renew">Enable Auto-renew</label>
+                </div>
+              </div>
+              <% if (userCustomerSession.role_id == 2) { %>
+                <div class="free_trial">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="free_trial" name="free_trial">
+                    <label class="custom-control-label" for="free_trial">Enable <%-subscription.trial_duration %> days trial</label>
+                  </div>
+                </div>
+              <% } %>
+              <!-- <a href="#" class="btn_sty_1" data-toggle="modal" data-target="#upgrade_isp_popup" data-dismiss="modal">Select</a> -->
+              <button type="submit" class="btn_sty_1 mt-2 checkFreeTrial" data-toggle="modal" data-target="#paymentModal" data-dismiss="modal">Get Started</button> 
+            </div>
+          </div>
+          <!-- end:join_isp_box -->
+
+        </div>
+        <!-- end:join_isp_sec -->
+
+
+      </section>
+      <!-- end:upgrade_isp_sec -->
+    </div>
+  </div>
+  <!-- end:main_content -->
+</div>
+<!-- end:middle_block -->
+
+<!-- start:upgrade_isp_popup -->
+<div class="modal" id="upgrade_isp_popup">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Upgrade to Business Owner</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p>You will get 2 weeks free trial after that you will be charged. If monthly/annually payments are not paid on time, you will not have access to your account</p>
+        
+        <div class="isp_upgrade_price">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optradio" value="<%-subscription.annual_price%>" id ="service_price_radio_val">
+                  <h4>$<%-subscription.annual_price%></h4>
+                  <h5>When billed annually</h5>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="optradio" value="<%-subscription.monthly_price%>">
+                  <h4>$<%-subscription.monthly_price%><sub>Per month</sub></h4>
+                  <!-- <h5>When billed monthly</h5> -->
+                </label>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+        <div class="auto_renew">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+            <label class="custom-control-label" for="customCheck">Enable Auto-renew</label>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn_sty_1 mt-2" data-toggle="modal" data-target="#paymentModal" data-dismiss="modal">Make Payment</button> 
+        
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end:upgrade_isp_popup -->
+
+
+<!-- make payment start -->
+<div class="modal" id="paymentModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Payment</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <% if(typeof cardList != "undefined" && cardList != ""){ %>
+        <form action="<%- baseUrl %>upgradeToIspPaymentSaveCard" method="POST" id="saveCardForm">
+          <p class="freeTrialMsg">Please, provide your credit card details. Don't worry, we won't charge you now. Once your free trial is over, we will conveniently process the payment to keep your account active.</p>
+          <h5 class="payment_select_card">Select Card</h5>
+          <div class="row">
+            <% for(var i=0; i<cardList.length; i++) { %>
+            <div class="col-xl-12" id="append_amount" style="display: flex; align-items: center;">
+                <input name="existingCardRadio" type="radio" class="existingCardRadio" value="<%- cardList[i].id %>" style="margin-right: 10px;">
+                <div class="payment_cart">
+                  <div class="card_logo">
+                      <img src="<%= baseUrl%>img/visa.png" alt="">
+                  </div>
+                  <div class="card_info">
+                      <h4 class="card_number">**** **** **** <span id="getCardNumber"></span>
+                        <span id="card_number">
+                          <%= cardList[i].last4 %>
+                        </span></h4>
+                      <h5 class="card_expire">Expires <%= cardList[i].exp_month %>/<%= cardList[i].exp_year %></h5>
+                  </div>
+                </div>
+                <script>
+                  $("#saveCardForm").click(function(){
+                    let amount_val = $('.totalAmount').html();
+                    let cardId = $("input[name='existingCardRadio']:checked").val();
+                    let auto_renew = $("input[name='auto_renew']:checked").val() || "off";
+                    let free_trial = $("input[name='free_trial']:checked").val() || "off";
+                    let couponCode = $("#couponCode").val();
+                    let coupon_based_on = $(".coupon_based_on").val();
+                    let coupon_type = $(".coupon_type").val();
+                    let discount = $(".discount").val();
+                  
+                    $('#saveCardForm [name="plan_name"]').remove();
+                    $('#saveCardForm [name="amount1"]').remove();
+                    $('#saveCardForm [name="card_Id"]').remove();
+                    $('#saveCardForm [name="userId"]').remove();
+                    $('#saveCardForm [name="auto_renew"]').remove();
+                    $('#saveCardForm [name="free_trial"]').remove();
+                    $('#saveCardForm [name="coupon_code"]').remove();
+                    $('#saveCardForm [name="coupon_based_on"]').remove();
+                    $('#saveCardForm [name="coupon_type"]').remove();
+                    $('#saveCardForm [name="discount"]').remove();
+
+                    
+                    $('#saveCardForm').append('<input type="hidden" name="plan_name" value="<%- subscription.plan_name %>">');
+                    $('#saveCardForm').append('<input type="hidden" name="amount1" value="'+amount_val+'">');
+                    $('#saveCardForm').append('<input type="hidden" name="card_Id" value="'+cardId+'">');
+                    $('#saveCardForm').append('<input type="hidden" name="userId" value="<%- userId %>">');
+                    $('#saveCardForm').append('<input type="hidden" name="auto_renew" value="'+auto_renew+'">');
+                    $('#saveCardForm').append('<input type="hidden" name="free_trial" value="'+free_trial+'">');
+                    $('#saveCardForm').append('<input type="hidden" name="coupon_code" value="'+couponCode+'">');
+                    $('#saveCardForm').append('<input type="hidden" name="coupon_based_on" value="'+coupon_based_on+'">');
+                    $('#saveCardForm').append('<input type="hidden" name="coupon_type" value="'+coupon_type+'">');
+                    $('#saveCardForm').append('<input type="hidden" name="discount" value="'+discount+'">');
+                  });
+                </script>
+            </div>
+            <% } %>
+          </div>
+          <Button type="submit" class="btn_sty_1 pay_now_using_existing_btn">Pay Now</Button>
+        </form>
+          <div class="form_seprator">
+            <div class="sep_or">OR</div>
+          </div>
+        <% } %>
+        <div class="row">
+            <div class="form_container" style="width: 100%;margin-top: 37px;">
+              <div class="col-md-12">
+                <h4>Payment with new card.</h4>
+              </div>
+  
+              <div class="col-md-12">
+                <label for="card-element">
+                  Credit or debit card
+                </label>
+                <div id="card-element" style="width: 450px; max-width:100%;">
+                  <!-- A Stripe Element will be inserted here. -->
+                </div>
+                <!-- Used to display form errors. -->
+                <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+                </div>
+
+              <form action="<%- baseUrl %>upgradeToIspPayment" method="post" id="payment-form">
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group mb-0">
+                    <input type="hidden" name="userId" value="<%- userId %>">
+                    <button type="submit" class="btn_sty_1 pay_now_btn">Pay Now</button>
+                  </div>
+                  <script>
+                    $("#payment-form").click(function(){
+                      let amount_val = $('.totalAmount').html();
+                      let auto_renew = $("input[name='auto_renew']:checked").val() || "off";
+                      let free_trial = $("input[name='free_trial']:checked").val() || "off";
+                      let couponCode = $("#couponCode").val();
+                      let coupon_based_on = $(".coupon_based_on").val();
+                      let coupon_type = $(".coupon_type").val();
+                      let discount = $(".discount").val();
+                    
+                      $('#payment-form [name="plan_name"]').remove();
+                      $('#payment-form [name="amount1"]').remove();
+                      $('#payment-form [name="auto_renew"]').remove();
+                      $('#payment-form [name="free_trial"]').remove();
+                      $('#payment-form [name="coupon_code"]').remove();
+                      $('#payment-form [name="coupon_based_on"]').remove();
+                      $('#payment-form [name="coupon_type"]').remove();
+                      $('#payment-form [name="discount"]').remove();
+                       
+                      $('#payment-form').append('<input type="hidden" name="plan_name" value="<%- subscription.plan_name %>">');
+                      $('#payment-form').append('<input type="hidden" name="amount1" value="'+amount_val+'">');
+                      $('#payment-form').append('<input type="hidden" name="auto_renew" value="'+auto_renew+'">');
+                      $('#payment-form').append('<input type="hidden" name="free_trial" value="'+free_trial+'">');
+                      $('#payment-form').append('<input type="hidden" name="coupon_code" value="'+couponCode+'">');
+                      $('#payment-form').append('<input type="hidden" name="coupon_based_on" value="'+coupon_based_on+'">');
+                      $('#payment-form').append('<input type="hidden" name="coupon_type" value="'+coupon_type+'">');
+                      $('#payment-form').append('<input type="hidden" name="discount" value="'+discount+'">');
+                    });
+                  </script>
+                </div>
+              </form>
+            </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-xl-4"><div class="price_des">$<span class="totalAmount"><%-subscription.monthly_price%></span></div></div>
+          <input type="hidden" value="<%-subscription.monthly_price%>" id="subscriptionAmount">
+          <div class="col-xl-8">
+            <input type="hidden" value="" class="coupon_based_on" name="coupon_based_on">
+            <input type="hidden" value="" class="coupon_type" name="coupon_type">
+            <input type="hidden" value="" class="discount" name="discount">
+            <div class="form-group">
+              <input type="text" class="form-control" name="couponCode" id="couponCode">
+              <span class="coupon_code_error hidden" style="font-weight:500; color: red;"></span>
+              <button type="button" class="apply_coupon">Apply Coupon</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- make payment end -->
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<style>
+    .StripeElement {
+      box-sizing: border-box;
+  
+      height: 40px;
+  
+      padding: 10px 12px;
+  
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background-color: white;
+  
+      box-shadow: 0 1px 3px 0 #e6ebf1;
+      -webkit-transition: box-shadow 150ms ease;
+      transition: box-shadow 150ms ease;
+    }
+  
+    .StripeElement--focus {
+      box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+  
+    .StripeElement--invalid {
+      border-color: #fa755a;
+    }
+  
+    .StripeElement--webkit-autofill {
+      background-color: #fefde5 !important;
+    }
+  
+    .linkFor:hover {
+      text-decoration: none;
+      color: #333
+    }
+  
+    .linkFor {
+      text-decoration: none;
+    }
+  
+  
+   .payment_card_sec .card_block {width: calc(100% - 30px); float: right;}
+  
+   @media (max-width: 550px){
+   .card_block_left {margin:0 10px 0 0;}
+   .card_block_right {width:auto; text-align: left;}
+   .card_block_right h4 {font-size: 16px;}
+   }
+  
+</style>
+
+<script>
+      $('input:radio[name="optradio"]').filter('#service_price_radio_val').attr('checked', true);
+    // Create a Stripe client.
+    var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+  
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+  
+    // Custom styling can be passed to options when creating an Element.
+    // (Note that this demo uses a wider set of styles than the guide below.)
+    var style = {
+      base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4'
+        }
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    };
+  
+    // Create an instance of the card Element.
+    var card = elements.create('card', {hidePostalCode: true, style: style});
+  
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+  
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function (event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+  
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+  
+      stripe.createToken(card).then(function (result) {
+        if (result.error) {
+          // Inform the user if there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+  
+    // Submit the form with the token ID.
+    function stripeTokenHandler(token) {
+      // Insert the token ID into the form so it gets submitted to the server
+      var form = document.getElementById('payment-form');
+      var hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'stripeToken');
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+      $(".pay_now_btn").attr("disabled", true);
+      // Submit the form
+      form.submit();
+    }
+  
+    $(function () {
+      $('.linkFor').one('click', function () {
+        window.location.replace($(this).data('href'));
+        $(this).removeAttr('data-href');
+      });
+    });
+</script>
+<script>
+  $(document).ready(function(){
+    $('input:radio[name="existingCardRadio"]').filter('.existingCardRadio').attr('checked', true);
+    $('input:radio[name="optradio"]').filter('[value="20"]').attr('checked', true);
+    $(".mobile_menu_btn").click(function(){
+      $(".mobile_menu").addClass("menu_open");
+    });
+
+    $(".menu_close").click(function(){
+      $(".mobile_menu").removeClass("menu_open");
+    });
+  });
+</script>
+<script>
+  $(".apply_coupon").on("click",function () {
+    var coupon_code = $("#couponCode").val();
+    $.ajax({
+      type: "GET",
+      url: `<%- baseUrl %>applyCoupon?coupon_code=${coupon_code}&cusType=Business Owner`,
+      success: function(res) {
+        let paymentPrice = $('#subscriptionAmount').val();
+        if(res.status == 1){
+          var discount = res.data.discount;
+          discount = parseFloat(discount);
+          var coupon_based_on = res.data.coupon_based_on;
+          var coupon_type = res.data.coupon_type;
+          let discountPrice;
+          let newPrice;
+          if(coupon_based_on == 'Percentage'){
+            paymentPrice = parseFloat(paymentPrice);
+            discountPrice = (discount*paymentPrice)/100;
+            newPrice = (paymentPrice - discountPrice).toFixed(2);
+          } else {
+            discountPrice = discount;
+            newPrice = (paymentPrice - discountPrice).toFixed(2)
+          }
+          if(newPrice <= 0){
+            $('.totalAmount').html(paymentPrice);
+            $('.coupon_based_on').val('');
+            $('.discount').val('');
+            $('.coupon_type').val('');
+            $('.coupon_code_error').html("This coupon code is not applicable. Please use a different coupon code.");
+          } else {
+            $('.totalAmount').html(newPrice);
+            $('.coupon_based_on').val(coupon_based_on);
+            $('.discount').val(discount);
+            $('.coupon_type').val(coupon_type);
+            $('.coupon_code_error').html("");
+          }
+        }
+        if(res.status == 2){
+          let msg = res.msg;
+          $('.totalAmount').html(paymentPrice);
+          $('.coupon_based_on').val('');
+          $('.discount').val('');
+          $('.coupon_type').val('');
+          $('.coupon_code_error').html("");
+          $('.coupon_code_error').html(msg);
+        }
+        if(res.status == 3){
+          let msg = res.msg;
+          $('.coupon_code_error').html("");
+          $('.coupon_code_error').html(msg);
+          $('.totalAmount').html(paymentPrice);
+          $('.coupon_based_on').val('');
+          $('.discount').val('');
+          $('.coupon_type').val('');
+        }
+        if(res.status == 4){
+          let msg = res.msg;
+          $('.totalAmount').html(paymentPrice);
+          $('.coupon_based_on').val('');
+          $('.discount').val('');
+          $('.coupon_type').val('');
+          $('.coupon_code_error').html("");
+          $('.coupon_code_error').html(msg);
+        }
+        if(res.status == 5){
+          let msg = res.msg;
+          $('.totalAmount').html(paymentPrice);
+          $('.coupon_based_on').val('');
+          $('.discount').val('');
+          $('.coupon_type').val('');
+          $('.coupon_code_error').html("");
+          $('.coupon_code_error').html(msg);
+        }
+        if(res.status == 6){
+          let msg = res.msg;
+          $('.totalAmount').html(paymentPrice);
+          $('.coupon_based_on').val('');
+          $('.discount').val('');
+          $('.coupon_type').val('');
+          $('.coupon_code_error').html("");
+          $('.coupon_code_error').html(msg);
+        }
+        if(res.status == 7){
+          let msg = res.msg;
+          $('.totalAmount').html(paymentPrice);
+          $('.coupon_based_on').val('');
+          $('.discount').val('');
+          $('.coupon_type').val('');
+          $('.coupon_code_error').html("");
+          $('.coupon_code_error').html(msg);
+        }
+        if(res.status == 8){
+          let msg = res.msg;
+          $('.totalAmount').html(paymentPrice);
+          $('.coupon_based_on').val('');
+          $('.discount').val('');
+          $('.coupon_type').val('');
+          $('.coupon_code_error').html("");
+          $('.coupon_code_error').html(msg);
+        }
+        if(res.status == 0){
+          let msg = res.msg;
+          $('.totalAmount').html(paymentPrice);
+          $('.coupon_based_on').val('');
+          $('.discount').val('');
+          $('.coupon_type').val('');
+          $('.coupon_code_error').html(msg);
+        }
+      },
+      error: function(res) { console.log("Error",res) }
+    });
+  });
+</script>
+<script>
+  $("#upgrade_isp_popup").modal({
+			show: false,
+			backdrop: 'static'
+	});
+  $("#paymentModal").modal({
+			show: false,
+			backdrop: 'static'
+	});
+</script>
+<script>
+  $(document).ready(function(){
+      $('.isp_value_slider').slick({
+      arrows: false,
+      dots: true,
+      infinite: true,
+      autoplay: true,
+      speed: 500,
+      fade: true,
+      pauseOnHover:false,
+      cssEase: 'linear'
+      });
+    });
+</script>
+<script>
+  $(document).on('click', '.checkFreeTrial', function(){
+    if (!$("#free_trial").is(":checked")) {
+      $(".freeTrialMsg").hide();
+    } else {
+      $(".freeTrialMsg").show();
+    }
+  });
+</script>
+</body>
+</html>

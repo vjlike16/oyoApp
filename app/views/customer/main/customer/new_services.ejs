@@ -1,0 +1,42 @@
+<!-- include header -->
+<% include ../../common/loggedIn-header %>
+<!-- / end include -->
+
+      <div class="main_content">
+        <div class="container-fluid">
+          <div class="home_detail_more">
+            <section class="home_white_blocks">
+              <div class="white_block_head">
+                <h3>New Services</h3>
+              </div>
+              <div class="white_block_body">
+                <% for(var i=0; i<ispServices.length; i++) { %>
+                  <div class="white_block_box">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= ispServices[i].icon %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p><%= ispServices[i].service_proviver_name %> has launched a new "<%= ispServices[i].name %>" service. Click the below button if you are interested in booking that service.</p>
+                        <div class="white_box_btn_group">
+                          <a href="<%= baseUrl%>connectedIspDetail/<%= ispServices[i].service_proviver %>" class="btn_sty_1">Book Appointment</a>
+                        </div>
+                      </div>
+                  </div>
+                <% } %>
+                <% if (ispServices.length == 0) { %>
+                  <div class="white_block_box">
+                    <div class="white_info_box">
+                      <p>No data available</p>
+                    </div>
+                  </div>
+                <% } %>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+  </body>
+</html>

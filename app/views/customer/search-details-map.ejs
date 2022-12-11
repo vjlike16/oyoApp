@@ -1,0 +1,760 @@
+<!-- include header -->
+<% include common/header %>
+<!-- / end include -->
+
+<div class="search_info_bar">
+	<div class="container">
+		<div class="sib_left">
+			<h3 class="sib_left_title">Found 6 Business Owner</h3>
+		</div>
+
+		<div class="sib_right">
+			<div class="search_wrap">
+				<input
+					type="text"
+					class="form-control"
+					placeholder="Name, Category or Invite Code"
+				/>
+				<input
+					type="text"
+					class="form-control"
+					placeholder="Location or Zip Code"
+				/>
+			</div>
+
+			<div class="search_btn_wrap">
+				<button type="submit" class="search_btn">
+					<i class="icofont-search-1"></i>
+				</button>
+			</div>
+
+			<div class="view_toggle">
+				<a href="search-details-grid.html"><img src="img/list.png" alt="" /></a>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end:search_info_bar -->
+
+<div class="g_map_service_provider">
+	<iframe
+		src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.305935303!2d-74.25986548248684!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1621418913717!5m2!1sen!2sin"
+		style="border: 0"
+		allowfullscreen=""
+		loading="lazy"
+	></iframe>
+</div>
+<!-- end:g_service_provider -->
+
+<footer class="footer">
+	<div class="container text-center">
+		Copyright &copy; 2022 All Rights Reserved
+	</div>
+</footer>
+
+<!-- login modal start -->
+<div class="modal" id="loginModal">
+	<div class="modal-dialog modal-dialog-centered account_modal">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<i class="icofont-close"></i>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body">
+				<div class="modal_top">
+					<div class="modal_logo">
+						<img src="img/logo.png" alt="" />
+					</div>
+					<h2 class="account_modal_heading">Login</h2>
+				</div>
+
+				<div class="account_form">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Email/Phone</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Password</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<button type="submit" class="btn_sty_1">Submit</button>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<a
+									href="#"
+									data-toggle="modal"
+									data-target="#signupModal"
+									data-dismiss="modal"
+									>Create Account</a
+								>
+								<a
+									href="#"
+									class="float-right"
+									data-toggle="modal"
+									data-target="#forgotModal"
+									data-dismiss="modal"
+									>Forgot Password</a
+								>
+							</div>
+						</div>
+					</div>
+
+					<div class="form_seprator">
+						<div class="sep_or">OR</div>
+					</div>
+
+					<div class="social_login">
+						<h3>Sign In Using</h3>
+						<ul>
+							<li>
+								<a href="#">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="18"
+										height="20"
+										viewBox="0 0 18 20"
+									>
+										<text
+											id="_"
+											data-name=""
+											transform="translate(9 16)"
+											font-size="18"
+											font-family="icofont, IcoFont"
+										>
+											<tspan x="-9" y="0"></tspan>
+										</text>
+									</svg>
+								</a>
+							</li>
+
+							<li>
+								<a href="#">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="14.703"
+										height="15"
+										viewBox="0 0 14.703 15"
+									>
+										<path
+											id="google"
+											d="M7.5,19.5c4.328,0,7.2-3.038,7.2-7.326a6.408,6.408,0,0,0-.122-1.248H7.5V13.5h4.257A4.062,4.062,0,0,1,7.5,16.737a4.738,4.738,0,0,1,0-9.475,4.213,4.213,0,0,1,2.988,1.156l2.036-1.954A7.172,7.172,0,0,0,7.5,4.5a7.5,7.5,0,0,0,0,15Z"
+											transform="translate(0 -4.5)"
+										/>
+									</svg>
+								</a>
+							</li>
+
+							<li>
+								<a href="#">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="18"
+										height="20"
+										viewBox="0 0 18 20"
+									>
+										<text
+											id="apple"
+											transform="translate(9 16)"
+											font-size="18"
+											font-family="icofont, IcoFont"
+										>
+											<tspan x="-9" y="0"></tspan>
+										</text>
+									</svg>
+								</a>
+							</li>
+
+							<li>
+								<a href="#">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="18"
+										height="20"
+										viewBox="0 0 18 20"
+									>
+										<text
+											id="linkedin"
+											transform="translate(9 16)"
+											font-size="18"
+											font-family="icofont, IcoFont"
+										>
+											<tspan x="-9" y="0"></tspan>
+										</text>
+									</svg>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<!-- end:social_login -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- login modal end -->
+
+<!-- forgot password start -->
+<div class="modal" id="forgotModal">
+	<div class="modal-dialog modal-dialog-centered account_modal">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<i class="icofont-close"></i>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body">
+				<div class="modal_top">
+					<div class="modal_logo">
+						<img src="img/logo.png" alt="" />
+					</div>
+					<h2 class="account_modal_heading">Forgot Password</h2>
+					<p>
+						Don't worry. Resetting your password is easy, just tell us the phone
+						number that was used to create this account.
+					</p>
+				</div>
+
+				<div class="account_form">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Phone Number</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<button type="submit" class="btn_sty_1">Submit</button>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group text-center">
+								<a
+									href="#"
+									data-toggle="modal"
+									data-target="#loginModal"
+									data-dismiss="modal"
+									>Back To Login</a
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- forgot password end -->
+
+<!-- create account start -->
+<div class="modal" id="signupModal">
+	<div class="modal-dialog modal-lg modal-dialog-centered account_modal">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<i class="icofont-close"></i>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body">
+				<div class="modal_top">
+					<div class="modal_logo">
+						<img src="img/logo.png" alt="" />
+					</div>
+					<h2 class="account_modal_heading">Sign Up</h2>
+				</div>
+
+				<div class="account_form">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Creating Account As</label>
+								<div class="select_wrap">
+									<select class="form-control">
+										<option>Customer</option>
+										<option>Business Owner</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Full Name</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Email Address</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Mobile number</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Business Name</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Location</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Service Business Type</label>
+								<div class="select_wrap">
+									<select class="form-control">
+										<option>Hair Salon</option>
+										<option>Yoga Teacher</option>
+										<option>Plumber</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Password</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Confirm Password</label>
+								<input type="text" class="form-control" />
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="custom-control custom-checkbox">
+									<input
+										type="checkbox"
+										class="custom-control-input"
+										id="customCheck"
+										name="example1"
+									/>
+									<label class="custom-control-label" for="customCheck"
+										>By using our platform you agree to our
+										<a
+											href="#"
+											data-toggle="modal"
+											data-target="#termsModal"
+											data-dismiss="modal"
+											><strong>Terms of Service</strong></a
+										>
+										&
+										<a
+											href="#"
+											data-toggle="modal"
+											data-target="#privacyPolicyModal"
+											data-dismiss="modal"
+											><strong>Privacy Policy</strong></a
+										>.</label
+									>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<img src="img/captcha.png" alt="" />
+							</div>
+						</div>
+
+						<div class="col-md-6 ml-auto mr-auto">
+							<div class="form-group">
+								<button
+									type="submit"
+									class="btn_sty_1"
+									data-toggle="modal"
+									data-target="#verifyModal"
+									data-dismiss="modal"
+								>
+									Submit
+								</button>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group text-center">
+								Already have an account?&nbsp;
+								<a
+									href="#"
+									data-toggle="modal"
+									data-target="#loginModal"
+									data-dismiss="modal"
+									><b>Login</b></a
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Create account end -->
+
+<!-- verify account start -->
+<div class="modal" id="verifyModal">
+	<div class="modal-dialog modal-dialog-centered account_modal">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<i class="icofont-close"></i>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body">
+				<div class="modal_top">
+					<div class="modal_logo">
+						<img src="img/logo.png" alt="" />
+					</div>
+					<h2 class="account_modal_heading">Verify Your Account</h2>
+					<p>
+						We have sent a verification code to your registered email address
+						please check and enter the code below.
+					</p>
+				</div>
+
+				<div class="account_form">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<input
+									type="text"
+									class="form-control"
+									placeholder="Verification Code"
+								/>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<button type="submit" class="btn_sty_1">Submit</button>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group text-center">
+								<a href="#">Resend Code</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- verify account end -->
+
+<!-- terms and condition start -->
+<div class="modal" id="termsModal">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">Terms of Service</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					<i class="icofont-close"></i>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body">
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+					ullamcorper nisl a molestie hendrerit. Curabitur sed sodales urna, at
+					pellentesque ipsum. Donec quis lectus viverra, tincidunt turpis eget,
+					lacinia enim. Nullam in commodo massa. Integer at mauris sit amet est
+					convallis vestibulum. Aenean sodales eros sed massa blandit efficitur.
+					In accumsan vitae neque sit amet accumsan. Etiam in libero sapien.
+				</p>
+
+				<p>
+					Sed quis dapibus diam. Etiam ac velit tellus. Morbi id scelerisque
+					nisi. Nulla id commodo nibh. Praesent volutpat, mauris gravida
+					ullamcorper accumsan, ante purus vulputate orci, sit amet suscipit
+					velit magna non nunc. Curabitur non velit leo. Cras et dolor sed nulla
+					semper ultrices ac ac orci. Aenean viverra suscipit massa ut finibus.
+					Nullam tristique pellentesque mattis. Quisque vitae tincidunt dui. Nam
+					sed aliquet arcu, et mollis enim.
+				</p>
+
+				<p>
+					Proin commodo feugiat aliquet. Morbi ac mi massa. Ut sit amet urna
+					est. Curabitur eros sem, porttitor nec arcu eget, egestas convallis
+					sem. Pellentesque sit amet ipsum id ipsum sodales suscipit. Sed eget
+					libero imperdiet, volutpat augue in, viverra odio. Suspendisse a lacus
+					at tellus ullamcorper gravida. Phasellus vestibulum vitae elit ut
+					sodales. Aliquam viverra auctor dolor nec ullamcorper.
+				</p>
+
+				<p>
+					Morbi malesuada risus justo, ut egestas dolor scelerisque nec.
+					Vestibulum scelerisque risus convallis dolor vulputate aliquam.
+					Pellentesque sit amet lectus aliquet, fermentum massa sed, molestie
+					urna. Vivamus gravida molestie dolor, sed malesuada odio rhoncus at.
+					Maecenas sagittis pharetra quam et volutpat. Pellentesque faucibus
+					tortor nec erat feugiat, suscipit iaculis diam commodo. Sed imperdiet,
+					erat sed tempus ultrices, massa nulla efficitur dui, eget efficitur
+					est justo ut ligula. Vivamus in eros nec tortor volutpat viverra id id
+					quam.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="privacyPolicyModal" data-backdrop="static">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">Privacy Policy</h4>
+				<button type="button" class="close" data-dismiss="modal">
+					<i class="icofont-close"></i>
+				</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body">
+				<h5>1. Overall Summary</h5>
+				<p class="text-justify px-4">
+					This privacy policy illustrates how user OYOapp (Business Owner &
+					Customer) account user information is gathered, used, and disclosed by
+					OYOapp LLC and all its affiliates, and 3rd party vendors. This Policy
+					applies to all users, and non-users or visitors of OYOapp website, web
+					application and mobile app.
+				</p>
+				<p class="text-justify px-4">
+					3rd parties, Business Owner and customers account users interacting
+					via connecting with each other, appointment booking, and transacting
+					may also gather, use, and share information about each other. 3rd
+					parties may gather information of OYOapp account users during
+					transactions and the account setup processes. This Policy does not
+					cover 3rd party and or Business Owners gathering, using and disclosing
+					other OYOapp account user’s information. All Business Owner account
+					users are encouraged to request consent from Customers and other
+					Business Owners they do business with first before using their
+					information. For details and information about third-party privacy
+					practices, please consult with them (for ex., Stripe) directly.
+				</p>
+
+				<h5>2. What Is Collected & Used</h5>
+				<p class="text-justify px-4">
+					We collect non-user and OYOapp user account information in various
+					ways. Generally, all information inputted into the website and system.
+					We use this information to improve the user experience, and technical
+					functionality while enhancing the quality of our website and system.
+					Some of the information we collect consists of your name, date of
+					birth, photo, email address, physical address, cell phone number,
+					billing information (credit card, debit card), feedback/opinions,
+					experience, business name, business hours of operation, current and
+					prior appointments details, information from connections (business
+					owners and customers), and location data. We may also collect cookies
+					(data files unique to your device & location), real time website usage
+					behaviors and information from 3rd party/affiliates. OYOapp could use
+					user and non-user information collected through our website and system
+					for the purposes described in this Policy and or to execute requests
+					from users and non-users in connection with the use and or request to
+					access OYOapp. OYOapp may use your information for:
+				</p>
+				<ol type="I" class="text-justify px-4 ml-4">
+					<li>
+						Improving our website, web and mobile application based on user
+						behavior & feedback
+					</li>
+					<li>Displaying advertisement</li>
+					<li>
+						Sending you information relating to OYOapp, updates, maintenance,
+						alerts, & messages
+					</li>
+					<li>
+						Ensuring proper authentication of your credit and debit card account
+						information
+					</li>
+					<li>
+						Protecting, and guarding against fraudulent, unauthorized, or
+						illegal activities
+					</li>
+				</ol>
+
+				<h5>3. How Collected Information Is Shared</h5>
+				<ol type="I" class="text-justify px-4 ml-4">
+					<li class="mb-2">
+						OYOapp has access and visibility to all user information. Non-OYOapp
+						account users and OYOapp account users have the ability to view an
+						OYOapp Business Owner account user’s information. OYOapp Business
+						Owner account users receive customer and other Business Owner
+						account information when an appointment is booked, in order to be
+						able to facilitate the appointment requested. This means,
+						potentially all types of contact information (phone number, email,
+						address, credit card, etc.) included in your profile is displayed,
+						especially when you are connected to each other. In order for the
+						automated transactions to occur once triggered, all OYOapp account
+						users must have their registration completed and credit card
+						information added in the system.
+					</li>
+					<li class="mb-2">
+						When a transaction is completed, Stripe, a 3rd party entity, also
+						receives both parties transaction information. Business Owner
+						account users will receive transaction review ratings and comments
+						from customer & other Business Owner account users they transact
+						with. Business Owner account users may use the information received
+						from their connections and other OYOapp users they transact with for
+						their own purposes. OYOapp does not control the privacy practices of
+						these Business Owner account users. Please contact the Business
+						Owner account user directly if you want to learn about their own
+						privacy practices.
+					</li>
+					<li class="mb-2">
+						Account calendar synchronization with other calendars such as Google
+						and Microsoft will lead to appointment booking information being
+						shared to the 3rd party calendar sites (upon user request). All
+						OYOapp account users (Business Owner and Customers) agree and
+						acknowledge by submitting your credit or debit card account
+						information into the system, you consent to the sharing of your
+						information with OYOapp account users you transact with, and 3rd
+						party vendors (such as Stripe). OYOapp provides an opportunity for
+						the transaction to occur via a popular payment gateway
+						provider/Stripe and OYOapp has 0% responsibility with the
+						performance of these transactions. If there are any issues, the
+						OYOapp account users would need to resolve the issue with Stripe.
+						All credit/debit card information is stored with Stripe.
+					</li>
+					<li class="mb-2">
+						The OYOapp system provides Business Owner account users the ability
+						to share their profile with social media platforms (such as
+						Facebook, Instagram or via a link) as a way to attract and easily
+						allow non OYOapp account users access to the system with the
+						Business Owner account users intent of getting a new client with an
+						appointment booked. All OYOapp users are to be mindful of how they
+						use this feature to attract new business opportunities, who they
+						connect with and how they make their profiles public on different
+						social media platforms. OYOapp takes no responsibility with how
+						OYOapp account users put to use features and functionalities for
+						their gains. OYOapp does not control the privacy policies and
+						practices of social media and 3rd party platforms. If you have any
+						questions or concerns about social media and 3rd party platforms you
+						share your information with, you will have to contact them directly
+						to learn.
+					</li>
+					<li class="mb-2">
+						OYOapp may disclose your personal information to:
+						<ol type="a">
+							<li>
+								Comply with local and federal agencies in response to legal
+								requests
+							</li>
+							<li>
+								Protect the rights and property of OYOapp, and our account users
+							</li>
+						</ol>
+					</li>
+				</ol>
+
+				<h5>4. Personal Information Security</h5>
+				<p class="text-justify px-4">
+					OYOapp has implemented and will continue implementing the appropriate
+					efforts to protect your personal information to prevent information
+					loss, unauthorized access, misuse, alteration, disclosure, and
+					destruction. When transactions occur (credit/debit card information
+					transmission), this information is being transmitted with encrypted
+					technological protection (Secure Sockets Layer/SSL).
+				</p>
+				<ul class="text-justify px-4 ml-4">
+					<li class="mb-2">
+						All credit/debit card information is stored on Stripe servers, we do
+						not have direct control over and or responsibility for your credit
+						or debit card account information. Stripe has its own security
+						policy and practice to keep your credit or debit card account
+						information secure and confidential.
+					</li>
+					<li>
+						Collectively, there is no guarantee that transmissions of your
+						credit or debit card account information and or personal information
+						will consistently be secure and or there will never be security
+						breaches. All OYOapp users agree and acknowledge OYOapp takes no
+						liability or responsibility for errors in transmission, or security
+						breaches. All OYOapp users must keep their account information safe
+						by never sharing usernames and passwords.
+					</li>
+				</ul>
+
+				<h5>5. Opting Out & Updates</h5>
+				<p class="text-justify px-4">
+					OYOapp users will receive email communication on updates, alerts,
+					things to know and business information. All users have the option to
+					opt out from receiving OYOapp communication emails. Once opted out,
+					you could still receive communication on critical updates. OYOapp
+					users have the responsibility of contacting OYOapp to update their
+					communication preferences at any time.
+				</p>
+				<ul class="text-justify px-4 ml-4">
+					<li>
+						OYOapp collects cookies and most web browsers are set to accept
+						cookies by default. OYOapp users and non-users can choose to remove
+						and reject cookies which could affect your use case experience. A
+						lot of devices (if not all) emit location data of the device. All
+						users and non-users have the ability to turn off their location data
+						by accessing the right disable protocol provided by the device
+						manufacturer. Please, contact your device manufacturer to obtain the
+						steps to deactivate device location. Turning off your location could
+						affect your use case experience. If you would like to deactivate
+						your account, email Support@OYOapp.com
+					</li>
+				</ul>
+				<p class="text-justify px-4">
+					OYOapp may update this policy at any time and OYOapp does not have to
+					send any prior notice or post notice to update and or inform users of
+					the updates implemented. All OYOapp users and non-users agree and
+					acknowledge their responsibility to review this document in a periodic
+					manner (of their choice). The use of the OYOapp system is an
+					indication of the user’s agreement to the policy and expectations
+					shared on this document including the updated versions. If there is a
+					disagreement with any aspect of this policy, do not use OYOapp.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- terms and condition end -->
+<!-- include footer -->
+<% include common/footer %>
+<!-- / end footer -->

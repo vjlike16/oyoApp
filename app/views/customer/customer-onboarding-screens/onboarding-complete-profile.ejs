@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="<%- baseUrl %>img/logo.png"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="<%- baseUrl %>css/icofont.css">
+    <link rel="stylesheet" href="<%- baseUrl %>css/style-customer.css">
+    <link rel="stylesheet" href="<%- baseUrl %>css/style-owner.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>   
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="<%- baseUrl %>admin/vendors/moment/moment.js"></script>
+     <!-- validation -->
+	<script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+	<script src="<%- baseUrl %>validation/custom.validate.js"></script>
+  <title>OYO</title>
+    <div class="right_col" role="main">
+      <% if (error.length > 0) { %>
+      <div class="alert alert-danger common-notification-alert text-center"
+        style="margin-bottom: 0px;padding: 7px 0;"><%- error %></div>
+      <% } %>
+
+      <% if (success.length > 0) { %>
+      <div class="alert alert-success common-notification-alert text-center"
+        style="margin-bottom: 0px;padding: 7px 0;"><%- success %></div>
+      <% } %>
+
+      <script>
+        setTimeout(function () { 
+          $(".common-notification-alert").slideUp(); }, 5000);	
+      </script>
+  </head>
+  <body>
+    <div class="onboarding">
+      <div class="container">
+        <div class="onboarding_title">
+          <img src="<%- baseUrl %>img/logo.png" alt="">
+          <h2>Complete Profile</h2>
+        </div>
+        <div class="onboarding_block">
+          <form enctype="multipart/form-data" action="<%- baseUrl %>cus-complete-profile/save" name="my_profile_form" method="POST" id="my_profile_form">
+          <section class="my_profile_sec">
+            <div class="my_profile_pic_box">
+              <div class="my_profile_img">
+                <img src="<%-baseUrl%>uploads/profile/<%- userDetails.profileImage %>" alt="" id="pic">
+              </div>
+              <div class="file-upload-wrapper" data-text="" style="margin-top: 7px;">
+                <input class="file-upload-field" type="file" accept="image/*" name="profileImage" id="profileImage" value="<%- userDetails.profileImage %>"
+                  onchange="document.getElementById('pic').src = window.URL.createObjectURL(this.files[0])">
+                <input class="file-upload-field" type="hidden" name="uploaded_profileImage"
+                  value="<%- userDetails.profileImage %>" hidden>
+              </div>
+              <style>
+                label#profileImage-error {
+                  margin-top: 40px;
+                }
+  
+                .file-upload-wrapper {
+                  position: relative;
+                  width: 100%;
+                  height: 20px;
+                }
+  
+                .file-upload-wrapper:after {
+                  content: attr(data-text);
+                  font-size: 20px;
+                  position: absolute;
+                  top: 0;
+                  text-align: left;
+                  left: 66px;
+                  background: transparent;
+                  padding: 12px 20px;
+                  display: block;
+                  width: calc(100% - 40px);
+                  pointer-events: none;
+                  z-index: 1;
+                  height: 34px;
+                  line-height: 19px;
+                  color: #999;
+                  border-radius: 10px;
+                  font-weight: 300;
+                }
+  
+                .file-upload-wrapper:before {
+                  content: 'Change Profile Photo';
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  display: inline-block;
+                  height: 34px;
+                  background: #fff;
+                  color: #333;
+                  z-index: 1;
+                  font-size: 15px;
+                  padding: 6px 20px;
+                  pointer-events: none;
+                  border-radius: 10px;
+                  background: #fff;
+                  border: 1px solid #ced4da;
+                }
+  
+                .file-upload-wrapper:hover:before {
+                  background: #fff;
+                }
+  
+                .file-upload-wrapper input {
+                  opacity: 0;
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  bottom: 0;
+                  left: 0;
+                  z-index: 99;
+                  height: 33px;
+                  margin: 0;
+                  padding: 0;
+                  display: block;
+                  cursor: pointer;
+                  width: 100%;
+                  font-size: 0;
+                }
+              </style>
+  
+            </div>
+            <!-- end:my_profile_pic_box -->
+            <div class="my_profile_form">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Full Name</label><span class="text-error">*</span>
+                      <input type="text" class="form-control" value="<%- trim(userDetails.name);%>" name="name" id="name">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Email Address</label><span class="text-error">*</span>
+                      <input type="text" class="form-control" value="<%- userDetails.mail %>" name="mail" id="mail" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Mobile number</label><span class="text-error">*</span>
+                      <input type="text" class="form-control" value="<%- userDetails.mobile %>" name="mobile" id="mobile">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Gender</label><span class="text-error">*</span>
+                      <select id="gender" name="gender" class="form-control" placeholder="Role" required />
+                      <option value="">Select Gender</option>
+                      <option value="male" <% if (userDetails.gender=="male" || userDetails.gender=="undefined" ) {%>
+                        selected <% } %>>Male
+                      </option>
+                      <option value="female" <% if (userDetails.gender=="female" || userDetails.gender=="undefined" ) {%>
+                        selected <% } %>>
+                          Female</option>
+                      <option value="other" <% if (userDetails.gender=="other" || userDetails.gender=="undefined" ) {%>
+                        Other selected <% } %>>
+                          Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Birthday</label><span class="text-error">*</span>
+                      <% if(!userDetails.birthdate || userDetails.birthdate=="" || userDetails.birthdate==null ||
+                      userDetails.birthdate=='undefined' ){ %>
+                        <input type="text" class="form-control birth_datePicker" name="birthdate" id="birthdate" value=""
+                          readonly>
+                        <% }else{%>
+                          <input type="text" class="form-control birth_datePicker" name="birthdate" id="birthdate"
+                            value="<%- dateFormat(userDetails.birthdate, 'mmmm dd yyyy'); %>" readonly>
+                          <% }%>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Address</label><span class="text-error">*</span>
+                      <input type="text" id="autocomplete" name="address" onFocus="geolocate()"
+                      onkeypress="return event.keyCode != 13;" class="form-control"
+                      placeholder="Enter your location" value="<%- userDetails.address %>">
+                    </div>
+                  </div>
+
+                  <div class="form-group col-sm-6" style="display:none">
+                    <label class="control-label">Latitude <span class="text-danger">*</span></label>
+                    <input name="lat" id="latitude" class="form-control" type="text" placeholder="Latitude" value="<%= userDetails.Latitude  %>">
+                  </div>
+                  <div class="form-group col-sm-6" style="display:none">
+                    <label class="control-label">Longitude <span class="text-danger">*</span></label>
+                    <input name="lng" id="longitude" class="form-control" type="text" placeholder="Longitude" value="<%= userDetails.Longitude  %>">
+                  </div>
+                  <div class="form-group col-sm-6" style="display:none">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">City </label>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                      <input name="city" id="locality" class="form-control" type="text" placeholder="City"
+                        value="<%= userDetails.city  %>">
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-6" style="display:none">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">State/Province
+                    </label>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                      <input name="state" id="administrative_area_level_1" class="form-control"
+                        type="text" placeholder="State" value="<%= userDetails.state  %>">
+    
+                      <input type="hidden" class="field" id="street_number" disabled="true"></input>
+                      <input type="hidden" class="field" id="route" disabled="true"></input>
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-6" style="display:none">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="postal_code">Zip/Postal
+                      Code
+                    </label>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                      <input name="postal_code" id="postal_code" type="text" class="form-control"
+                        placeholder="Zip/Postal">
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-6" style="display:none">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Country
+                    </label>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                      <input name="country" id="country" type="text" class="form-control"
+                        placeholder="Country" value="<%= userDetails.country  %>">
+                    </div>
+                  </div>
+          
+                  <div class="col-md-12">
+                    <div class="form-group mb-0">
+                      <button type="submit" class="btn_sty_1" style="min-width: 135px;">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          
+          </section>
+        </div>
+        <!-- end:onboarding_block -->
+        <div class="onboarding_skip">
+          <a href="<%- baseUrl %>cus-payment-info">Skip</a>
+        </div>
+      </div>
+    </div>
+    
+
+   
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <!-- Datepicker -->
+  <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+  <script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+  <link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+  <script>
+    $(document).ready(function () {
+    });
+    $(document).ready(function () {
+      var lastDate = new Date();
+      lastDate.setDate(lastDate.getDate()-1);
+      $(function () {
+        $(".birth_datePicker").datepicker({
+          dateFormat: "dd MM  yy",
+          changeMonth: true,
+          changeYear: true,
+          maxDate: lastDate,
+          //	minDate:lastDate,
+          yearRange: '1940:' + new Date().getFullYear(), 
+          onSelect: function () {
+           $("#my_profile_form").valid();
+          }
+        });
+      });
+    });
+  </script>
+
+    <script>
+    $(function () {
+			$("form[name='my_profile_form']").validate({
+				ignore: [],
+				debug: false,
+				rules: {
+					name: {
+						required: true,
+						lettersonly: true,
+						maxlength: 50,
+          //   noSpace: true,
+					// 	normalizer: function (value) {
+					// 	return $.trim(value);
+					// }
+					},
+					mail: {
+						required: true,
+						//email: true,
+						noSpace: true,
+						remote: {
+							url: "<%- baseUrl %>checkemailexist",
+							type: "post",
+							data: {
+								email: function () {
+									return $("#emailForRegisterUser").val();
+								}
+							},
+							beforeSend: function () {
+							},
+							complete: function (data) {
+							}
+						}
+					},
+					mobile: {
+						required: true,
+						number: true,
+						noSpace: true,
+						minlength: 10,
+						maxlength: 10,
+					},
+					address: {
+						required: true
+					},
+          birthdate:{
+            required: true
+          },
+          profileImage: {
+            extension: "png|jpeg|jpg",
+            filesize: 5242880,  // in megabytes
+           // required: true
+          },
+				},
+				messages: {
+					name: {
+						required: 'Please enter full name.'
+					},
+					mail: {
+						required: 'Please enter email.',
+						remote: "This email already exist in our system, Please use another."
+					},
+					mobile: {
+						required: 'Please enter mobile number.',
+						number: "Please enter a phone number",
+						minlength: "Minimum length is 10.",
+						maxlength: "Maximum length is 10.",
+					},
+					address: {
+						required: "Please enter location"
+					}, 
+          birthdate: {
+						required: "Please enter your birthdate."
+					},
+          profileImage: {
+            required: 'Please select image.',
+            extension: 'Please upload a jpg or png file.',
+            filesize: 'Please upload a picture less than 5MB.',
+          }, 
+				},
+      
+				submitHandler: function (form) {
+						$(":submit").attr("disabled", true);
+						form.submit();
+				}
+			});
+    })
+    </script>
+
+  <!-- SOCIAL Places API KEY -->
+  <script>
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+    var placeSearch, autocomplete;
+    var componentForm = {
+      street_number: 'short_name',
+      route: 'long_name',
+      locality: 'long_name',
+      administrative_area_level_1: 'short_name',
+      country: 'long_name',
+      postal_code: 'short_name'
+    };
+  
+    function initAutocomplete() {
+      // Create the autocomplete object, restricting the search to geographical
+      // location types.
+      autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+        { types: ['geocode'] });
+  
+      // When the user selects an address from the dropdown, populate the address
+      // fields in the form.
+      autocomplete.addListener('place_changed', fillInAddress);
+    }
+  
+    function fillInAddress() {
+      // Get the place details from the autocomplete object.
+      var place = autocomplete.getPlace();
+      document.getElementById('latitude').value = place.geometry.location.lat();
+      document.getElementById('longitude').value = place.geometry.location.lng();
+  
+  
+      for (var component in componentForm) {
+        document.getElementById(component).value = '';
+        document.getElementById(component).disabled = false;
+      }
+  
+      // Get each component of the address from the place details
+      // and fill the corresponding field on the form.
+      for (var i = 0; i < place.address_components.length; i++) {
+        var addressType = place.address_components[i].types[0];
+        if (componentForm[addressType]) {
+          var val = place.address_components[i][componentForm[addressType]];
+          document.getElementById(addressType).value = val;
+        }
+      }
+      var fullAddress = autocomplete.getPlace().formatted_address;
+      var addressArray = fullAddress.split(',');
+      //addressArray.splice(addressArray.length - 3);
+      document.getElementById('autocomplete').value = addressArray.toString();
+    }
+  
+    // Bias the autocomplete object to the user's geographical location, 
+    // as supplied by the browser's 'navigator.geolocation' object.
+    function geolocate() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          var geolocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          var circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          autocomplete.setBounds(circle.getBounds());
+        });
+      }
+    }
+  </script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJ6uwVCSWkHJlZD-qZ8hmG--apu2Q76L4&libraries=places&callback=initAutocomplete"
+    async defer></script>
+  
+  
+  </body>
+</html>

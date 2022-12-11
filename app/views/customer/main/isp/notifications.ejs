@@ -1,0 +1,703 @@
+<!-- include header -->
+<% include ../../common/loggedIn-header %>
+<!-- / end include -->
+
+      <div class="main_content">
+        <div class="container-fluid">
+          <div class="home_detail_more">
+            <section class="home_white_blocks">
+              <% if( userCustomerSession.role_id == 2){ %>
+                <div class="white_block_body" style="margin-top: 15px;">
+                  <% for(var i=0; i<sendReminder.length; i++) { %>
+                    <% if(sendReminder[i].mail == userCustomerSession.mail) { %>
+                      <% if (sendReminder[i].notificationType == "Reminder") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p>Hi <%= sendReminder[i].name %>, This is a friendly reminder for your <%= sendReminder[i].title %> appointment on <span class="cusDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="cusTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> with <%= sendReminder[i].ispName %>.</p>
+                            <div class="white_box_btn_group">
+                              <a data-toggle="tooltip" title="<%= sendReminder[i].ispPhone %>" href="tel:<%= sendReminder[i].ispPhone %>" class="btn_sty_1"><i class="icofont-phone"></i> Call</a>
+                              <a href="mailto:<%= sendReminder[i].ispEmail %>" class="btn_sty_1"><i class="icofont-email"></i> Email</a>
+                            </div>
+                          </div>
+                        </div>
+                      <% } %>
+                      <% if (sendReminder[i].notificationType == "Connection") { %>
+                        <% if (sendReminder[i].status == "success") { %>
+                          <div class="white_block_box">
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p">A new Business Owner <%= sendReminder[i].ispName %> has been successfully connected.</p>
+                            </div>
+                          </div>
+                        <% } %>
+                      <% } %>
+                      <% if (sendReminder[i].notificationType == "Appointment" && sendReminder[i].status == "Upcoming") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p class="white_info_box_p">Hi <%= sendReminder[i].name %>, You have booked <%= sendReminder[i].title %> appointment on <span class="cusDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="cusTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> with <%= sendReminder[i].ispName %>.</p>
+                          </div>
+                        </div>
+                      <% } %>
+                      <% if (sendReminder[i].notificationType == "Appointment" && sendReminder[i].status == "Upcoming") { %>
+                        <div class="white_block_box">
+                          <% if (sendReminder[i].tip != 0) { %>
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p"><%= sendReminder[i].name %> you have paid the Payment of $<%= sendReminder[i].amount %> and Tip of $<%= sendReminder[i].tip %> to Business Owner "<%= sendReminder[i].ispName %>".</p>
+                            </div>
+                          <% } else if(sendReminder[i].amount != 0) { %>
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p"><%= sendReminder[i].name %> you have paid the Payment of $<%= sendReminder[i].amount %> to Business Owner "<%= sendReminder[i].ispName %>".</p>
+                            </div>
+                          <% } %>
+                        </div>
+                      <% } %>
+                      <!-- Cancelled Customer Appointment -->
+                      <% if (sendReminder[i].notificationType == "Appointment" && sendReminder[i].status == "Cancelled") { %>
+                        <div class="white_block_box"> 
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p"><%= sendReminder[i].name %> you have cancelled the appointment with Business Owner "<%= sendReminder[i].ispName %>".</p>
+                            </div>
+                            </div>
+                            <% } %>
+                      <% if (sendReminder[i].notificationType == "Complete Payment") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p class="white_info_box_p">Hi <%= sendReminder[i].name %>, You have completed the payment of <%= sendReminder[i].title %> appointment on <span class="cusDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="cusTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> with <%= sendReminder[i].ispName %>.</p>
+                          </div>
+                        </div>
+                      <% } %>
+                      <% if (sendReminder[i].notificationType == "New Service") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p><%= sendReminder[i].ispName %> has launched a new "<%= sendReminder[i].ispServiceName %>" service. Click the below button if you are interested in booking that service.</p>
+                            <div class="white_box_btn_group">
+                              <a href="<%= baseUrl%>connectedIspDetail/<%= sendReminder[i].ispId %>" class="btn_sty_1">Book Appointment</a>
+                            </div>
+                          </div>
+                        </div>
+                      <% } %>
+                    <% } %>
+                    <% if (sendReminder[i].notificationType == "Popup Content" && sendReminder[i].content_for != "Business Owner") { %>
+                      <div class="white_block_box" data-toggle="modal" data-target="#popupModal<%= sendReminder[i]._id %>">
+                        <div class="white_block_img">
+                          <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p class="white_info_box_p"><%= sendReminder[i].content_title %></p>
+                        </div>
+                      </div>
+                      <div class="modal show" id="popupModal<%= sendReminder[i]._id %>" data-backdrop="static">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title"><%= sendReminder[i].content_title %></h4>
+                              <button type="button" class="hidePopup" data-dismiss="modal" style="border: 0;"><i class="icofont-close"></i></button>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                              <%- sendReminder[i].content %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% } %>
+                    <script>
+                      var finalTimeZone = moment.tz.guess();
+                      var sendReminderStartTime = moment("<%= sendReminder[i].utc_start%>").format();
+                      var dateTz = moment.tz(sendReminderStartTime, "GMT");
+                      var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                      var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                      $(".cusDate<%= sendReminder[i]._id %>").html(newDate);
+                      $(".cusTime<%= sendReminder[i]._id %>").html(newTime);
+                    </script>
+                  <% } %>
+                </div>
+
+                <div class="white_block_body" style="margin-top: 15px;">
+                  <% for(var i=0; i<connectedList.length; i++) { %>
+                    <% if (connectedList[i].status == "pending" && connectedList[i].ispInvite) { %>
+                      <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p>Hi <%= connectedList[i].cusName %>, <%= connectedList[i].ispName %> has sent you a connection request.</p>
+                            <div class="white_box_btn_group">
+                              <a href="/accept/connection/<%= connectedList[i]._id %>" class="btn_sty_1">Accept</a>
+                              <a href="/deny/connection/<%= connectedList[i]._id %>" class="btn_red" style="width: 90px; text-align: center;">Deny</a>
+                            </div>
+                          </div>
+                      </div>
+                    <% } %>
+                  <% } %>
+                </div>
+
+                <div class="white_block_body" style="margin-top: 15px;">
+                  <% for(var i=0; i<managepopup.length; i++) { %>
+                    <div class="white_block_box" data-toggle="modal" data-target="#popupModal<%= managepopup[i]._id %>">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= managepopup[i].content_image %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p class="white_info_box_p"><%= managepopup[i].content_title %></p>
+                      </div>
+                    </div>
+                    <div class="modal show" id="popupModal<%= managepopup[i]._id %>" data-backdrop="static">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title"><%= managepopup[i].content_title %></h4>
+                            <button type="button" class="hidePopup" data-dismiss="modal" style="border: 0;"><i class="icofont-close"></i></button>
+                          </div>
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                            <%- managepopup[i].content %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
+                </div>
+              <% } else { %>
+                <div class="white_block_body" style="margin-top: 15px;">
+                  <% for(var i=0; i<sendReminder.length; i++) { %>
+                    <% if(sendReminder[i].ispId == userCustomerSession._id) { %>
+                      <% if (sendReminder[i].notificationType == "Reminder") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].profile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p class="white_info_box_p"><%= sendReminder[i].name %> has booked <%= sendReminder[i].title %> service with you on <span class="ispDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="ispTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "h:MM TT"); %></span>.</p>
+                          </div>
+                        </div>
+                      <% } %>
+                      <% if (sendReminder[i].notificationType == "Connection") { %>
+                        <% if (sendReminder[i].status == "success") { %>
+                          <div class="white_block_box">
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].profile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p"><%= sendReminder[i].name %> has joined your network.</p>
+                            </div>
+                          </div>
+                        <% } %>
+                        <% if (sendReminder[i].status == "pending") { %>
+                          <div class="white_block_box">
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].profile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p">Hi <%= sendReminder[i].ispName %>, <%= sendReminder[i].name %> has sent you a connection request.</p>
+                            </div>
+                          </div>
+                        <% } %>
+                      <% } %>
+                      <% if (sendReminder[i].notificationType == "Appointment") { %>
+                        <% if (sendReminder[i].status == "Upcoming") { %>
+                          <div class="white_block_box">
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].profile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                                <p class="white_info_box_p"><%= sendReminder[i].name %> has an upcoming appointment with you for the <%= sendReminder[i].title %> on the <span class="ispDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="ispTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span>.</p>
+                            </div>
+                          </div>
+                          <div class="white_block_box" style="margin-top: 15px;">
+                            <% if (sendReminder[i].tip != 0) { %>
+                              <div class="white_block_img">
+                                <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].profile %>" alt="">
+                              </div>
+                              <div class="white_info_box">
+                                <p class="white_info_box_p">You have received the Payment of $<%= sendReminder[i].amount %> and Tip of $<%= sendReminder[i].tip %> from your customer "<%= sendReminder[i].name %>".</p>
+                              </div>
+                            <% } else if(sendReminder[i].amount != 0){ %>
+                              <div class="white_block_img">
+                                <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].profile %>" alt="">
+                              </div>
+                              <div class="white_info_box">
+                                <p class="white_info_box_p">You have received the Payment of $<%= sendReminder[i].amount %> from your customer "<%= sendReminder[i].name %>".</p>
+                              </div>
+                            <% } %>
+                          </div>
+                        <% } %>
+                        <% if (sendReminder[i].status == "Cancelled") { %>
+                          <div class="white_block_box">
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].profile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p"><%= sendReminder[i].name %> has cancelled the appointment with you for the <%= sendReminder[i].title %> on <span class="ispDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="ispTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span>.</p>
+                            </div>
+                          </div>
+                        <% } %>
+                      <% } %>
+                      <% if (sendReminder[i].notificationType == "Complete Payment") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].profile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p class="white_info_box_p"><%= sendReminder[i].name %> has completed the payment of <%= sendReminder[i].title %> appointment on <span class="ispDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="ispTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span>.</p>
+                          </div>
+                        </div>
+                      <% } %>
+                    <% } %>
+                    <% if(sendReminder[i].mail == userCustomerSession.mail) { %>
+                      <% if (sendReminder[i].notificationType == "New Service") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p><%= sendReminder[i].ispName %> has launched a new "<%= sendReminder[i].ispServiceName %>" service. Click the below button if you are interested in booking that service.</p>
+                            <div class="white_box_btn_group">
+                              <a href="<%= baseUrl%>connectedIspDetail/<%= sendReminder[i].ispId %>" class="btn_sty_1">Book Appointment</a>
+                            </div>
+                          </div>
+                        </div>
+                      <% } %>
+                      <!-- Reminder as a Customer -->
+                      <% if (sendReminder[i].notificationType == "Reminder") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p>Hi <%= sendReminder[i].name %>, This is a friendly reminder for your <%= sendReminder[i].title %> appointment on <span class="ispDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="ispTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "h:MM TT"); %></span> with <%= sendReminder[i].ispName %>.</p>
+                            <div class="white_box_btn_group">
+                              <a data-toggle="tooltip" title="<%= sendReminder[i].ispPhone %>" href="tel:<%= sendReminder[i].ispPhone %>" class="btn_sty_1"><i class="icofont-phone"></i> Call</a>
+                              <a href="mailto:<%= sendReminder[i].ispEmail %>" class="btn_sty_1"><i class="icofont-email"></i> Email</a>
+                            </div>
+                          </div>
+                        </div>
+                      <% } %>
+                      <!-- Connection request as a customer -->
+                      <% if (sendReminder[i].notificationType == "Connection") { %>
+                        <% if (sendReminder[i].status == "success") { %>
+                          <div class="white_block_box">
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p">A new Business Owner <%= sendReminder[i].ispName %> has been successfully connected.</p>
+                            </div>
+                          </div>
+                        <% } %>
+                        <% if (sendReminder[i].status == "pending") { %>
+                          <div class="white_block_box">
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p">Hi <%= sendReminder[i].name %>, Your connection request has been successfully sent.</p>
+                            </div>
+                          </div>
+                        <% } %>
+                      <% } %>
+                      <!-- Appointments as a customer -->
+                      <% if (sendReminder[i].notificationType == "Appointment" && sendReminder[i].status == "Upcoming") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p class="white_info_box_p">Hi <%= sendReminder[i].name %>, You have booked <%= sendReminder[i].title %> appointment on <span class="ispDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="ispTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "h:MM TT"); %></span> with <%= sendReminder[i].ispName %>.</p>
+                          </div>
+                        </div>
+                      <% } %>
+                      <% if (sendReminder[i].notificationType == "Appointment" && sendReminder[i].status == "Upcoming") { %>
+                        <div class="white_block_box">
+                          <% if (sendReminder[i].tip != 0) { %>
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p"><%= sendReminder[i].name %> you have paid the Payment of $<%= sendReminder[i].amount %> and Tip of $<%= sendReminder[i].tip %> to Business Owner "<%= sendReminder[i].ispName %>".</p>
+                            </div>
+                          <% } else if(sendReminder[i].amount != 0) { %>
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                            </div>
+                            <div class="white_info_box">
+                              <p class="white_info_box_p"><%= sendReminder[i].name %> you have paid the Payment of $<%= sendReminder[i].amount %> to Business Owner "<%= sendReminder[i].ispName %>".</p>
+                            </div>
+                          <% } %>
+                        </div>
+                      <% } %>
+                      <!-- Cancelled Appointment -->
+                      <% if (sendReminder[i].notificationType == "Appointment" && sendReminder[i].status == "Cancelled") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p class="white_info_box_p">Hi <%= sendReminder[i].name %>, Your appointment for <%= sendReminder[i].title %> which was booked on <span class="ispDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="ispTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "h:MM TT"); %></span> with <%= sendReminder[i].ispName %> has been cancelled.</p>
+                          </div>
+                        </div>
+                      <% } %>
+                      <!-- Complete Payment as a customer -->
+                      <% if (sendReminder[i].notificationType == "Complete Payment") { %>
+                        <div class="white_block_box">
+                          <div class="white_block_img">
+                            <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                          </div>
+                          <div class="white_info_box">
+                            <p class="white_info_box_p">Hi <%= sendReminder[i].name %>, You have completed the payment of <%= sendReminder[i].title %> appointment on <span class="ispDate<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "mmmm dd yyyy"); %></span> at <span class="ispTime<%= sendReminder[i]._id %>"><%= dateFormat(sendReminder[i].utc_start, "h:MM TT"); %></span> with <%= sendReminder[i].ispName %>.</p>
+                          </div>
+                        </div>
+                      <% } %>
+                    <% } %>
+                    <% if (sendReminder[i].notificationType == "Popup Content" && sendReminder[i].content_for != "Customer") { %>
+                      <div class="white_block_box" data-toggle="modal" data-target="#popupModal<%= sendReminder[i]._id %>">
+                        <div class="white_block_img">
+                          <img src="<%= baseUrl%>uploads/profile/<%= sendReminder[i].ispProfile %>" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p class="white_info_box_p"><%= sendReminder[i].content_title %></p>
+                        </div>
+                      </div>
+                      <div class="modal show" id="popupModal<%= sendReminder[i]._id %>" data-backdrop="static">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title"><%= sendReminder[i].content_title %></h4>
+                              <button type="button" class="hidePopup" data-dismiss="modal" style="border: 0;"><i class="icofont-close"></i></button>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                              <%- sendReminder[i].content %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% } %>
+                    <script>
+                      var finalTimeZone = moment.tz.guess();
+                      var sendReminderStartTime = moment("<%= sendReminder[i].utc_start%>").format();
+                      var dateTz = moment.tz(sendReminderStartTime, "GMT");
+                      var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                      var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                      $(".ispDate<%= sendReminder[i]._id %>").html(newDate);
+                      $(".ispTime<%= sendReminder[i]._id %>").html(newTime);
+                    </script>
+                  <% } %>
+                </div>
+
+                <div class="white_block_body" style="margin-top: 15px;">
+                  <% for(var i=0; i<managepopup.length; i++) { %>
+                    <div class="white_block_box" data-toggle="modal" data-target="#popupModal<%= managepopup[i]._id %>">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= managepopup[i].content_image %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p class="white_info_box_p"><%= managepopup[i].content_title %></p>
+                      </div>
+                    </div>
+                    <div class="modal show" id="popupModal<%= managepopup[i]._id %>" data-backdrop="static">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title"><%= managepopup[i].content_title %></h4>
+                            <button type="button" class="hidePopup" data-dismiss="modal" style="border: 0;"><i class="icofont-close"></i></button>
+                          </div>
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                            <%- managepopup[i].content %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
+                </div>
+              <% } %>
+            </section>
+            <!-- end:home_white_blocks -->
+          </div>
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+<!-- make payment start -->
+<div class="modal" id="paymentModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Payment</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <% if(typeof cardList != "undefined"){ %>
+        <form action="<%- baseUrl %>completePaymentSaveCard" method="POST" id="completePaymentSaveCard">
+          <h5 class="payment_select_card">Select Card</h5>
+          <div class="row">
+            <% for(var i=0; i<cardList.length; i++) { %>
+            <div class="col-xl-12" id="append_amount" style="display: flex; align-items: center;">
+                <input name="existingCardRadio" type="radio" class="existingCardRadio" value="<%- cardList[i].id %>" style="margin-right: 10px;">
+                <div class="payment_cart">
+                  <div class="card_logo">
+                      <img src="<%= baseUrl%>img/visa.png" alt="">
+                  </div>
+                  <div class="card_info">
+                      <h4 class="card_number">**** **** **** <span id="getCardNumber"></span>
+                        <span id="card_number">
+                          <%= cardList[i].last4 %>
+                        </span></h4>
+                      <h5 class="card_expire">Expires <%= cardList[i].exp_month %>/<%= cardList[i].exp_year %></h5>
+                  </div>
+                </div>
+                <script>
+                  $("#completePaymentSaveCard").click(function(){
+                    let appointmentId = $("#add_payment_id").val();
+                    let remainingAmount = $("#add_payment_amount").val();
+    
+                    $('#completePaymentSaveCard [name="remainingAmount1"]').remove();
+                    $('#completePaymentSaveCard [name="remainingAmountappointmentId"]').remove();
+                      
+                    $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');
+                    $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                  });
+                </script>
+            </div>
+            <% } %>
+          </div>
+          <Button type="submit" class="btn_sty_1 pay_now_using_existing_btn">Pay Now</Button>
+        </form>
+          <div class="form_seprator">
+            <div class="sep_or">OR</div>
+          </div>
+        <% } %>
+        <div class="row">
+            <div class="form_container" style="width: 100%;margin-top: 37px;">
+              <div class="col-md-12">
+                <h4>Payment with new card.</h4>
+              </div>
+  
+              <div class="col-md-12">
+                <label for="card-element">
+                  Credit or debit card
+                </label>
+                <div id="card-element" style="width: 450px; max-width:100%;">
+                  <!-- A Stripe Element will be inserted here. -->
+                </div>
+                <!-- Used to display form errors. -->
+                <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+                </div>
+
+              <form action="<%- baseUrl %>completePayment" method="post" id="completePayment">
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group mb-0">
+                    <button type="submit" class="btn_sty_1 pay_now_btn">Pay Now</button>
+                  </div>
+                  <script>
+                    $("#completePayment").click(function(){
+                      let appointmentId = $("#add_payment_id").val();
+                      let remainingAmount = $("#add_payment_amount").val();
+                      
+                      $('#completePayment [name="remainingAmountappointmentId"]').remove();
+                      $('#completePayment [name="remainingAmount1"]').remove();
+                        
+                      $('#completePayment').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');    
+                      $('#completePayment').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                    });
+                  </script>
+                </div>
+              </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- make payment end -->
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<style>
+  .StripeElement {
+    box-sizing: border-box;
+
+    height: 40px;
+
+    padding: 10px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+  .linkFor:hover {
+    text-decoration: none;
+    color: #333
+  }
+
+  .linkFor {
+    text-decoration: none;
+  }
+
+
+ .payment_card_sec .card_block {width: calc(100% - 30px); float: right;}
+
+ @media (max-width: 550px){
+ .card_block_left {margin:0 10px 0 0;}
+ .card_block_right {width:auto; text-align: left;}
+ .card_block_right h4 {font-size: 16px;}
+ }
+
+</style>
+
+<script>
+  // Create a Stripe client.
+  var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+
+  // Create an instance of Elements.
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create('card', {hidePostalCode: true, style: style});
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  // Handle real-time validation errors from the card Element.
+  card.addEventListener('change', function (event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById('completePayment');
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function (result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('completePayment');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    $(".pay_now_btn").attr("disabled", true);
+    // Submit the form
+    form.submit();
+  }
+
+  $(function () {
+    $('.linkFor').one('click', function () {
+      window.location.replace($(this).data('href'));
+      $(this).removeAttr('data-href');
+    });
+  });
+</script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script>
+      $(document).ready(function(){
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+    </script>
+    <script>
+      $(document).on('click', '.make_payment', function(){
+        var appointmentId = $(this).data('id');
+        var remainingAmount = $(this).data('price');
+    
+        $('#add_payment').html('');
+        $('#add_payment').append(`
+          <input type="hidden" name="add_payment_id" id="add_payment_id" value="${appointmentId}">
+          <input type="hidden" name="add_payment_amount" id="add_payment_amount" value="${remainingAmount}">
+        `);
+        $('#paymentModal').modal('show');
+      });
+    </script>
+  </body>
+</html>

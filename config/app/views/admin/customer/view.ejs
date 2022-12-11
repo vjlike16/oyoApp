@@ -1,0 +1,407 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+	
+
+          <div class="">
+		  	<div class="page-title">
+              <div class="title_left">
+                <h3>Customer Details</h3>
+              </div>
+            </div>
+			<div class="clearfix"></div>
+			
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="x_panel">
+								<div class="x_title">
+									<h2>View Customer</h2>
+									<div class="clearfix"></div>
+							    </div>
+								<div>
+									  <!-- Nav tabs -->
+									  <ul class="nav nav-tabs" role="tablist">
+											<li role="presentation" class="active"><a href="#basic" aria-controls="home" role="tab" data-toggle="tab">Basic Information</a></li>
+											<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Subscription</a></li>
+											<li role="presentation"><a href="#uploads" aria-controls="uploads" role="tab" data-toggle="tab">Uploads</a></li>
+									  </ul>
+
+									  <!-- Tab panes -->
+									  <div class="tab-content" style="padding-bottom: 30px;">
+											<div role="tabpanel" class="tab-pane active" id="basic">
+												<fieldset class="form-horizontal">
+													<div class="col-sm-12">
+														<span class="section">Basic Information
+														<a href="<%- baseUrl %>admin/customer" class="btn btn-primary btn-sm pull-right" style="margin-top: -6px;">Back</a>
+														</span>
+													</div>
+													<div class="col-sm-6 col-xs-12 item form-group" style="height: 114px;">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Image</label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<% if (result.profileImage == '' || result.profileImage == 'null' || result.profileImage == 'Null') {%>
+																	<img class="img-thumbnail" src="<%= baseUrl%>admin/images/big_profile.jpg"  class="form-control"  style="width:100px;height:100px;">
+																	
+																<%}else{%>
+																	<img class="img-thumbnail" src="<%= baseUrl%>uploads/profile/<%= result.profileImage %>" class="form-control" style="width:100px;height:100px;">
+																	<input type="hidden" name="uploaded_profileImage" value="<%= result.profileImage %>"/>
+																<%}%>
+															</div>	
+												   </div>
+												  <div class="col-sm-6 col-xs-12 item form-group" style="height: 114px;">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="registration_card">Bar Registration Identity Card </label>
+														<div class="col-md-9 col-sm-9 col-xs-12">
+																	<% if (result.registration_card == '' || result.registration_card == 'null' || result.registration_card == 'Null') {%>
+																		<img class="img-thumbnail" src="<%= baseUrl%>admin/images/big_profile.jpg"  class="form-control"  style="width:100px;height:100px;">
+																		
+																	<%}else{%>
+																		<img class="img-thumbnail" src="<%= baseUrl%>uploads/profile/<%= result.registration_card %>" class="form-control" style="width:100px;height:100px;">
+																		
+																		<a title="Click to download." target="_blank" href="<%= baseUrl%>uploads/profile/<%= result.registration_card %>" download><i class="fa fa fa-download"></i></a>
+																		
+																	<%}%>
+														</div>	
+													</div>
+													<div class="col-sm-6 col-xs-12 item form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Full Name  </label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<input disabled type="name" value="<%= result.name  %>" id="email" class="form-control"    placeholder="Full Name" required/>
+															</div>
+														</div>
+														<div class="col-sm-6 col-xs-12 item form-group">	
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status  </label>
+															<div class="col-md-9 col-sm-9 col-xs-12" >
+																	<select disabled id="status" name="status" class="form-control" placeholder="Role"/>
+																		<option value="">Select status</option>
+																		<option value="active" <% if (result.status == "active") {%>
+																		selected <% } %>>Active</option>
+																		<option value="inactive" <% if (result.status == "inactive") {%>
+																		selected <% } %>>Inactive</option>
+																	</select>
+															</div>
+														</div>
+														
+														<div class="col-sm-6 col-xs-12 item form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email  </label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<input disabled type="email" name="mail" value="<%= result.mail  %>" id="email" class="form-control"    placeholder="Email" required/>
+															</div>
+														</div>	
+														
+														<div class="col-sm-6 col-xs-12 item form-group">	
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="mobile">Mobile  </label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<input disabled type="text" name="mobile" value="<%= result.mobile  %>" id="mobile" class="form-control" placeholder="Mobile" />
+															</div>
+														</div>
+														
+														<div class="col-sm-6 col-xs-12 item form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="dob">D.O.B </label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<input disabled readonly type="text" name="dob" id="dob" class="datePicker form-control"  value="<%= result.dob %>" placeholder="D.O.B"/>
+															</div>
+														</div>
+														
+														
+														<!-- Professional -->
+														<div class="col-sm-12">
+															<span class="section">Professional Information</span>
+														</div>	
+														
+														<div class="col-sm-6 col-xs-12 item form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="primary_city_operation">Primary City of Operation </label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<input disabled type="text" name="primary_city_operation"  value="<%= result.primary_city_operation  %>" id="primary_city_operation" class="form-control"    placeholder="Primary City of Operation" />
+															</div>
+														</div>	
+														<div class="col-sm-6 col-xs-12 item form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="barname">Name of Bar</label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<input disabled type="text" name="bar_name" value="<%= result.bar_name  %>" id="barname" class="form-control"    placeholder="Name of Bar" />
+															</div>
+														</div>	
+														
+														<div class="col-sm-6 col-xs-12 item form-group">		
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="barregistration">Bar Registration  </label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<input disabled type="text" name="bar_registration" value="<%= result.bar_registration  %>" id="barregistration" class="form-control" placeholder="Bar Registration" />
+															</div>
+														</div>	
+														<div class="col-sm-6 col-xs-12 item form-group">	
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="district">District</label>
+															<div class="col-md-9 col-sm-9 col-xs-12" >
+																<input disabled type="text" name="district" value="<%= result.district  %>" id="district" class="form-control" placeholder="District"/>
+															</div>
+														</div>
+														
+														<div class="col-sm-6 col-xs-12 item form-group">	
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="tehsil">Tehsil</label>									
+															<div class="col-md-9 col-sm-9 col-xs-12" >
+																<input disabled type="text" name="tehsil" value="<%= result.tehsil  %>" id="tehsil" class="form-control" placeholder="Tehsil"/>
+															</div>
+														</div>
+																											
+														<div class="col-sm-6 col-xs-12 item form-group">	
+																<label class="control-label col-md-3 col-sm-3 col-xs-12" for="state">State  </label>
+																<div class="col-md-9 col-sm-9 col-xs-12" >
+																	<select disabled id="state" name="state" class="form-control" required/>
+																	   <option value="">Select State  </option>
+																		<% for(var i=0; i < states.length; i++) { %>
+																			<option value="<%= states[i]._id %>"  <% if (states[i]._id.equals(result.state)) {%>
+																			selected <% } %>><%= states[i].state %></option>
+																		<% } %>
+																	</select>
+																</div>
+														</div>
+														<div class="col-sm-6 col-xs-12 item form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="zipcode">Pin Code</label>
+															<div class="col-md-9 col-sm-9 col-xs-12" >
+																<input disabled type="text" name="zipcode" id="zipcode" class="form-control" value="<%= result.zipcode  %>" placeholder="Pin Code"/>
+															</div>
+														</div>	
+														
+														<div class="col-sm-6 col-xs-12 item form-group">	
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="address">Address 1</label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<textarea disabled type="text" rows="1" name="address" id="address" class="form-control"  placeholder="Address 1" style="resize: vertical;"/><%= result.address  %></textarea>
+															</div>
+														</div>
+														<div class="col-sm-6 col-xs-12 item form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="address2">Address 2</label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<textarea disabled rows="1" type="text" name="address2" id="address2" class="form-control"  placeholder="Address 2" style="resize: vertical;"/><%= result.address2  %></textarea>
+															</div></textarea>
+														</div>
+															
+														
+														<div class="col-sm-6 col-xs-12 item form-group">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="practising">Practising as </label>
+															<div class="col-md-9 col-sm-9 col-xs-12">
+																<select disabled id="practising" name="practising" class="form-control"/>
+																	<option value="">Select Practising</option>
+																	<option value="individual" <% if (result.practising == "individual") {%>
+																	selected <% } %>>Individual</option>
+																	<option value="law_firm" <% if (result.practising == "law_firm") {%>
+																	selected <% } %>>Law Firm</option>
+																	<option value="associate" <% if (result.practising == "associate") {%>
+																	selected <% } %>>Associate</option>
+																</select>
+															</div>	
+														</div>	
+														<div class="col-sm-6 col-xs-12 item form-group lawfirmed_associated_container" style="display:none;">
+															<label class="control-label col-md-3 col-sm-3 col-xs-12" for="lawfirmed_associated">Name of Law Firm/Associated with  </label>
+															<div class="col-md-9 col-sm-9 col-xs-12" >
+																<input disabled type="text" name="lawfirmed_associated" id="lawfirmed_associated" class="form-control" placeholder="Law Firm/Associated with" value="<%= result.lawfirmed_associated  %>"/>
+															</div>
+														</div>
+														
+
+														<div class="col-sm-12">
+															<span class="section">Office Hours – Court Working Days</span>
+														</div>	
+														<div class="col-sm-12 col-xs-12 item form-group">
+															<div class="col-md-4 col-sm-4 col-xs-4">
+																<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="working_days_start_time">Start Time </label>
+																<div class="col-md-9 col-sm-9 col-xs-12">
+																	<input disabled readonly type="text" name="working_days_start_time" id="working_days_start_time" class="timePicker form-control" placeholder="Start Time"  value="<%= result.working_days_start_time  %>"/>
+																</div>
+																
+															</div>
+															<div class="col-md-4 col-sm-4 col-xs-4">
+																<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="working_days_end_time">End Time </label>
+																<div class="col-md-9 col-sm-9 col-xs-12">
+																	<input disabled readonly type="text" name="working_days_end_time" id="working_days_end_time" class="timePicker form-control" placeholder="End Time" value="<%= result.working_days_end_time  %>"/>
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-sm-12">
+															<span class="section">Office Hours – Weekends and Court Holidays</span>
+														</div>	
+														<div class="col-sm-12 col-xs-12 item form-group">
+															<div class="col-md-4 col-sm-4 col-xs-4">
+																<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="weekend_days_start_time">Start Time </label>
+																<div class="col-md-9 col-sm-9 col-xs-12">
+																	<input disabled readonly type="text" name="weekend_days_start_time" id="weekend_days_start_time" class="timePicker form-control" placeholder="Start Time"  value="<%= result.weekend_days_start_time  %>"/>
+																</div>
+																
+															</div>
+															<div class="col-md-4 col-sm-4 col-xs-4">
+																<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="weekend_days_end_time">End Time </label>
+																<div class="col-md-9 col-sm-9 col-xs-12">
+																	<input disabled readonly type="text" name="weekend_days_end_time" id="weekend_days_end_time" class="timePicker form-control" placeholder="End Time" value="<%= result.weekend_days_end_time  %>"/>
+																</div>
+															</div>
+														</div>
+														
+														<div class="col-sm-12 col-xs-12 item form-group frequently_services_container">
+															<label class="pull-left" for="frequently_services">Do You Frequently Required Steno Services During Court Hours </label>
+															<div class="col-md-1 col-sm-1 col-xs-1">
+																<label>
+																	<input disabled type="radio" name="frequently_services" value="yes" class="frequently_services"  <% if (result.frequently_services == "yes") {%>
+																	checked <% } %>/> Yes
+																</label>
+															</div>
+															<div class="col-md-1 col-sm-1 col-xs-1">
+																<label>
+																	<input disabled type="radio" name="frequently_services" value="no" class="frequently_services"  <% if (result.frequently_services == "no") {%>
+																	checked <% } %>/> No
+																</label>
+															</div>
+														</div>
+												   
+													
+												</fieldset>
+											</div>
+											
+											
+											<div role="tabpanel" class="tab-pane" id="profile">
+											       <div class="col-md-12" style="padding: 15px 15px 0;">
+															<div class="panel panel-default" style="margin-bottom:0;">
+																<div class="panel-heading">
+																	<div class="row">
+																		<div class="col-md-6 col-sm-6">
+																			<span><strong>Current Plan :</strong> <% if(plans != ''){ %> <%= plans[0].plan %> <%} %></span><br>
+																			<span><strong>Amount :</strong> Rs. <% if(plans != ''){ %> <%= plans[0].amount %> <%} %></span><br>
+																			<span><strong>Expiry On :</strong> <% if(plans != ''){ %> <%= plans[0].end %> <%} %></span>
+																		</div>
+																		<div class="col-md-6 col-sm-6 text-right">
+																			
+																				<a href="<%- baseUrl %>admin/customer" class="btn btn-primary btn-sm" style="margin-top:5px;">Back</a>
+																																		
+																		</div>
+																		<div class="clearfix"></div>
+																		
+																	</div>
+																</div>
+															</div>
+													</div>
+													<div class="col-sm-12">
+														<span class="section">Subscription History :</span>
+													</div>
+													<div class="table-responsive listing-tbl">
+														<table id="datatable" class="datatable-responsive table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+																<thead class="bg-green">
+																	<tr>
+																		<th class="column-title" data-field-name="name">Plan Name </th>
+																		<th class="column-title" data-field-name="name">Plan Amount </th>
+																		<th class="column-title" data-field-name="status">Start Date </th>
+																		<th class="column-title" data-field-name="district">End Date </th>
+																		<th class="column-title" data-field-name="tehsil">Status </th>
+																	</tr>
+																</thead>
+																<tbody>
+																	  <% for(var i=0; i<plans.length; i++) { %>
+																		  <tr>
+																			<td><%= plans[i].plan %></td>
+																			<td>Rs. <%= plans[i].amount %></td>
+																			<td><%= plans[i].start %></td>
+																			<td><%= plans[i].end %></td>
+																			<td>
+																				<% if(plans[i].status == 'active'){ %>
+																					 <span class="label label-success">Active</span>
+																				<% }else{ %>
+																					<span class="label label-danger">Inactive</span>
+																				<% } %>
+																			</td>
+																		 </tr>
+																	  <% } %>	 
+																</tbody>
+														</table>
+													</div>
+										</div>
+										
+																		 <!-- Uploads Start -->
+								 <div role="tabpanel" class="tab-pane" id="uploads">
+										   <% 
+											  var uploadsLength = uploads.length; 
+											  if(uploadsLength && uploadsLength != 0){	
+										   %>	
+											     <div class="col-sm-12">
+													<span class="section">
+														Uploads History :
+														<a href="<%- baseUrl %>admin/customer" class="btn btn-primary btn-sm pull-right" style="margin-top: -4px;">Back</a>
+													</span>
+												</div>
+											<% } %>	
+											<div class="table-responsive listing-tbl">
+											   
+											    <% 
+													if(uploadsLength && uploadsLength != 0){
+												%>
+													<table id="datatable" class="datatable-responsive table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+															<thead class="bg-green">
+																<tr>
+																	<th class="column-title" data-field-name="name">Name </th>
+																	<th class="column-title" data-field-name="description">Description </th>
+																	<!-- <th class="column-title" data-field-name="status">Status </th> -->
+																	<th class="column-title" data-field-name="file">File </th>
+																	<th class="column-title" data-field-name="created_date">Created Date </th>
+																</tr>
+															</thead>
+															<tbody>
+																  <% for(var i=0; i<uploads.length; i++) { %>
+																	  <tr>
+																		<td><%= uploads[i].name %></td>
+																		<td class="datatable-text-wrap">
+																			<%= uploads[i].description %></td>	
+																		</td>	
+																		<td class="datatable-text-wrap">
+																			
+																				 <% 
+																				 var uploadDocsLength = uploads[i].uploadDocs.length; 
+																				 if(uploadDocsLength && uploadDocsLength != 0){
+																					for(var j=0; j<uploads[i].uploadDocs.length; j++) { %>
+																						<li style="list-style-type: none;">
+																						<a target="_blank" href="<%- baseUrl %>uploads/format/<%- uploads[i].uploadDocs[j].name %>">Preview </a>
+																						</li>
+																					 <% } %>
+																				 <% }else{ %>
+																					<span>Null</span>
+																				<% } %>
+																			
+																		</td>
+																		<td><span class="hidden"><%= dateFormat(uploads[i].created_date, "yyyy-mm-dd HH:MM:ss"); %></span><%= dateFormat(uploads[i].created_date, "dd-mm-yyyy h:MM:ss TT"); %></td>
+																	 </tr>
+																  <% } %>	 
+															</tbody>
+													</table>
+												 <% }else{ %>	
+													<h4 class="text-center text-danger">No Record Found.</h4>
+												 <% } %>	
+											</div>
+								   </div>
+								    <!-- Uploads End -->
+									
+									
+									</div>
+
+								</div>
+						
+						</div>
+				  </div>	
+            </div>
+          </div>
+		  
+		  
+        
+<script>
+$(document).ready(function(){
+	 practising_value = $('#practising').find('option:selected').val();
+	 if(practising_value == 'law_firm' || practising_value == 'associate'){
+			$('.lawfirmed_associated_container').show();
+	 }else{
+			$('.lawfirmed_associated_container').hide();
+	 }
+	  
+     value = $('#practising').find('option:selected').val();
+	  if(value == 'law_firm' || value == 'associate'){
+			$('.lawfirmed_associated_container').show();
+	  }else{
+		   $('.lawfirmed_associated_container').hide();
+	  }
+});         
+</script>
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

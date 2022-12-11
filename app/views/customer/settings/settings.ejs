@@ -1,0 +1,725 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->	
+
+      <div class="main_content">
+        <div class="container-fluid">
+          <section class="settings_page">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <div class="setting_box">
+                  <a href="/my-profile/<%- userCustomerSession._id %>">
+                    <div class="setting_icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24.785" height="28.2" viewBox="0 0 24.785 28.2">
+                        <g id="setup_profile" transform="translate(-31)">
+                          <g id="Group_7298" data-name="Group 7298" transform="translate(35.957)">
+                            <g id="Group_7297" data-name="Group 7297" transform="translate(0)">
+                              <path id="Path_4208" data-name="Path 4208" d="M128.436,0a7.436,7.436,0,1,0,7.436,7.436A7.444,7.444,0,0,0,128.436,0Z" transform="translate(-121)" fill="#fff"/>
+                            </g>
+                          </g>
+                          <g id="Group_7300" data-name="Group 7300" transform="translate(31 16.524)">
+                            <g id="Group_7299" data-name="Group 7299" transform="translate(0)">
+                              <path id="Path_4209" data-name="Path 4209" d="M52.644,303.205a10.6,10.6,0,0,0-7.6-3.205h-3.3a10.6,10.6,0,0,0-7.6,3.205A10.836,10.836,0,0,0,31,310.85a.826.826,0,0,0,.826.826H54.959a.826.826,0,0,0,.826-.826A10.836,10.836,0,0,0,52.644,303.205Z" transform="translate(-31 -300)" />
+                            </g>
+                          </g>
+                        </g>
+                      </svg>
+                      
+                    </div>
+
+                    <h3>Profile</h3>
+                  </a>
+                </div>
+              </div>
+
+              <div class="col-md-4 col-sm-6">
+                <div class="setting_box">
+                  <a href="#" data-toggle="modal" data-target="#addcardModal">
+                    <div class="setting_icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="29.62" height="29.62" viewBox="0 0 29.62 29.62">
+                        <g id="setting_wallet" transform="translate(-0.003 0)">
+                          <g id="Group_7302" data-name="Group 7302" transform="translate(0.003 0)">
+                            <g id="Group_7301" data-name="Group 7301" transform="translate(0 0)">
+                              <path id="Path_4210" data-name="Path 4210" d="M27.6,24.235H22.891a5.385,5.385,0,1,1,0-10.771H27.6a.673.673,0,0,0,.673-.673v-2.02A2.687,2.687,0,0,0,25.8,8.1L21.932,1.348A2.664,2.664,0,0,0,18.277.363L5.023,8.079H2.7A2.7,2.7,0,0,0,0,10.771V26.928A2.7,2.7,0,0,0,2.7,29.621H25.584a2.7,2.7,0,0,0,2.693-2.693v-2.02A.673.673,0,0,0,27.6,24.235ZM22.767,5.517l1.467,2.562H18.366ZM7.7,8.079,18.955,1.526a1.3,1.3,0,0,1,1-.135,1.32,1.32,0,0,1,.809.625v0L10.357,8.079Z" transform="translate(-0.003 0)" fill="#fff"/>
+                              <path id="Path_4211" data-name="Path 4211" d="M307.421,234.674h-4.712a4.039,4.039,0,1,0,0,8.078h4.712a2.022,2.022,0,0,0,2.02-2.02v-4.039A2.022,2.022,0,0,0,307.421,234.674Zm-4.712,5.385a1.346,1.346,0,1,1,1.346-1.346A1.348,1.348,0,0,1,302.709,240.059Z" transform="translate(-279.821 -219.864)" />
+                            </g>
+                          </g>
+                        </g>
+                      </svg>
+                      
+                    </div>
+
+                    <h3>Payment Details</h3>
+                  </a>
+                </div>
+              </div>
+            <% if (userCustomerSession.role_id == 2) {%>
+              <div class="col-md-4 col-sm-6">
+                <div class="setting_box">
+                  <a href="#" data-toggle="modal" data-target="#change_passwordModal">
+                    <div class="setting_icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="23.78" height="31.707" viewBox="0 0 23.78 31.707">
+                        <g id="setting_changepassword" transform="translate(-64)">
+                          <g id="Group_7296" data-name="Group 7296" transform="translate(64)">
+                            <path id="Path_4206" data-name="Path 4206" d="M87.119,11.89H85.138V9.248a9.248,9.248,0,0,0-18.5,0V11.89H64.661a.66.66,0,0,0-.661.661V29.064a2.645,2.645,0,0,0,2.642,2.642h18.5a2.645,2.645,0,0,0,2.642-2.642V12.551A.66.66,0,0,0,87.119,11.89Zm-9.252,13.8a.661.661,0,0,1-.657.733H74.569a.661.661,0,0,1-.657-.733l.417-3.747a2.613,2.613,0,0,1-1.081-2.125,2.642,2.642,0,1,1,5.284,0,2.613,2.613,0,0,1-1.081,2.125Zm3.307-13.8H70.606V9.248a5.284,5.284,0,0,1,10.569,0Z" transform="translate(-64)" />
+                          </g>
+                        </g>
+                      </svg>
+                      
+                    </div>
+
+                    <h3>Change Password</h3>
+                  </a>
+                </div>
+              </div>
+            <% } else { %>
+                <div class="col-md-4 col-sm-6">
+                    <div class="setting_box"> <a href="#" data-toggle="modal" data-target="#import_contactModal">
+                      <div class="setting_icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26.204" height="31.541" viewBox="0 0 26.204 31.541">
+                          <g id="setting_import_contact" transform="translate(-37.4)">
+                            <path id="Path_4207" data-name="Path 4207" d="M42.253,15.771a1.213,1.213,0,0,1-1.213,1.213H38.613A1.213,1.213,0,0,1,37.4,15.771h0a1.213,1.213,0,0,1,1.213-1.213h2.426a1.213,1.213,0,0,1,1.213,1.213Zm0-7.764a1.213,1.213,0,0,0-1.213-1.213H38.613A1.213,1.213,0,0,0,37.4,8.007h0A1.213,1.213,0,0,0,38.613,9.22h2.426a1.213,1.213,0,0,0,1.213-1.213Zm0,15.528a1.213,1.213,0,0,0-1.213-1.213H38.613A1.213,1.213,0,0,0,37.4,23.535h0a1.213,1.213,0,0,0,1.213,1.213h2.426a1.213,1.213,0,0,0,1.213-1.213ZM63.6,3.882V27.659a3.882,3.882,0,0,1-3.882,3.882H42.738a3.882,3.882,0,0,1-3.882-3.882V25.718H41.04a2.184,2.184,0,0,0,0-4.367H38.856v-3.4h2.184a2.184,2.184,0,0,0,0-4.367H38.856v-3.4h2.184a2.184,2.184,0,0,0,0-4.367H38.856V3.882A3.882,3.882,0,0,1,42.738,0H59.722A3.882,3.882,0,0,1,63.6,3.882ZM48.214,11.507a3.743,3.743,0,1,0,3.743-3.743A3.743,3.743,0,0,0,48.214,11.507Zm9.566,9.15A4.159,4.159,0,0,0,53.621,16.5H50.294a4.16,4.16,0,0,0-4.16,4.159v1.664H57.781Z"/>
+                          </g>
+                        </svg>
+                      </div>
+                      <h3>Import Contact</h3>
+                      </a> </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="setting_box"> <a href="/accountSettings">
+                      <div class="setting_icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="71" height="71" viewBox="0 0 71 71">
+                          <g id="Group_7498" data-name="Group 7498" transform="translate(-378 -280)">
+                            <circle id="Ellipse_273" data-name="Ellipse 273" cx="35.5" cy="35.5" r="35.5" transform="translate(378 280)" fill="#181828"/>
+                            <g id="lock" transform="translate(338 300)">
+                              <g id="Group_7296" data-name="Group 7296" transform="translate(64)">
+                                <path id="Path_4206" data-name="Path 4206" d="M87.119,11.89H85.138V9.248a9.248,9.248,0,0,0-18.5,0V11.89H64.661a.66.66,0,0,0-.661.661V29.064a2.645,2.645,0,0,0,2.642,2.642h18.5a2.645,2.645,0,0,0,2.642-2.642V12.551A.66.66,0,0,0,87.119,11.89Zm-9.252,13.8a.661.661,0,0,1-.657.733H74.569a.661.661,0,0,1-.657-.733l.417-3.747a2.613,2.613,0,0,1-1.081-2.125,2.642,2.642,0,1,1,5.284,0,2.613,2.613,0,0,1-1.081,2.125Zm3.307-13.8H70.606V9.248a5.284,5.284,0,0,1,10.569,0Z" transform="translate(-64)" fill="#fff"/>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                    <h3>Account Settings</h3>
+                    </a> </div>
+                </div>
+                  <!-- <div class="col-md-4 col-sm-6">
+                    <div class="setting_box"> <a href="#" data-toggle="modal" data-target="#coupan_code">
+                      <div class="setting_icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="71" height="71" viewBox="0 0 71 71">
+                          <g id="Group_7500" data-name="Group 7500" transform="translate(-690 -280)">
+                            <g id="Group_7499" data-name="Group 7499">
+                              <circle id="Ellipse_273" data-name="Ellipse 273" cx="35.5" cy="35.5" r="35.5" transform="translate(690 280)" fill="#181828"/>
+                              <path id="Path_4216" data-name="Path 4216" d="M29,2.5a4.6,4.6,0,0,1-9.2,0H12.5V32.643H36.329V2.5Zm2,24.78H17.8V24.932H30.966V27.28Zm0-6.187H17.8V18.745H30.966v2.348Zm0-6.219H17.8V12.526H30.966v2.348Z" transform="translate(701.5 297.5)" fill="#fff"/>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                      <h3>Coupon Code</h3>
+                      </a> </div>
+                  </div> -->
+                  <div class="col-md-4 col-sm-6">
+                    <div class="setting_box"> <a href="/stripe">
+                      <div class="setting_icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="71" height="71" viewBox="0 0 71 71">
+                          <g id="Group_7508" data-name="Group 7508" transform="translate(-1003 -280)">
+                            <g id="Group_7505" data-name="Group 7505" transform="translate(313)">
+                              <g id="Group_7499" data-name="Group 7499">
+                                <circle id="Ellipse_273" data-name="Ellipse 273" cx="35.5" cy="35.5" r="35.5" transform="translate(690 280)" fill="#181828"/>
+                              </g>
+                            </g>
+                            <path id="Path_4219" data-name="Path 4219" d="M134.709,31H120.588a2.487,2.487,0,0,0-2.517,2.473V58.766a2.544,2.544,0,0,0,2.517,2.54h18.877a2.532,2.532,0,0,0,2.5-2.54V38.2Zm-9.776,4.243a1.817,1.817,0,1,1-1.817,1.817A1.817,1.817,0,0,1,124.933,35.243Zm-3.274,5.5a2.244,2.244,0,0,1,1.035-1.881,2.9,2.9,0,0,0,.976.775,2.862,2.862,0,0,0,3.5-.784,2.236,2.236,0,0,1,1.042,1.889v1.5a.713.713,0,0,1-.7.713h-5.141a.712.712,0,0,1-.7-.713v-1.5Zm12.192,16.806H121.659V56.185h12.192Zm4.528-4.807H121.659V51.378H138.38Zm0-4.842H121.659V46.536H138.38Zm-1.7-9.684a1.978,1.978,0,0,1-1.956-1.949v-3.1l5.145,5.052Z" transform="translate(908.93 269)" fill="#fff"/>
+                          </g>
+                        </svg>
+                      </div>
+                      <h3>Bank Details</h3>
+                      </a> </div>
+                  </div>
+            <% } %>
+            </div>
+          </section>
+          <!-- end:settings_page -->
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+    <!-- add card start -->
+    <div class="modal" id="addcardModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Add Card</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="col-md-12">
+              <label for="card-element">
+                Credit or debit card
+              </label>
+              <div id="card-element" style="width: 450px; max-width:100%;">
+                <!-- A Stripe Element will be inserted here. -->
+              </div>
+              <!-- Used to display form errors. -->
+              <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="form-group">
+                <button type="submit" id="save_card_btn" class="btn_sty_1">Save</button>
+              </div>
+            </div>
+            <form action="/card/settings/save" name="save_card_form" id="save_card_form" method="POST">
+            </form>
+            <!-- <form action="/card/settings/save" name="card" method="POST">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Name</label>
+                      <input type="text" class="form-control" onkeydown="return /[a-zåäö ]/i.test(event.key)" name="name" id="name" maxlength="25">
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Card Number</label>
+                      <input type="text" class="form-control cardNumber" name="cardNumber" id="cardNumber"
+                        placeholder="0000-0000-0000-0000">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Expires</label>
+                      <input type="text" class="form-control" placeholder="DD/MM" name="expires" id="expires" minlength="5" maxlength="5">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>CVV</label>
+                      <input type="password" class="form-control" name="cvv" id="cvv">
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <button type="submit" class="btn_sty_1">Save</button>
+                    </div>
+                  </div>
+                </div>
+            </form> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- add card end -->
+
+    <!-- change password start -->
+    <div class="modal" id="change_passwordModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Change Password</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="/changePassword" name="changePassword" method="POST">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Current Password</label>
+                    <input type="password" class="form-control" name="currentPassword" id="currentPassword">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" class="form-control" name="newPassword" id="newPassword">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" class="form-control" name="confirmPassword" id="confirmPassword">
+                  </div>
+                </div>
+                
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <button type="submit" class="btn_sty_1">Save</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- change password end -->
+
+    <!-- import contact start -->
+    <div class="modal" id="import_contactModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Import Contacts</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <p>Please click on the below buttons and import your contacts</p>
+            <ul class="import_contact_list">
+              <li>
+                <a href="/import_google_profile">
+                  <svg id="symbol" xmlns="http://www.w3.org/2000/svg" width="20.475" height="20.474" viewBox="0 0 20.475 20.474">
+                    <path id="Path_3627" data-name="Path 3627" d="M4.8,106.445a5.405,5.405,0,0,1,.765-2.778v-3.451H2.112a10.243,10.243,0,0,0,0,12.459H5.564v-3.451A5.405,5.405,0,0,1,4.8,106.445Z" transform="translate(0 -96.207)" fill="#fbbd00"/>
+                    <path id="Path_3628" data-name="Path 3628" d="M198.4,373.722l-2.4,2.4,2.4,2.4a10.16,10.16,0,0,0,6.23-2.112v-3.448h-3.448A5.438,5.438,0,0,1,198.4,373.722Z" transform="translate(-188.162 -358.047)" fill="#0f9d58"/>
+                    <path id="Path_3629" data-name="Path 3629" d="M56.274,325.477l-3.451,3.451a10.4,10.4,0,0,0,.886,1.009,10.17,10.17,0,0,0,7.239,3v-4.8A5.441,5.441,0,0,1,56.274,325.477Z" transform="translate(-50.711 -312.461)" fill="#31aa52"/>
+                    <path id="Path_3630" data-name="Path 3630" d="M266.237,199.67a10.325,10.325,0,0,0-.168-1.855l-.09-.492H256v4.8h4.857a5.414,5.414,0,0,1-2.075,2.225l3.448,3.448a10.4,10.4,0,0,0,1.009-.886A10.17,10.17,0,0,0,266.237,199.67Z" transform="translate(-245.763 -189.433)" fill="#3c79e6"/>
+                    <path id="Path_3631" data-name="Path 3631" d="M202.245,6.392l.424.424,3.393-3.393L205.638,3A10.17,10.17,0,0,0,198.4,0L196,2.4l2.4,2.4A5.4,5.4,0,0,1,202.245,6.392Z" transform="translate(-188.162 0)" fill="#cf2d48"/>
+                    <path id="Path_3632" data-name="Path 3632" d="M60.947,4.8V0a10.171,10.171,0,0,0-7.239,3,10.391,10.391,0,0,0-.886,1.009l3.451,3.451A5.441,5.441,0,0,1,60.947,4.8Z" transform="translate(-50.71 0)" fill="#eb4132"/>
+                  </svg>
+                  Google
+                </a>
+              </li>
+
+              <li>
+                <a href="/import_outlook_profile">
+                  <svg id="logotype" xmlns="http://www.w3.org/2000/svg" width="19.206" height="19.206" viewBox="0 0 19.206 19.206">
+                    <path id="Path_3633" data-name="Path 3633" d="M272,9h9V.6a.6.6,0,0,0-.6-.6H272Z" transform="translate(-261.797)" fill="#4caf50"/>
+                    <path id="Path_3634" data-name="Path 3634" d="M9,9V0H.6A.6.6,0,0,0,0,.6V9Z" fill="#f44336"/>
+                    <path id="Path_3635" data-name="Path 3635" d="M9,272H0v8.4a.6.6,0,0,0,.6.6H9Z" transform="translate(0 -261.797)" fill="#2196f3"/>
+                    <path id="Path_3636" data-name="Path 3636" d="M272,272v9h8.4a.6.6,0,0,0,.6-.6V272Z" transform="translate(-261.797 -261.797)" fill="#ffc107"/>
+                  </svg>
+                  
+                  Outlook
+                </a>
+              </li>
+
+              <!-- <li>
+                <a href="#">
+                  <svg id="facebook" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+                    <path id="Path_3651" data-name="Path 3651" d="M18.375,0H2.625A2.628,2.628,0,0,0,0,2.625v15.75A2.628,2.628,0,0,0,2.625,21h15.75A2.628,2.628,0,0,0,21,18.375V2.625A2.628,2.628,0,0,0,18.375,0Z" fill="#1976d2"/>
+                    <path id="Path_3652" data-name="Path 3652" d="M201.844,102.563h-3.281V99.938c0-.725.588-.656,1.313-.656h1.313V96h-2.625a3.937,3.937,0,0,0-3.937,3.938v2.625H192v3.281h2.625v7.219h3.938v-7.219h1.969Z" transform="translate(-184.125 -92.063)" fill="#fafafa"/>
+                  </svg>
+                  
+                  Facebook
+                </a>
+              </li>
+
+              <li>
+                <a href="#">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+                    <text id="_" data-name="" transform="translate(10 18)" fill="#0077b5" font-size="20" font-family="icofont, IcoFont"><tspan x="-10" y="0"></tspan></text>
+                  </svg>
+                  
+                  Linkedin
+                </a>
+              </li> -->
+
+              <!-- <li>
+                <a href="#">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+                    <text id="_" data-name="" transform="translate(10 18)" fill="#666" font-size="20" font-family="icofont, IcoFont"><tspan x="-10" y="0"></tspan></text>
+                  </svg>
+                  
+                  Apple
+                </a>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- import contact end -->
+    <div class="modal" id="coupan_code" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"> 
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Coupon Code</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="couponCodeApplied" name="couponCodeApplied" method="POST">
+              <div class="coupan-code">
+                <div class="form-group">
+                  <label>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
+                  <div class="row">
+                    <div class="col-xl-12">
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="couponCode" id="couponCode">
+                        <span class="coupon_code_error hidden" style="font-weight:500; color: red;"></span>
+                        <span class="coupon_code_success hidden" style="font-weight:500; color: green;"></span>
+                        <input type="hidden" name="amount" id="amount" value="<%= monthly_price %>">
+                        <input type="hidden" name="discountedAmount" id="discountedAmount" value="<%= monthly_price %>">
+                        <input type="hidden" value="" class="coupon_based_on" name="coupon_based_on">
+                        <input type="hidden" value="" class="coupon_type" name="coupon_type">
+                        <input type="hidden" value="" class="discount" name="discount">
+                        <button type="button" class="apply_coupon">Apply Coupon</button>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn_sty_1 mr-1 mt-4 mb-2">Save</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  End Coupan code --> 
+    
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+    <script src="<%- baseUrl %>validation/custom.validate.js"></script>
+    <script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <!-- Datepicker -->
+    <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+    <link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+
+    <script>
+    $(document).ready(function () {
+    var lastDate = new Date();
+      $(function () {
+        $(".datePicker").datepicker({
+          changeMonth: true,
+          changeYear: true,
+          showButtonPanel: true,
+          minDate: lastDate,
+          dateFormat: 'mm-yy',
+          onClose: function (dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+          },
+        })
+      });
+    });
+    </script>
+    <script>
+      $(document).ready(function(){
+        $('.settings-link').addClass('nav-active');
+
+        $("#expires").keyup(function(){
+          if($(this).val().length == 2){
+            console.log($(this).val())
+            if(parseInt($(this).val()) > 12){
+              $(this).val($(this).val().slice(0,-1))
+            }else{
+              $(this).val($(this).val()+'/')
+            }    
+          }
+        });
+
+      });
+    </script>
+    <script>
+    $("form[name='card']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        name: {
+          required: true,
+          maxlength: 50,
+          normalizer: function (value) {
+            return $.trim(value);
+          }
+        },
+        cardNumber: {
+          required: true,
+          creditNum: true
+        },
+        expires: {
+          required: true,
+        },
+        cvv: {
+          required: true,
+          number: true,
+          minlength: 3,
+          maxlength: 4,
+        }
+      },
+      messages: {
+        name: {
+          required: 'Please enter card holder  name.',
+          maxlength: 'Maximum length is 50.',
+        },
+        cardNumber: {
+          required: 'Please enter card number.',
+          minlength: "Minimum length is 14.",
+          maxlength: "Maximum length is 16.",
+        },
+        expires: {
+          required: 'Please enter the expiration date.'
+        },
+        cvv: {
+          required: 'Please enter cvv.',
+          minlength: 'Minimum length is 3.',
+          maxlength: 'Maximum length is 4.',
+          number: 'Please enter numbers.'
+        },
+      },
+
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    
+    $("form[name='changePassword']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        currentPassword: {
+            required: true,
+            remote: {
+                url: "<%- baseUrl %>checkCurrentPassword",
+                type: "post",
+                data: {
+                    email: function () {
+                        return $("#currentPassword").val();
+                    }
+                },
+                beforeSend: function () {
+                },
+                complete: function (data) {
+                }
+            }
+        },
+        newPassword: {
+            required: true,
+            noSpace: true,
+            atLeastOneLowercaseLetter: true,
+            atLeastOneUppercaseLetter: true,
+            atLeastOneNumber: true,
+            atLeastOneSymbol: true,
+            minlength: 8,
+            maxlength: 15
+        },
+        confirmPassword: {
+            required: true,
+            noSpace: true,
+            atLeastOneLowercaseLetter: true,
+            atLeastOneUppercaseLetter: true,
+            atLeastOneNumber: true,
+            atLeastOneSymbol: true,
+            minlength: 8,
+            maxlength: 15,
+			equalTo: "#newPassword"
+        }
+      },
+      messages: {
+        currentPassword: {
+          required: 'Please enter your password.',
+          remote: 'Please enter correct password.'
+        },
+        newPassword: {
+          required: 'Please enter password.',
+        },
+        confirmPassword: {
+          required: 'Please enter password to confirm.'
+        }
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    </script>
+    <script>
+      $("form[name='couponCodeApplied']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        couponCode: {
+          required: true,
+        },
+      },
+      messages: {
+        couponCode: {
+          required: 'Please enter your coupon code',
+        }
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    </script>
+    <script>
+      $(".apply_coupon").on("click",function () {
+        var coupon_code = $("#couponCode").val();
+        $.ajax({
+          type: "GET",
+          url: "<%- baseUrl %>couponCodeApply?coupon_code="+coupon_code,
+          success: function(res) {
+            if(res.status == 1){
+              let msg = res.msg;
+              var discount = res.data.discount;
+              discount = parseFloat(discount);
+              var coupon_based_on = res.data.coupon_based_on;
+              var coupon_type = res.data.coupon_type;
+              let paymentPrice = $('#amount').val();
+              var discountPrice;
+              var newTotal;
+              if(coupon_based_on == 'Percentage'){
+                paymentPrice = parseFloat(paymentPrice);
+                discountPrice = (discount*paymentPrice)/100;
+                discountPrice = discountPrice.toFixed(2);
+                newTotal = (paymentPrice - discountPrice).toFixed(2);
+                $('#discountedAmount').val(newTotal);
+              } else {
+                discountPrice = discount;
+                newTotal = (paymentPrice - discountPrice).toFixed(2);
+                $('#discountedAmount').val(newTotal);
+              }
+              if(newTotal <= 0){
+                $('#discountedAmount').val(paymentPrice);
+                $('.coupon_based_on').val('');
+                $('.coupon_type').val('');
+                $('.coupon_code_success').html('');
+                $('.coupon_code_error').html("This coupon code is not applicable. Please use a different coupon code.");
+              } else {
+                $('.coupon_based_on').val(coupon_based_on);
+                $('.coupon_type').val(coupon_type);
+                $('.discount').val(discount);
+                $('.coupon_code_error').html('');
+                $('.coupon_code_success').html(msg);
+              }
+            }
+            if(res.status == 2){
+              let msg = res.msg;
+              $('.coupon_code_success').html('');
+              $('.coupon_code_error').html('');
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 3){
+              let msg = res.msg;
+              $('.coupon_code_success').html('');
+              $('.coupon_code_error').html('');
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 4){
+              let msg = res.msg;
+              $('.coupon_code_success').html('');
+              $('.coupon_code_error').html('');
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 5){
+              let msg = res.msg;
+              $('.coupon_code_success').html('');
+              $('.coupon_code_error').html('');
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 6){
+              let msg = res.msg;
+              $('.coupon_code_success').html('');
+              $('.coupon_code_error').html('');
+              $('.coupon_code_error').html(msg);
+            }
+            // if(res.status == 8){
+            //   let msg = res.msg;
+            //   $('.coupon_code_success').html('');
+            //   $('.coupon_code_error').html('');
+            //   $('.coupon_code_error').html(msg);
+            // }
+            if(res.status == 0){
+              let msg = res.msg;
+              $('.coupon_code_success').html('');
+              $('.coupon_code_error').html('');
+              $('.coupon_code_error').html(msg);
+            }
+          },
+          error: function(res) { console.log("Error",res) }
+        });
+      });
+    </script>
+    <script>
+      // $('.cardNumber').on('keypress change', function () {
+      //   $(this).val(function (index, value) {
+      //     return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+      //   });
+      // });
+
+    //Stripe card views
+    // Create a Stripe client.
+    var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+    
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+  
+    // Custom styling can be passed to options when creating an Element.
+    // (Note that this demo uses a wider set of styles than the guide below.)
+    var style = {
+      base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4'
+        }
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    };
+  
+    // Create an instance of the card Element.
+    var card = elements.create('card', {hidePostalCode: true, style: style});
+  
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+  
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function (event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    $("#save_card_btn").click(function(){
+      stripe.createToken(card).then(function (result) {
+          if (result.error) {
+            // Inform the user if there was an error.
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+          } else {
+            // Send the token to your server.
+            stripeTokenHandler(result.token);
+          }
+        });
+    });
+    
+      // Submit the form with the token ID.
+      function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('save_card_form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+        $(".pay_now_btn").attr("disabled", true);
+        // Submit the form
+        form.submit();
+      }
+
+    </script>
+  </body>
+</html>

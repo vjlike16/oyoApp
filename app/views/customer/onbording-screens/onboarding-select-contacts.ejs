@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="img/logo.png"/>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="<%- baseUrl %>css/icofont.css">
+    <link rel="stylesheet" href="<%- baseUrl %>css/style-owner.css">
+    <title>OYO</title>
+  </head>
+  <body>
+    <div class="onboarding">
+      <div class="container">
+        <div class="onboarding_title">
+          <img src="<%- baseUrl %>img/logo.png" alt="">
+        </div>
+        <div class="onboarding_block mt-4" style="max-width: 700px;">
+          <div class="imt_contact_top_info">
+            <h3>Select which contacts you want to import</h3>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input select_all" id="customCheck" name="example1">
+              <label class="custom-control-label" for="customCheck">Select All</label>
+            </div>
+          </div>
+
+          <div class="imt_contact_list">
+            <form action="onboardingImportContacts" method="POST">
+              <div class="row">
+                <% for(var i=0; i < importContact.length; i++) { %>
+                  <div class="col-md-6">
+                    <div data-user-id='<%- importContact[i]._id %>' class="imt_contact_box">
+                      <div class="contact_pic"><img src="<%- importContact[i].coverPhotos %>" alt=""></div>
+                      <div class="contact_name"><%- importContact[i].name %></div>
+                      <div class="contact_check">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23">
+                          <g id="Group_7204" data-name="Group 7204" transform="translate(-522 -351)">
+                            <circle id="Ellipse_267" data-name="Ellipse 267" cx="11.5" cy="11.5" r="11.5" transform="translate(522 351)" fill="#27ae60"/>
+                            <path id="checked" d="M0,68.746l3.621,3.628,6.953-6.946-1-.984L3.621,70.391.984,67.754Z" transform="translate(528 294.557)" fill="#fff"/>
+                          </g>
+                        </svg>
+                      </div>
+                      <!-- end:contact_check -->
+                    </div>
+                  </div>             
+                <% } %>
+                <div class="selectedId" id="selectedId"></div>
+                <div class="col-md-12">
+                  <div class="form-group mb-0">
+                    <button type="submit" class="btn_sty_1" style="min-width: 135px;">Import Contacts</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- end:imt_contact_list -->
+          
+        </div>
+        <!-- end:onboarding_block -->
+
+        <div class="onboarding_skip">
+          <a href="<%- baseUrl %>add-service">Skip</a>
+        </div>
+      </div>
+    </div>
+    
+
+   
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="js/circle-progress.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $(".select_all").click(function () {
+          if($(this).prop("checked") == true){
+            $('#selectedId').html("");
+            $(".imt_contact_box").each(function() {
+            $(this).addClass("selected");
+              var userId = $(this).data('user-id');
+              $('#selectedId').append(`
+                <input type="hidden" name="contactId[]" class="${userId}" id="contactId" value="${userId}">
+              `);
+            });
+          } else {
+            $('#selectedId').html("");
+            $(".imt_contact_box").each(function() {
+            $(this).removeClass("selected");
+            });
+          }
+        });
+
+        $(".imt_contact_box").click(function(){
+          $(this).toggleClass("selected");
+          var userId = $(this).data('user-id');
+          var isSelected = $(this).attr('class');
+          if(isSelected.includes('selected')){
+          $('#selectedId').append(`
+            <input type="hidden" name="contactId[]" class="${userId}" id="contactId" value="${userId}">
+          `);
+          } else {
+            $("." + userId).remove();
+            $('.select_all').prop('checked', false);
+          }
+        });
+      });
+    </script>
+  
+  </body>
+</html>

@@ -1,0 +1,521 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+<style>
+	#datatable_filter {
+		display: none !important;
+	}
+
+	.table.dataTable thead .sorting:after {
+		display: none;
+		cursor: default;
+	}
+	.ipsfilter .form-group {position: relative;}
+	.ipsfilter label.error {display: block; position: absolute; left:0; top:100%;}
+	.textCapitalize{text-transform: capitalize;}
+</style>
+
+<div class="row">
+	<div class="page-title">
+		<div class="title_left">
+			<h3> Manage Customers</h3>
+		</div>
+	</div>
+
+
+	<div class="form-inline text-right" style="margin-bottom: 5px;">
+		<div class="form-group">
+			<label style="display: block;text-align: left;">Search: </label>
+			<input class="form-control input-sm" id="searchCustomInput" placeholder="Name" />
+		</div>
+		<div class="form-group">
+			<form name="customerFilter" name="ispFilter" class="ipsfilter" action="/admin/customer/datefilter" role="form" method="post"> 
+			<label style="display: block;text-align: left;">Sign up date From & To: </label>
+			<% if(min== ''){%>
+			<div class="form-group text-left">
+			<input class="form-control input-sm" readonly name="min"  onchange="change()"  id="min" type="text" placeholder="Select From date">
+			</div>
+			<div class="form-group text-left">
+			<input class="form-control input-sm" name="max" readonly onchange="change()"  id="max" type="text" placeholder="Select To date">
+			</div>
+			<button type="submit" style="margin-top: 4px;" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
+				Submit</button>
+			<% } else{%>
+			<input class="form-control input-sm" readonly name="min" value="<%=  dateFormat(min, 'yyyy-mm-dd'); %>" onchange="change()"  id="min" type="text" placeholder="Select from date">
+			<input class="form-control input-sm" name="max" value="<%=  dateFormat(max, 'yyyy-mm-dd'); %>" readonly onchange="change()"  id="max" type="text" placeholder="Select to date">
+			<button type="submit" style="margin-top: 4px;" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>
+			Submit</button>
+				<% } %>
+				<a class="btn btn-primary btn-sm" title="Reset" href="<%- baseUrl %>admin/customer"
+					style="border-radius: 0;margin-top: 4px;"><i class="fa fa-refresh" aria-hidden="true"> </i>
+					</a>
+			</form>	
+		</div>
+		<!--<div class="form-group">
+			<label style="display: block;text-align: left;">Status: </label>
+			<select class="form-control input-sm" id="sortByStatus">
+				<option value="">Status</option>
+				<option value="active">Active</option>
+				<option value="inactive">Inactive</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label style="display: block;visibility: hidden;margin-bottom: 10px;">button</label>
+			<a title="Add Customer" class="btn btn-primary btn-sm" href="<%- baseUrl %>admin/customer/add"
+				style="border-radius: 0;"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+				Add Customer</a>
+		</div>-->
+		<div class="form-group">
+			<label style="display: block;visibility: hidden;margin-bottom: 10px;">Export as CSV</label>
+			<a id="exportToCSV" title="Export as CSV" class="btn btn-warning btn-sm" href="javascript:void(0);"
+				style="border-radius: 0;"><i class="fa fa-file-excel-o"></i>
+				Export All as CSV</a>
+
+			<form name="exportToCSVForm" id="exportToCSVForm" method="POST"
+				action="<%- baseUrl %>admin/customer/exportToCsv">
+				<input type="hidden" name="userEmailsInForm">
+			</form>
+		</div>
+
+	</div>
+
+
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Image</h4>
+			</div>
+			<div class="modal-body">
+				<center><img id="imageLargeViewImg" src="" class="img-thumbnail" class="form-control" style="width:100%; height:auto;"></center>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<br />
+<div class="row">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>View All Customers</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="table-responsive listing-tbl">
+			<table id="datatable" class="datatable-responsive table table-striped table-bordered dt-responsive nowrap"
+				cellspacing="0" width="100%">
+				<thead class="bg-green">
+					<tr>
+						<!-- <th><input name="select_all" value="1" type="checkbox" style="margin-left: 9px;"></th> -->
+						<th class="column-title" data-field-name="name">S. No.</th>
+						<th class="column-title" data-field-name="name">Name</th>
+						<th class="column-title" data-field-name="mail">Email</th>
+						<th class="column-title" data-field-name="address">Address</th>
+						<th class="column-title" data-field-name="mobile">Mobile No.</th>
+						<th class="column-title" data-field-name="gender">Gender</th>
+						<th class="column-title" data-field-name="mail">Image</th>
+						<th class="column-title" data-field-name="hear_about">Hear About Us</th>
+						<th class="column-title" data-field-name="last_active_on">Last Active On</th>
+						<th class="column-title" data-field-name="user_type">User Type</th>
+						<th class="column-title" data-field-name="address">Signed Up Through</th>
+						<th class="column-title" data-field-name="signed_up_on">Signed Up On</th>
+						<th class="column-title" data-field-name="status">Status</th>
+						<th class="column-title">Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<% for(var i=0; i<result.length; i++) { %>
+					<tr>
+						<!-- <td class="datatable-text-wrap"><input type="checkbox" class="grid_checkbox" name="userIds" 
+								data-user-names="<%- result[i].name %>" value="<%- result[i].id %>"></td> -->
+								<td class="datatable-text-wrap"><%=i+1 %></td>
+						<td class="datatable-text-wrap"><span
+								class="hidden"><%= lowerCase(trim(result[i].name)); %></span><%= result[i].name %></td>
+						<td class="datatable-text-wrap"><span
+								class="hidden"><%= lowerCase(trim(result[i].mail)); %></span><%= result[i].mail %></td>
+						<td class="datatable-text-wrap"><span class="hidden-xs" style="  display: inline-block;
+							width: 150px;
+							white-space: nowrap;
+							overflow: hidden !important;
+							text-overflow: ellipsis;"><%= result[i].address; %></span></td>
+						<td class="datatable-text-wrap"><span><%= result[i].mobile %></span></td>
+						<td class="datatable-text-wrap textCapitalize"><span><%= result[i].gender %></span></td>
+						<td class="datatable-text-wrap"> <a href="javascript:void(0)" data-image-path="<%= baseUrl%>uploads/profile/<%= result[i].profileImage %>" class="imageLargeView" title="Click to view large." 
+							><img class="img-thumbnail" src="<%= baseUrl%>uploads/profile/<%= result[i].profileImage %>" class="form-control" style="width:40px;height:34px;"> </a></td>
+						<td class="datatable-text-wrap"><%= result[i].heard_about %></td>
+						<td class="datatable-text-wrap">
+							<!-- <%= dateFormat(result[i].login_time, "mm-dd-yyyy h:MM TT"); %> -->
+							<script>
+								var dateTz = moment("<%= result[i].login_time ? result[i].login_time : result[i].created_date %>").tz('America/Chicago').format("MM-DD-YYYY hh:mm A");
+								document.write(dateTz);
+							</script>
+						</td>
+						<!-- <td class="datatable-text-wrap">
+							<script>
+								var dateTz = moment("<%= result[i].login_time %>").format("YYYY-MM-DD hh:mm A");
+								document.write(dateTz);
+							</script>
+						</td> -->
+						<td class="datatable-text-wrap"><span><%= result[i].userType %> </td>
+						<td class="datatable-text-wrap"><span><%= result[i].social_provider %></span></td> 
+						<!-- <td><span
+								class="hidden"><%= dateFormat(result[i].created_date, "yyyy-mm-dd HH:MM:ss"); %></span><%= dateFormat(result[i].created_date, "mm-dd-yyyy h:MM:ss TT"); %>
+						</td> -->
+						<td class="datatable-text-wrap">
+							<!-- <%= dateFormat(result[i].created_date, "mm-dd-yyyy h:MM TT"); %> -->
+							<script>
+								var dateTz = moment("<%= result[i].created_date %>").tz('America/Chicago').format("MM-DD-YYYY hh:mm A");
+								document.write(dateTz);
+							</script>
+						</td>
+							
+						<td>
+							<% if(result[i].status == 'active'){ %>
+							<span class="label label-success">Active</span>
+							<% }else{ %>
+							<span class="label label-danger">Inactive</span>
+							<% } %>
+						</td>
+						<td>
+							<div class="ac_action"><i class="fa fa-cogs" style="margin-left: 110%;"></i>
+								<div>
+									<a href="<%- baseUrl %>admin/customer/edit/<%- result[i]._id %>"><i
+											class="fa fa-pencil-square-o"></i> Edit</a>
+									<% if(result[i].status == 'inactive'){ %>
+									<a href="<%- baseUrl %>admin/customer/changeStatus/active/<%- result[i]._id %>"><i
+											class="glyphicon glyphicon-minus-sign"></i> Active</a>
+									<% }else{ %>
+									<a href="<%- baseUrl %>admin/customer/changeStatus/inactive/<%- result[i]._id %>"><i
+											class="glyphicon glyphicon-minus-sign"></i> Inactive</a>
+									<% } %>
+
+									<a class="deleteButton"
+										onclick="return confirm('To confirm, do you want to delete this customer?.');"
+										href="<%- baseUrl %>admin/customer/delete/<%- result[i]._id %>/<%- result[i].mail %>"><i
+											class="glyphicon glyphicon-remove-sign"></i> Delete</a>
+									<!-- <a href="<%- baseUrl %>admin/customer/reset_password_by_admin/<%- result[i]._id %>"><i
+											class="glyphicon glyphicon-lock"></i> Reset Password</a> -->
+
+								</div>
+							</div>
+						</td>
+
+
+					</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<!-- /.table-responsive -->
+</div>
+
+<!-- Datepicker -->
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+<script src="<%- baseUrl %>js/sweetalert2.js"></script>
+<!-- Datatable -->
+<script src="<%- baseUrl %>admin/vendors/datatables.net/jquery.dataTables.min.js"></script>
+<link href="<%- baseUrl %>admin/vendors/datatables.net/jquery.dataTables.min.css" rel="stylesheet">
+<script src="<%- baseUrl %>admin/vendors/datatables.net/natural.js"></script>
+<script>
+	function updateDataTableSelectAllCtrl(table) {
+		var $table = table.table().node();
+		var $chkbox_all = $('tbody input[type="checkbox"]', $table);
+		var $chkbox_checked = $('tbody input[type="checkbox"]:checked', $table);
+		var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
+
+		// If none of the checkboxes are checked
+		if ($chkbox_checked.length === 0) {
+			chkbox_select_all.checked = false;
+			if ('indeterminate' in chkbox_select_all) {
+				chkbox_select_all.indeterminate = false;
+			}
+
+			// If all of the checkboxes are checked
+		} else if ($chkbox_checked.length === $chkbox_all.length) {
+			chkbox_select_all.checked = true;
+			if ('indeterminate' in chkbox_select_all) {
+				chkbox_select_all.indeterminate = false;
+			}
+
+			// If some of the checkboxes are checked
+		} else {
+			chkbox_select_all.checked = true;
+			if ('indeterminate' in chkbox_select_all) {
+				chkbox_select_all.indeterminate = true;
+			}
+		}
+	}
+	function change(){
+         var min , max;
+			min = $('#min').datepicker("getDate");
+			max = $('#max').datepicker("getDate");
+		 if(min !=undefined && max !=undefined &&min !=null && max!=null){	
+		   if( min > max ){
+			Swal.fire('From date should less than To date')
+			 return false;
+		    }
+	     }
+		 return true;
+		}
+
+	$(document).ready(function () {
+		$('.imageLargeView').click(function(){
+			var imageSrc = $(this).attr('data-image-path');
+			$('#imageLargeViewImg').attr("src",imageSrc);
+			$('#myModal').modal('show');
+
+		});
+
+		// $.fn.dataTable.ext.search.push(
+		// 	// function (settings, data, dataIndex) {
+			
+		// 	// 	var min = $('#min').datepicker("getDate");
+		// 	// 	var max = $('#max').datepicker("getDate");
+		// 	// var startDate = new Date(data[5]);
+		// 	// 	if (min == null && max == null) { return true; }
+		// 	// 	if (min == null && startDate <= max) { return true; }
+		// 	// 	if (max == null && startDate >= min) { return true; }
+		// 	// 	if (startDate <= max && startDate >= min) { return true; }
+		// 	// 	return false;
+		// 	// }
+		// );
+		oTable = $('#datatable').DataTable({
+			order: false, // added css in the above page for hide sorting icons
+			//order: [[3, 'desc']],
+			"columnDefs": [{ "orderable": false, "targets": 4 }, { targets: 0, type: "natural" }, { targets: 1, type: "natural" }],
+			"dom": '<"top"i>rt<"bottom"flp><"clear">',
+		});
+
+		$("#min").datepicker({
+			//minDate: new Date(),
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: 0
+		});
+
+		$("#max").datepicker({
+			//minDate: new Date(),
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'yy-mm-dd',
+			maxDate: 0
+		});
+
+
+		// Event listener to the two range filtering inputs to redraw on input
+		$('#min, #max').change(function () {
+			oTable.draw();
+		});
+
+		$('#sortByStatus').change(function () {
+			var term = $(this).val(),
+				regex = '\\b' + term + '\\b';
+			oTable.columns(2).search(regex, true, false).draw();
+		});
+		$('#searchCustomInput').keyup(function () {
+			oTable.search($(this).val()).draw();
+		});
+
+		// Handle click on checkbox
+		$('#example tbody').on('click', 'input[type="checkbox"]', function (e) {
+			var $row = $(this).closest('tr');
+
+			// Get row data
+			var data = oTable.row($row).data();
+
+			// Get row ID
+			var rowId = data[0];
+
+			// Determine whether row ID is in the list of selected row IDs 
+			var index = $.inArray(rowId, rows_selected);
+
+			// If checkbox is checked and row ID is not in list of selected row IDs
+			if (this.checked && index === -1) {
+				rows_selected.push(rowId);
+
+				// Otherwise, if checkbox is not checked and row ID is in list of selected row IDs
+			} else if (!this.checked && index !== -1) {
+				rows_selected.splice(index, 1);
+			}
+
+			if (this.checked) {
+				$row.addClass('selected');
+			} else {
+				$row.removeClass('selected');
+			}
+
+			// Update state of "Select all" control
+			updateDataTableSelectAllCtrl(oTable);
+
+			// Prevent click event from propagating to parent
+			e.stopPropagation();
+		});
+
+		// Handle click on table cells with checkboxes
+		$('#example').on('click', 'thead th:first-child', function (e) {
+			$(this).parent().find('input[type="checkbox"]').trigger('click');
+		});
+
+		// Handle click on "Select all" control
+		$('thead input[name="select_all"]', oTable.table().container()).on('click', function (e) {
+			if (this.checked) {
+				$('#example tbody input[type="checkbox"]:not(:checked)').trigger('click');
+			} else {
+				$('#example tbody input[type="checkbox"]:checked').trigger('click');
+			}
+
+			// Prevent click event from propagating to parent
+			e.stopPropagation();
+		});
+
+		// Uncheck all checkboxes once page loaded or come back to previous page
+		$('#example tbody input[type="checkbox"]:checked').trigger('click');
+
+		// Handle table draw event
+		oTable.on('draw', function () {
+			// Update state of "Select all" control
+			updateDataTableSelectAllCtrl(oTable);
+		});
+
+	});
+
+	// Updates "Select all" control in a data table
+
+
+
+	$(document).ready(function () {
+		// Handle click on checkbox
+		var rows_selected = [];
+		$('#datatable tbody').on('click', 'input[type="checkbox"]', function (e) {
+			var $row = $(this).closest('tr');
+
+			// Get row data
+			var data = oTable.row($row).data();
+
+			// Get row ID
+			var rowId = data[0];
+
+			// Determine whether row ID is in the list of selected row IDs 
+			var index = $.inArray(rowId, rows_selected);
+
+			// If checkbox is checked and row ID is not in list of selected row IDs
+			if (this.checked && index === -1) {
+				rows_selected.push(rowId);
+
+				// Otherwise, if checkbox is not checked and row ID is in list of selected row IDs
+			} else if (!this.checked && index !== -1) {
+				rows_selected.splice(index, 1);
+			}
+
+			if (this.checked) {
+				$row.addClass('selected');
+			} else {
+				$row.removeClass('selected');
+			}
+
+			// Update state of "Select all" control
+			updateDataTableSelectAllCtrl(oTable);
+
+			// Prevent click event from propagating to parent
+			e.stopPropagation();
+		});
+
+		// Handle click on table cells with checkboxes
+		$('#datatable').on('click', 'thead th:first-child', function (e) {
+			$(this).parent().find('input[type="checkbox"]').trigger('click');
+		});
+
+		// Handle click on "Select all" control
+		$('thead input[name="select_all"]', oTable.table().container()).on('click', function (e) {
+			if (this.checked) {
+				$('#datatable tbody input[type="checkbox"]:not(:checked)').trigger('click');
+			} else {
+				$('#datatable tbody input[type="checkbox"]:checked').trigger('click');
+			}
+
+			// Prevent click event from propagating to parent
+			e.stopPropagation();
+		});
+
+		// Uncheck all checkboxes once page loaded or come back to previous page
+		$('#datatable tbody input[type="checkbox"]:checked').trigger('click');
+
+		// Handle table draw event
+		oTable.on('draw', function () {
+			// Update state of "Select all" control
+			updateDataTableSelectAllCtrl(oTable);
+		});
+
+		$('#exportToCSV').click(function () {
+			// if ($('.grid_checkbox:checked').length == 0) {
+			// 	alert("Please select any customer to export the file.");
+			// } else {
+				Swal.fire('Your file will be download soon.')
+				var userIds = []
+				$('[name="userIds"]:checked').each(function (i) {
+					userIds.push($(this).val());
+				});
+
+				console.log('userIds----', userIds);
+
+				$("[name='userEmailsInForm']").val(JSON.parse(JSON.stringify(userIds)));
+				$('form#exportToCSVForm').submit();
+			// }
+		});
+	});
+	$(function () {
+		$("form[name='customerFilter']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 40,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+				},
+				max:{
+					required:true,
+				    greaterThan: "#min" 
+				},
+				min:{
+					required:true,
+				}
+			},
+			messages:{
+				max:{
+				    required:"Please select To date.",
+                    greaterThan:'From date should less than To date.'
+      
+				},
+				min:{
+					required:"Please select From date.",
+				//	greaterThan:"Must be greater than {0}."
+				}
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

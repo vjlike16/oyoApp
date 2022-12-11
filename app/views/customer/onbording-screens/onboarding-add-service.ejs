@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="<%-baseUrl%>img/logo.png"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="<%-baseUrl%>css/icofont.css">
+    <link rel="stylesheet" href="<%-baseUrl%>css/style-owner.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>   
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="<%- baseUrl %>admin/vendors/moment/moment.js"></script>
+     <!-- validation -->
+    <script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+    <script src="<%- baseUrl %>validation/custom.validate.js"></script>
+    <script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+    <script src="<%- baseUrl %>js/sweetalert2.js"></script>
+
+    <title>OYO</title>
+    <style>
+      .browse {
+background: #ced4da;
+float: right;
+border-radius: 0px 10px 10px 0px;
+padding: 9px;
+/* margin-right: 2px; */
+}
+.fileUpload {
+/* position: relative; */
+/* overflow: hidden; */
+margin-top: -39px;
+/* float: right; */
+}
+.fileUpload input.upload {
+  cursor: pointer;
+opacity: 0;
+display: block;
+/* margin: 0px; */
+/* padding: 5px 0px; */
+position: relative;
+margin-bottom: -40px;
+/* right: 0px; */
+height: calc(2.25rem + 2px);
+top: -45px;
+width: 100%;
+}
+
+.btn--browse {
+border-radius: 0px 10px 10px 0px;
+background-color: #ced4da;
+}
+
+.form-control:disabled, .form-control[readonly] {
+background-color: #fff;
+opacity: 1;
+}
+.f-input {
+border-radius: 10px;
+}
+     </style>
+  </head>
+  <body>
+    <div class="onboarding">
+      <div class="container">
+        <div class="onboarding_title">
+          <img src="<%-baseUrl%>img/logo.png" alt="">
+          <h2>Add Service</h2>
+        </div>
+        <div class="onboarding_block" style="max-width: 700px;">
+          <form action="/add-service/save" enctype="multipart/form-data" name="add-service" method="POST">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Service Name</label>
+                  <input type="text" class="form-control inputName" name="ServiceName1">
+                </div>  
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Service Image</label>
+                  <div class="custom-file">
+                    <!-- <input type="file" class="custom-file-input inputProfileImage" id="customFile" name="profileImage1" > 
+                    <label class="custom-file-label" for="customFile">Choose Image</label> -->
+                      <input id="uploadFile" class="f-input form-control" readonly/>
+                       <div class="fileUpload">
+                            <label for="profileImage1" class="browse">Browse</label>
+                            <input id="uploadBtn" type="file" accept="image/*" class="upload inputProfileImage" name="profileImage1" />
+                       </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Service Duration</label>
+                  <div class="row">
+                    <!-- <div class="col-md-6">
+                      <select class="form-control inputDuration_hours" name="duration_hours1" >
+                        <option value="">Set Hours</option>
+                        <option value="0">0 hr</option>
+                        <option value="1">1 hr</option>
+                        <option value="2">2 hr</option>
+                        <option value="3">3 hr</option>
+                        <option value="4">4 hr</option>
+                        <option value="5">5 hr</option>
+                        <option value="6">6 hr</option>
+                        <option value="7">7 hr</option>
+                        <option value="8">8 hr</option>
+                        <option value="9">9 hr</option>
+                        <option value="10">10 hr</option>
+                        <option value="11">11 hr</option>
+                        <option value="12">12 hr</option>
+                        <option value="13">13 hr</option>
+                        <option value="14">14 hr</option>
+                        <option value="15">15 hr</option>
+                        <option value="16">16 hr</option>
+                        <option value="17">17 hr</option>
+                        <option value="18">18 hr</option>
+                        <option value="19">19 hr</option>
+                        <option value="20">20 hr</option>
+                        <option value="21">21 hr</option>
+                        <option value="22">22 hr</option>
+                        <option value="23">23 hr</option>
+                        <option value="24">1 day</option>
+                      </select>
+                    </div> -->
+
+                    <div class="col-md-12">
+                      <select class="form-control inputDuration_minutes" name="duration_minutes1">
+                        <option value="">Set Minutes</option>
+                        <option value="15">15 min</option>
+                        <option value="30">30 min</option>
+                        <option value="45">45 min</option>
+                        <option value="60">60 min</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Advance Needed (%)</label>
+                  <select class="form-control inputAdvance" name="advance1">
+                    <option value="0">0%</option>
+                    <option value="25">25%</option>
+                    <option value="50">50%</option>
+                    <option value="75">75%</option>
+                    <option value="100">100%</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Cancellation allowed till (Minutes/Hours)</label>
+                  <select class="form-control inputCancellation" name="cancellation1">
+                    <option value="">Set Cancellation Time</option>
+                    <option value="30">30 Minutes</option>
+                    <option value="60">1 Hour</option>
+                    <option value="120">2 Hours</option>
+                    <option value="180">3 Hours</option>
+                    <option value="240">4 Hours</option>
+                    <option value="300">5 Hours</option>
+                    <option value="360">6 Hours</option>
+                    <option value="420">7 Hours</option>
+                    <option value="480">8 Hours</option>
+                    <option value="540">9 Hours</option>
+                    <option value="600">10 Hours</option>
+                    <option value="660">11 Hours</option>
+                    <option value="720">12 Hours</option>
+                    <option value="780">13 Hours</option>
+                    <option value="840">14 Hours</option>
+                    <option value="900">15 Hours</option>
+                    <option value="960">16 Hours</option>
+                    <option value="1020">17 Hours</option>
+                    <option value="1080">18 Hours</option>
+                    <option value="1140">19 Hours</option>
+                    <option value="1200">20 Hours</option>
+                    <option value="1260">21 Hours</option>
+                    <option value="1320">22 Hours</option>
+                    <option value="1380">23 Hours</option>
+                    <option value="1440">1 Day</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Price (Dollar)</label>
+                  <input type="text" class="form-control price inputPrice" name="price1" id="price" min="1" pattern="^\d*(\.\d{0,2})?$" title="Please enter valid price" maxlength="6">
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea class="form-control inputDescription" name="description1" rows="4"></textarea>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>No. of Customers Per Session</label>
+                  <input type="number" max="1000" class="form-control inputAllowded_customers" name="allowded_customers1" id="allowded_customers" min="1">
+                </div>
+              </div>
+              <!-- <div class="col-md-12">
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="example1">
+                    <label class="custom-control-label" for="customCheck1">Allow multiple customers per session</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6" id="customers">
+                <div class="form-group">
+                  <label>No. of Customers Per Session</label>
+                  <select class="form-control allowded_customers" name="allowded_customers1" id="allowded_customers1">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option> 
+                  </select>
+                </div>
+              </div> -->
+
+             
+            </div>
+            <div class="row" id="add_Services">
+            </div>  
+            <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-0">
+                <input type="hidden" name="rowCount" id="rowCount" value="1">
+                <button type="submit" class="btn_sty_1" style="min-width: 135px;">Submit</button>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="addMoreServices">
+                <span style="cursor: pointer;" class="addMoreBtn btn-link">Add more service</span>
+              </div>
+            </div>
+            </div>
+          </form>
+        </div>
+        <!-- end:onboarding_block -->
+
+        <div class="onboarding_skip">
+          <a href="<%-baseUrl%>main">Skip</a>
+        </div>
+      </div>
+    </div>
+    
+<script>
+     $(document).ready(function(){
+      document.getElementById("uploadBtn").onchange = function () {
+      document.getElementById("uploadFile").value = this.value.replace("C:\\fakepath\\", "");
+      };
+    });
+  $(document).on("click", ".deleteAddMoreContainer", function(){
+    Swal.fire({
+      title: 'Do you really want to remove this?',
+      showDenyButton: false,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      confirmButtonColor: 'limegreen',
+      cancelButtonText: 'No',
+      cancelButtonColor:'red'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        var rowId = $(this).attr('data-row-id');
+       $('.addMoreContainer'+rowId).remove();
+      } else if (result.isDenied) {
+        return false;
+      }
+    })
+  });
+
+  $(document).on("click", ".addMoreBtn", function(){
+        var num = Math.floor((Math.random() * 10) + 1);
+        var rowCount = $('#rowCount').val();
+        rowCount = parseInt(rowCount) + 1;
+        $('#rowCount').val(rowCount);
+        $('#add_Services').append(`  
+            <div class="col-sm-12 addMoreContainer${rowCount}" style="position: relative;">
+            <div class="row addon_service">
+            <div class="col-md-12">
+              <a class="text-danger deleteAddMoreContainer" data-row-id="${rowCount}" href="javascript:void(0);" title"Do you really want to remove this ?">Delete</a>  
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label>Service Name</label>
+                  <input type="text" class="form-control inputName" name="ServiceName${rowCount}" required>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Service Image</label>
+                  <div class="custom-file">
+                      <input id="uploadFile${rowCount}" class="f-input form-control" readonly/>
+                       <div class="fileUpload">
+                          <label for="profileImage1" class="browse">Browse</label>
+                          <input id="uploadBtn${rowCount}" type="file" accept="image/*" class="upload inputProfileImage" name="profileImage${rowCount}" />
+                       </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Service Duration</label>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <select class="form-control inputDuration_minutes" name="duration_minutes${rowCount}">
+                        <option value="">Set Minutes</option>
+                        <option value="15">15 min</option>
+                        <option value="30">30 min</option>
+                        <option value="45">45 min</option>
+                        <option value="60">60 min</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Advance Needed (%)</label>
+                  <select class="form-control inputAdvance" name="advance${rowCount}">
+                    <option value="25">25%</option>
+                    <option value="50">50%</option>
+                    <option value="75">75%</option>
+                    <option value="100">100%</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Cancellation allowed till (Minutes/Hours)</label>
+                  <select class="form-control inputCancellation" name="cancellation${rowCount}">
+                    <option value="">Set Cancellation Time</option>
+                    <option value="30">30 Minutes</option>
+                    <option value="60">1 Hour</option>
+                    <option value="120">2 Hours</option>
+                    <option value="180">3 Hours</option>
+                    <option value="240">4 Hours</option>
+                    <option value="300">5 Hours</option>
+                    <option value="360">6 Hours</option>
+                    <option value="420">7 Hours</option>
+                    <option value="480">8 Hours</option>
+                    <option value="540">9 Hours</option>
+                    <option value="600">10 Hours</option>
+                    <option value="660">11 Hours</option>
+                    <option value="720">12 Hours</option>
+                    <option value="780">13 Hours</option>
+                    <option value="840">14 Hours</option>
+                    <option value="900">15 Hours</option>
+                    <option value="960">16 Hours</option>
+                    <option value="1020">17 Hours</option>
+                    <option value="1080">18 Hours</option>
+                    <option value="1140">19 Hours</option>
+                    <option value="1200">20 Hours</option>
+                    <option value="1260">21 Hours</option>
+                    <option value="1320">22 Hours</option>
+                    <option value="1380">23 Hours</option>
+                    <option value="1440">1 Day</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Price (Dollar)</label>
+                  <input type="text" class="form-control inputPrice " id="price${rowCount}" name="price${rowCount}">
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea class="form-control inputDescription" name="description${rowCount}" rows="4"></textarea>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>No. of Customers Per Session</label>
+                  <input type="number" max="1000" class="form-control price inputAllowded_customers" name="allowded_customers${rowCount}" min="1">
+                </div>
+              </div>
+
+        </div>
+      </div>`);
+        //  $(`.allowded_customers${num}`).append('<option value="1">1</option>');   
+      // $(`#price${rowCount}`).keypress(function(e) {
+      //   alert("srlhkdth")
+      //      if (String.fromCharCode(e.which).match(/[^0-9.]/)) {
+      //      e.preventDefault();
+      //      }
+      //     });
+      $(document).ready(function(){
+    document.getElementById(`uploadBtn${rowCount}`).onchange = function () {
+    document.getElementById(`uploadFile${rowCount}`).value = this.value.replace("C:\\fakepath\\", "");
+};
+        $('.services-link').addClass('nav-active'); 
+    });
+      $(`#allowded_customers${rowCount}`).append('<option value="1">1</option>');
+      $(`#customCheck${rowCount}`).change(function () {
+          if ($(`#customCheck${rowCount}`).is(":checked")) {
+            $(`#allowded_customers${rowCount}`).append('<option value="2">2</option>');
+            $(`#allowded_customers${rowCount}`).append('<option value="3">3</option>');
+            $(`#allowded_customers${rowCount}`).append('<option value="4">4</option>');
+          } else {
+            $(`#allowded_customers${rowCount}`)
+            .find('option')
+            .remove()
+            .end()
+            .append('<option value="1">1</option>')
+          }
+      });
+  });
+
+
+  $(document).ready(function () {
+      function my_function(){}
+      $(`#allowded_customers1`).append('<option value="1">1</option>');
+      $('#customCheck1').change(function () {
+          if ($('#customCheck1').is(":checked")) {
+            $(`#allowded_customers1`).append('<option value="2">2</option>');
+            $(`#allowded_customers1`).append('<option value="3">3</option>');
+            $(`#allowded_customers1`).append('<option value="4">4</option>');
+          } else {
+            $(`#allowded_customers1`)
+            .find('option')
+            .remove()
+            .end()
+            .append('<option value="1">1</option>')
+          }
+      });
+      $("form[name='add-service']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+        },
+        messages: {
+            // "ServiceName[]": { 
+            //   required: 'Please enter service name.'
+            // },
+            "name_category[]": {
+              required: 'Please enter name.',
+              maxlength: "Please enter a maximum of 50 characters."
+            },
+            "profileImage[]": {
+              required: 'Please select image.',
+              extension: 'Please upload a jpg or png file.',
+              filesize: 'Please upload a picture less than 5MB.',
+            },
+            "duration_hours[]": {
+              required: "Please select hours"
+            },
+            "duration_minutes[]": {
+              required: "Please select minutes"
+            },
+            "advance[]": {
+              required: "Please select advance"
+            },
+            "cancellation[]": {
+              required: "Please enter cancellation time" 
+            },
+            "price[]": {
+              required: "Please enter price",  
+              number: "Please enter a valid number."
+            },
+            "description[]": {
+              required: "Please enter description"  
+            },
+            "allowded_customers[]": {
+              required: "Please select allowded customers",
+              number: "Please enter a number",
+              min: "Please enter at least 1."  
+            }
+        },
+        submitHandler: function (form) {
+            $('.inputProfileImage').each(function () {
+                $(this).attr('name', 'profileImage')
+            })
+           //return false;
+            $(":submit").attr("disabled", true);
+            form.submit();
+        }
+      });
+});
+
+
+  $.validator.addClassRules("inputName", {
+      required: true,
+      lettersonly: true,
+      maxlength: 50,
+      normalizer: function (value) {
+      return $.trim(value);
+        }
+  }); 
+
+  $.validator.addClassRules("inputProfileImage", {
+      required: true,
+      extension: "png|jpeg|jpg",
+      filesize: 5242880,  // in megabytes
+  });
+  $.validator.addClassRules("inputDuration_hours", {
+      required: true,
+  });
+  $.validator.addClassRules("inputDuration_minutes", {
+      required: true,
+  }); 
+  $.validator.addClassRules("inputProfileImage", {
+      required: true,
+      extension: true
+  });
+  $.validator.addClassRules("inputAdvance", {
+      required: true,
+  });
+  $.validator.addClassRules("inputCancellation", {
+      required: true,
+      number: true
+  });
+  $.validator.addClassRules("inputDescription", {
+      required: true,  
+  });
+  $.validator.addClassRules("inputPrice", {
+    required: true,
+    number: true 
+  }); 
+  $.validator.addClassRules("inputAllowded_customers", {
+    required: true,
+    number: true,
+    max: 1000,
+    min: 1,
+    decimal0: true 
+  });
+
+</script>
+<script>
+  $(".price").keypress(function(e) {
+    if (String.fromCharCode(e.which).match(/[^0-9.]/)) {
+      e.preventDefault();
+    }
+  });
+</script>
+  
+  </body>
+</html>

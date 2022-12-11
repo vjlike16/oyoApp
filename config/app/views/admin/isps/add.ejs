@@ -1,0 +1,371 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+<style>
+	textarea {
+		resize: none !important;
+		width: 99.9% !important;
+	}
+</style>
+<div>
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Business Owners</h3>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Add Business Owners</h2>
+					<div class="clearfix"></div>
+				</div>
+				<form enctype="multipart/form-data" role="form" name="customerForm" action="/admin/isps/save"
+					role="form" method="post" class="login-form form-horizontal form-label-left" novalidate>
+					<fieldset>
+						<!-- Basic -->
+						<div class="col-sm-12">
+							<span class="section">ISPS Information</span>
+						</div>
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Full Name <span
+									class="text-error">*</span></label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" name="name" id="name" class="form-control" required
+									placeholder="Full Name" />
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">Profile Image </label>
+							<div class="col-md-9 col-sm-9 col-xs-12 file-upload-wrapper-profileImage">
+								<div class="file-upload-wrapper" data-text="">
+									<input class="file-upload-field" type="file" name="profileImage" id="profileImage"
+										style="margin-top: 6px;" placeholder="Profile Image" />
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span
+									class="text-error">*</span></label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="email" name="mail" id="email" class="form-control" placeholder="Email" />
+							</div>
+						</div>
+
+						<!-- <div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="mobile">Mobile <span
+									class="text-error">*</span></label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" name="mobile" id="mobile" class="form-control"
+									placeholder="Mobile" />
+							</div>
+						</div> -->
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="gender_id">Gender </label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<select id="gender_id" name="gender" class="form-control" placeholder="Gender">
+									<option value="">Select Gender</option>
+									<option value="male">Male</option>
+									<option value="female">Female</option>
+									<option value="other">Other</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="business_name">Business
+								Name </label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" name="business_name" value="<%= result.business_name  %>"
+									id="business_name" class="form-control" placeholder="Business Name" />
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-xs-12 item form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="business_category">Business
+								Category </label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input type="text" name="business_category" value="<%= result.business_category  %>"
+									id="business_category" class="form-control" placeholder="Business Category" />
+							</div>
+						</div>
+
+
+
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-1 col-sm-1 col-xs-12" for="autocomplete">Address <span
+									class="text-error">*</span></label>
+							<div class="col-md-11 col-sm-11 col-xs-12">
+								<input type="text" id="autocomplete" name="address" onFocus="geolocate()"
+									onkeypress="return event.keyCode != 13;" class="form-control"
+									placeholder="Enter your location" />
+							</div>
+						</div>
+
+						<div class="form-group col-sm-6" style="display:none">
+							<label class="control-label">Latitude <span class="text-danger">*</span></label>
+							<input name="lat" id="latitude" class="form-control" type="text" placeholder="Latitude">
+						</div>
+						<div class="form-group col-sm-6" style="display:none">
+							<label class="control-label">Longitude <span class="text-danger">*</span></label>
+							<input name="lng" id="longitude" class="form-control" type="text" placeholder="Longitude">
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">City </label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input name="city" id="locality" class="form-control" type="text" placeholder="City">
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">State/Province
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input name="state" id="administrative_area_level_1" class="form-control" type="text"
+									placeholder="State">
+
+								<input type="hidden" class="field" id="street_number" disabled="true"></input>
+								<input type="hidden" class="field" id="route" disabled="true"></input>
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="postal_code">Zip/Postal Code
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input name="zipcode" id="postal_code" type="text" class="form-control"
+									placeholder="Zip/Postal">
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Country
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12">
+								<input name="country" id="country" type="text" class="form-control"
+									placeholder="Country">
+							</div>
+						</div>
+
+					</fieldset>
+
+
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<!-- Change this to a button or input when using this as a form -->
+							<button disabled type="submit" class="btn btn-primary">Submit</button>
+							<a href="<%- baseUrl %>admin/isps" class="btn btn-primary">Cancel</a>
+						</div>
+					</div>
+				</form>
+				<!-- /.table-responsive -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.border_dotted_top {
+		padding-top: 20px;
+		border-top: 1px dotted #8a6d3b;
+		height: 71px !important;
+	}
+
+	.remove_preference_time {
+		line-height: 36px;
+	}
+</style>
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(document).ready(function () {
+		var lastDate = new Date();
+		jQuery.validator.setDefaults({
+			errorPlacement: function (error, element) {
+				if (element.attr("name") == "profileImage") {
+					error.appendTo('.file-upload-wrapper-profileImage');
+				} else {
+					error.insertAfter(element);
+				}
+			}
+		});
+	});
+
+
+	$(function () {
+		$("form[name='customerForm']").validate({
+
+			rules: {
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 250,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+				},
+				profileImage: {
+					extension: "png|jpeg|jpg",
+					filesize: 5242880  // in megabytes
+				},
+				mail: {
+					required: true,
+					email: true,
+					noSpace: true,
+					remote: {
+						url: "<%- baseUrl %>user/checkemailexist",
+						type: "post",
+						data: {
+							mail: function () {
+								return $('input[name="mail"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					}
+
+				},
+				// mobile: {
+				// 	required: true,
+				// 	number: true,
+				// 	noSpace: true,
+				// 	minlength: 10,
+				// 	maxlength: 10,
+				// 	number: true
+
+				// },
+				password: {
+					noSpace: true,
+					alphanumericspecial: true,
+					minlength: 8,
+					maxlength: 8
+				},
+				zipcode: {
+					number: true,
+					maxlength: 10,
+				},
+
+
+			},
+			messages: {
+				name: {
+					required: "Please enter your full name."
+				},
+				profileImage: "File must be JPEG, JPG or PNG, less than 5MB.",
+				mail: {
+					required: "Please enter your email.",
+					email: "Incorrect email.",
+					remote: "This email already exist in our system, Please use another."
+				},
+
+				// mobile: {
+				// 	required: "Please enter your mobile.",
+				// 	minlength: "Minimum length is 10.",
+				// 	maxlength: "Maximum length is 10.",
+				// 	number: "It should be number only."
+
+				// },
+				password: {
+					required: "Please enter your password.",
+					minlength: "Minimum length is 8.",
+					maxlength: "Maximum length is 8.",
+				},
+				zipcode: {
+					number: "It should ne number only.",
+
+				}
+			},
+
+			debug: true,
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+<!-- SOCIAL Places API KEY -->
+<script>
+	// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+	var placeSearch, autocomplete;
+	var componentForm = {
+		street_number: 'short_name',
+		route: 'long_name',
+		locality: 'long_name',
+		administrative_area_level_1: 'short_name',
+		country: 'long_name',
+		postal_code: 'short_name'
+	};
+
+	function initAutocomplete() {
+		// Create the autocomplete object, restricting the search to geographical
+		// location types.
+		autocomplete = new google.maps.places.Autocomplete(
+          /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+			{ types: ['geocode'] });
+
+		// When the user selects an address from the dropdown, populate the address
+		// fields in the form.
+		autocomplete.addListener('place_changed', fillInAddress);
+	}
+
+	function fillInAddress() {
+		// Get the place details from the autocomplete object.
+		var place = autocomplete.getPlace();
+		document.getElementById('latitude').value = place.geometry.location.lat();
+		document.getElementById('longitude').value = place.geometry.location.lng();
+
+
+		for (var component in componentForm) {
+			document.getElementById(component).value = '';
+			document.getElementById(component).disabled = false;
+		}
+
+		// Get each component of the address from the place details
+		// and fill the corresponding field on the form.
+		for (var i = 0; i < place.address_components.length; i++) {
+			var addressType = place.address_components[i].types[0];
+			if (componentForm[addressType]) {
+				var val = place.address_components[i][componentForm[addressType]];
+				document.getElementById(addressType).value = val;
+			}
+		}
+		var fullAddress = autocomplete.getPlace().formatted_address;
+		var addressArray = fullAddress.split(',');
+		addressArray.splice(addressArray.length - 3);
+		document.getElementById('autocomplete').value = addressArray.toString();
+	}
+
+	// Bias the autocomplete object to the user's geographical location,
+	// as supplied by the browser's 'navigator.geolocation' object.
+	function geolocate() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function (position) {
+				var geolocation = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				};
+				var circle = new google.maps.Circle({
+					center: geolocation,
+					radius: position.coords.accuracy
+				});
+				autocomplete.setBounds(circle.getBounds());
+			});
+		}
+	}
+</script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJ6uwVCSWkHJlZD-qZ8hmG--apu2Q76L4&libraries=places&callback=initAutocomplete"
+	async defer></script>
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

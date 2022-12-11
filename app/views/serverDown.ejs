@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>OyoApp - Server is down</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<link
+			rel="shortcut icon"
+			type="image/png"
+			href="<%- baseUrl %>img/logo.png"
+		/>
+		<!-- jQuery -->
+		<!-- <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script> -->
+		<script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+
+		<script>
+			$(':submit').attr('disabled', true);
+		</script>
+
+		<link rel="preconnect" href="https://fonts.gstatic.com" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+		/>
+		<link rel="stylesheet" href="<%- baseUrl %>css/icofont.css" />
+		<link rel="stylesheet" href="<%- baseUrl %>css/style.css" />
+
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css"
+		/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+		<!-- validation -->
+		<script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+		<script src="<%- baseUrl %>validation/custom.validate.js"></script>
+
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"
+		></script>
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=UA-163116171-1"
+		></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'UA-163116171-1');
+		</script>
+		<style type="text/css">
+			body.serverDownClass {
+				background-image: url('/img/server_down1.jpg');
+				background-size: cover;
+				background-repeat: no-repeat;
+				min-height: 100% !important;
+				height: calc(100vh - 100px);
+				width: calc(100vh - 50px);
+			}
+			body.serverDownClass .container {
+				position: absolute;
+				top: 40%;
+				left: -25%;
+			}
+		</style>
+	</head>
+	<body class="serverDownClass row">
+		<div class="container col-12 text-center"></div>
+	</body>
+</html>

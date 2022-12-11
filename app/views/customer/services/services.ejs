@@ -1,0 +1,853 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->	
+ <style>
+.fileUpload span {
+background: #ced4da;
+float: right;
+border-radius: 0px 10px 10px 0px;
+padding: 8px;
+margin-right: 2px;
+}
+.fileUpload {
+/* position: relative; */
+/* overflow: hidden; */
+margin-top: -39px;
+/* float: right; */
+}
+.fileUpload input.upload {
+cursor: pointer;
+opacity: 0;
+display: block;
+height: calc(2.25rem + 2px);
+/* margin: 0px; */
+/* padding: 5px 0px; */
+position: relative;
+margin-bottom: -35px;
+/* right: 0px; */
+top: -35px;
+width: 100%;
+}
+
+.btn--browse {
+border-radius: 0px 10px 10px 0px;
+background-color: #ced4da;
+}
+
+.form-control:disabled, .form-control[readonly] {
+background-color: #fff;
+opacity: 1;
+}
+.f-input {
+border-radius: 10px;
+}
+ </style>
+  <div class="main_content">
+    <div class="alert alert-danger common-notification-hideShow text-center" style="margin-bottom: 0px; padding: 10px 0px; display: none;">
+      Please, update your business hours first in account settings
+    </div>
+    <div class="inner_fixed_tbar ovr_hide">
+      <div class="pl-3 pt-2 float-left">
+        <h5>My Services</h5>
+      </div>
+      <% if (businessHours.length != 0) { %>
+        <div class="float-right pr-3 pt-2"><a href="" data-toggle="modal" data-target="#add_serviceModal"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="27" viewBox="0 0 25 27">
+          <g id="floating_button" data-name="floating button" transform="translate(-310 -727)">
+            <text id="_" data-name="" transform="translate(310 749)" fill="#27ae60" font-size="25" font-family="icofont, IcoFont"><tspan x="0" y="0"></tspan></text>
+          </g>
+        </svg></a></div>
+      <% } else { %>
+        <div class="float-right pr-3 pt-2 hideShowBtn"><a href=""><svg xmlns="http://www.w3.org/2000/svg" width="25" height="27" viewBox="0 0 25 27">
+          <g id="floating_button" data-name="floating button" transform="translate(-310 -727)">
+            <text id="_" data-name="" transform="translate(310 749)" fill="#27ae60" font-size="25" font-family="icofont, IcoFont"><tspan x="0" y="0"></tspan></text>
+          </g>
+        </svg></a></div>
+      <% } %>
+    </div>
+    <div class="container-fluid">
+      <section class="isp_info">
+        <% for(var i=0; i<services.length; i++) { %>
+            <div class="isp_info_block revert_item">
+            <div class="offer_ser_img1"> <img src="<%= baseUrl%>uploads/profile/<%= services[i].icon %>" alt=""> </div>
+            <!-- end:isp_pic_circle -->
+            
+            <div class="isp_info_sec">
+                <div class="row mb-2">
+                <div class="col-md-6">
+                    <h3 class="isp_detail_name"><%= services[i].name %></h3>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span style="font-weight: 500;">Customers per session:</span> <%= services[i].allowded_customers %></h5>
+                </div>
+                </div>
+                <div class="row mb-2">
+                <div class="col-md-6">
+                    <h4 class="offer_ser_price">$<%= services[i].price %></h4>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="isp_info_sec_al_right"><span style="font-weight: 500;">Advance Needed:</span> <%= services[i].advance %>%</h5>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                    <h5>
+                      <span style="font-weight: 500;">Duration:</span> 
+                      
+                    <% if (services[i].minutes != 0) { %>
+                      <%= services[i].minutes %> mins
+                    <% } %>
+                    </h5>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="isp_info_sec_al_right"><span style="font-weight: 500;">Cancellation:</span> Before 
+                      <% if (services[i].cancellation == 30) { %>
+                        <%= services[i].cancellation %> mins
+                      <% } else { %>
+                        <%= services[i].cancellation/60 %> hours
+                      <% } %>
+                    </h5>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-md-12 py-2">
+                    <p><%= services[i].description %></p>
+                </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-start">
+                        <div class="isp_detail_side_btns"> <a href="#" class="btn_sty_1 editService" style="width: 95px; text-align: center;"
+                            data-id="<%= services[i]._id %>"
+                            data-name="<%= services[i].name %>"
+                            data-icon="<%= services[i].icon %>"
+                            data-hours="<%= services[i].hours %>"
+                            data-minutes="<%= services[i].minutes %>"
+                            data-advance="<%= services[i].advance %>"
+                            data-cancellation="<%= services[i].cancellation %>"
+                            data-price="<%= services[i].price %>"
+                            data-description="<%= services[i].description %>"
+                            data-allowded_customers="<%= services[i].allowded_customers %>"
+                            data-profileImage="<%= services[i].profileImage %>"
+                        > Edit</a></div>
+                        <div class="isp_detail_side_btns"> <a href="<%- baseUrl %>myService/delete/<%- services[i]._id %>" class="btn_sty_2" onclick="confirmFormAlert(this,'Are you sure you want to delete?','click'); return false"> Delete</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="underline"></div>
+            <!-- end:isp_info_sec --> 
+            </div>
+        <!-- end:isp_info_block --> 
+        <% } %>
+        <div class="service_details" id="service_details"></div>
+      </section>
+      <!-- end:isp_info --> 
+      <!-- end:offered_services -->      
+    </div>
+  </div>
+  <!-- end:main_content --> 
+</div>
+<!-- end:middle_block -->
+
+
+
+    <!-- Add Service start -->
+    <div class="modal" id="add_serviceModal" data-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add Service</h4>
+              <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+              <form action="/myServices/add-service" enctype="multipart/form-data" name="add-service" method="POST">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Service Name</label>
+                      <input type="text" class="form-control" name="name">
+                    </div>
+                  </div>
+    
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Service Image</label>
+                      <!-- <div class="custom-file"> -->
+                        <!-- <input type="file" class="custom-file-input" id="customFile" name="profileImage" > 
+                        <label class="custom-file-label" for="customFile">Choose Image</label>
+                      </div> -->
+                      <input id="uploadFile" class="f-input form-control" readonly/> 
+                       <div class="fileUpload">
+                            <span>Browse</span>
+                            <input id="uploadBtn" type="file" accept="image/*" class="upload" name="profileImage" />
+                       </div>
+                      
+                      <!-- </div>   -->
+                    </div>
+                  </div>
+    
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Service Duration</label>
+                      <div class="row">
+                        <!-- <div class="col-md-6">
+                          <select class="form-control" name="duration_hours">
+                            <option value="">Set Hours</option>
+                            <option value="0">0 hr</option>
+                            <option value="1">1 hr</option>
+                            <option value="2">2 hr</option>
+                            <option value="3">3 hr</option>
+                            <option value="4">4 hr</option>
+                            <option value="5">5 hr</option>
+                            <option value="6">6 hr</option>
+                            <option value="7">7 hr</option>
+                            <option value="8">8 hr</option>
+                            <option value="9">9 hr</option>
+                            <option value="10">10 hr</option>
+                            <option value="11">11 hr</option>
+                            <option value="12">12 hr</option>
+                            <option value="13">13 hr</option>
+                            <option value="14">14 hr</option>
+                            <option value="15">15 hr</option>
+                            <option value="16">16 hr</option>
+                            <option value="17">17 hr</option>
+                            <option value="18">18 hr</option>
+                            <option value="19">19 hr</option>
+                            <option value="20">20 hr</option>
+                            <option value="21">21 hr</option>
+                            <option value="22">22 hr</option>
+                            <option value="23">23 hr</option>
+                            <option value="24">1 day</option>
+                          </select>
+                        </div> -->
+    
+                        <div class="col-md-12">
+                          <select class="form-control" name="duration_minutes">
+                            <option value="">Set Minutes</option>
+                            <option value="15">15 min</option>
+                            <option value="30">30 min</option>
+                            <option value="45">45 min</option>
+                            <option value="60">60 min</option>
+                          </select>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+    
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Advance Needed (%)</label>
+                      <select class="form-control" name="advance">
+                        <option value="0">0%</option>
+                        <option value="25">25%</option>
+                        <option value="50">50%</option>
+                        <option value="75">75%</option>
+                        <option value="100">100%</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Cancellation allowed till (Minutes/Hours)</label>
+                      <select class="form-control" name="cancellation">
+                        <option value="">Set Cancellation Time</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="60">1 Hour</option>
+                        <option value="120">2 Hours</option>
+                        <option value="180">3 Hours</option>
+                        <option value="240">4 Hours</option>
+                        <option value="300">5 Hours</option>
+                        <option value="360">6 Hours</option>
+                        <option value="420">7 Hours</option>
+                        <option value="480">8 Hours</option>
+                        <option value="540">9 Hours</option>
+                        <option value="600">10 Hours</option>
+                        <option value="660">11 Hours</option>
+                        <option value="720">12 Hours</option>
+                        <option value="780">13 Hours</option>
+                        <option value="840">14 Hours</option>
+                        <option value="900">15 Hours</option>
+                        <option value="960">16 Hours</option>
+                        <option value="1020">17 Hours</option>
+                        <option value="1080">18 Hours</option>
+                        <option value="1140">19 Hours</option>
+                        <option value="1200">20 Hours</option>
+                        <option value="1260">21 Hours</option>
+                        <option value="1320">22 Hours</option>
+                        <option value="1380">23 Hours</option>
+                        <option value="1440">1 Day</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Price (Dollar)</label>
+                      <input type="text" class="form-control" name="price" id="price" min="1" pattern="^\d*(\.\d{0,2})?$" title="Only 2 digits allowed after decimal" maxlength="6">
+                    </div>
+                  </div>
+    
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea class="form-control" name="description" id="description" rows="4"></textarea>
+                    </div>
+                  </div>
+    
+                  <!-- <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                        <label class="custom-control-label" for="customCheck">Allow multiple customers per session</label>
+                      </div>
+                    </div>
+                  </div>
+    
+                  <div class="col-md-6" id="customers">
+                    <div class="form-group">
+                      <label>No. of Customers Per Session</label>
+                      <select class="form-control" name="allowded_customers" id="allowded_customers">
+                      </select>
+                    </div>
+                  </div> -->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>No. of Customers Per Session</label>
+                      <input type="number" max="1000" class="form-control inputAllowded_customers" name="allowded_customers" id="allowded_customers" min="1">
+                    </div>
+                  </div>
+                  
+                  
+                  <div class="col-md-12">
+                    <div class="form-group mb-0">
+                      <button type="submit" class="btn_sty_1" style="min-width: 135px;">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+      <!-- Add Service end -->
+
+<!--  Start Edit service  -->
+<div class="modal" id="edit_service" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content"> 
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Service</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12 mb-2">
+            <form action="/editService" enctype="multipart/form-data" name="editService" method="POST">
+              <div id="add_ser_id"></div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Service Name</label>
+                    <input type="text" class="form-control" name="name" id="name">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Service Image</label>
+                    <div class="custom-file">
+                        <!-- <input type="file" class="custom-file-input" id="customFileEdit" name="profileImage">
+                        <label class="custom-file-label" for="customFileEdit">Choose Image</label> -->
+                        <input type="hidden" name="old_uploaded_image" id="old_uploaded_image">
+
+                          <input id="uploadFile1" class="f-input form-control" readonly/>
+                           <div class="fileUpload">
+                                <span>Browse</span>
+                                <input id="uploadBtn1" type="file" accept="image/*" class="upload" name="profileImage" />
+                           </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Service Duration</label>
+                    <div class="row">
+                      <!-- <div class="col-md-6">
+                        <select class="form-control" name="duration_hours" id="duration_hours">
+                          <option value="">Set Hours</option>
+                          <option value="0">0 hr</option>
+                          <option value="1">1 hr</option>
+                          <option value="2">2 hr</option>
+                          <option value="3">3 hr</option>
+                          <option value="4">4 hr</option>
+                          <option value="5">5 hr</option>
+                          <option value="6">6 hr</option>
+                          <option value="7">7 hr</option>
+                          <option value="8">8 hr</option>
+                          <option value="9">9 hr</option>
+                          <option value="10">10 hr</option>
+                          <option value="11">11 hr</option>
+                          <option value="12">12 hr</option>
+                          <option value="13">13 hr</option>
+                          <option value="14">14 hr</option>
+                          <option value="15">15 hr</option>
+                          <option value="16">16 hr</option>
+                          <option value="17">17 hr</option>
+                          <option value="18">18 hr</option>
+                          <option value="19">19 hr</option>
+                          <option value="20">20 hr</option>
+                          <option value="21">21 hr</option>
+                          <option value="22">22 hr</option>
+                          <option value="23">23 hr</option>
+                          <option value="24">1 day</option>
+                        </select>
+                      </div> -->
+                      <div class="col-md-12">
+                        <select class="form-control" name="duration_minutes" id="duration_minutes">
+                            <option value="">Set Minutes</option>
+                            <option value="15">15 min</option>
+                            <option value="30">30 min</option>
+                            <option value="45">45 min</option>
+                            <option value="60">60 min</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Advance Needed (%)</label>
+                    <select class="form-control" name="advance" id="advance">
+                      <option value="0">0%</option>
+                      <option value="25">25%</option>
+                      <option value="50">50%</option>
+                      <option value="75">75%</option>
+                      <option value="100">100%</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Cancellation allowed till (Minutes/Hours)</label>
+                    <select class="form-control" name="cancellation" id="cancellation">
+                        <option value="">Set Cancellation Time</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="60">1 Hour</option>
+                        <option value="120">2 Hours</option>
+                        <option value="180">3 Hours</option>
+                        <option value="240">4 Hours</option>
+                        <option value="300">5 Hours</option>
+                        <option value="360">6 Hours</option>
+                        <option value="420">7 Hours</option>
+                        <option value="480">8 Hours</option>
+                        <option value="540">9 Hours</option>
+                        <option value="600">10 Hours</option>
+                        <option value="660">11 Hours</option>
+                        <option value="720">12 Hours</option>
+                        <option value="780">13 Hours</option>
+                        <option value="840">14 Hours</option>
+                        <option value="900">15 Hours</option>
+                        <option value="960">16 Hours</option>
+                        <option value="1020">17 Hours</option>
+                        <option value="1080">18 Hours</option>
+                        <option value="1140">19 Hours</option>
+                        <option value="1200">20 Hours</option>
+                        <option value="1260">21 Hours</option>
+                        <option value="1320">22 Hours</option>
+                        <option value="1380">23 Hours</option>
+                        <option value="1440">1 Day</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Price (Dollar)</label>
+                    <input type="text" class="form-control" name="price" id="price1" min="0" pattern="^\d*(\.\d{0,2})?$" title="Only 2 digits allowed after decimal" maxlength="6">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" id="editDescription" rows="4"></textarea>
+                  </div>
+                </div>
+                <!-- <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheckEdit" name="example1">
+                        <label class="custom-control-label" for="customCheckEdit">Allow multiple customers per session</label>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-6" id="customersEdit">
+                    <div class="form-group">
+                      <label>No. of Customers Per Session</label>
+                      <select class="form-control" name="allowded_customers" id="allowded_customers_edit">
+                        <option value="1">1</option>
+                        <option value="2">2</option> 
+                        <option value="3">3</option>
+                        <option value="4">4</option> 
+                      </select>
+                    </div>
+                </div> -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>No. of Customers Per Session</label>
+                    <input type="number" max="1000" class="form-control inputAllowded_customers" name="allowded_customers" id="allowded_customers_edit" min="1">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group mb-0">
+                    <button type="submit" class="btn_sty_1" style="min-width: 135px;">Save</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS --> 
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>  -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>  -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  -->
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>  -->
+<!-- <script src="js/circle-progress.js"></script>  -->
+<!-- validation -->
+<script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+<script src="<%- baseUrl %>validation/custom.validate.js"></script>
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script src="<%- baseUrl %>js/sweetalert2.js"></script>
+<script> 
+    $(document).ready(function(){
+    document.getElementById("uploadBtn").onchange = function () {
+        document.getElementById("uploadFile").value = this.value.replace("C:\\fakepath\\", "");
+    };
+    });
+    $('#uploadBtn1').change(function(){
+        var value = $('#uploadBtn1').val();
+        document.getElementById("uploadFile1").value = value.replace("C:\\fakepath\\", "");
+      })
+      const confirmFormAlert = async function (events,msg,type) {
+        const sweetConfirm = await Swal.fire({
+          title: msg,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          confirmButtonColor: 'limegreen',
+          cancelButtonText: 'No',
+          cancelButtonColor:'red'
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            if(type == 'click'){
+              window.location=events.href;
+            }else{
+              events.submit();
+            }
+          }else{
+            return false;
+          }
+        });
+        return sweetConfirm;
+      }
+</script>
+<script>
+    $(document).on('click', '.editService', function(){
+        var ser_id = $(this).data('id');
+        var ser_name = $(this).data('name');
+        var ser_icon = $(this).data('icon');
+        var ser_hours = $(this).data('hours');
+        var ser_minutes = $(this).data('minutes');
+        var ser_advance = $(this).data('advance');
+        var ser_cancellation = $(this).data('cancellation');
+        var ser_price = $(this).data('price');
+        var ser_description = $(this).data('description');
+        var ser_allowded_customers = $(this).data('allowded_customers');
+        var profileImage = $(this).data('profileImage');
+        console.log("profileImage----->" , ser_icon);
+        // if(ser_allowded_customers > 1){
+        //   $('#customCheckEdit').prop('checked', true);
+        //   if ($('#customCheckEdit').is(":checked")) {
+        //     $("#allowded_customers_edit").append('<option value="2">2</option>');
+        //     $("#allowded_customers_edit").append('<option value="3">3</option>');
+        //     $("#allowded_customers_edit").append('<option value="4">4</option>');
+        //   } else {
+        //     $('#allowded_customers_edit')
+        //     .find('option')
+        //     .remove()
+        //     .end()
+        //     .append('<option value="1">1</option>')
+        //   }
+        // } else {
+        //   $('#customCheckEdit').prop('checked', false);
+        // }
+
+        $("#name").val(ser_name);
+        $("#uploadFile1").val(ser_icon); 
+        $("#old_uploaded_image").val(ser_icon); 
+        $("#duration_hours").val(ser_hours);
+        $("#duration_minutes").val(ser_minutes);
+        $("#advance").val(ser_advance);
+        $("#cancellation").val(ser_cancellation);
+        $("#price1").val(ser_price);
+        $("#editDescription").val(ser_description);
+        $("#allowded_customers_edit").val(ser_allowded_customers);
+
+        $('#add_ser_id').html('');
+        $('#add_ser_id').append(`
+        <input type="hidden" name="service_id" id="service_id" value="${ser_id}">
+        `);
+        $('#edit_service').modal('show');
+
+    });
+</script>
+<script>
+    $("#price, #price1").keypress(function(e) {
+      if (String.fromCharCode(e.which).match(/[^0-9.]/)) {
+        e.preventDefault();
+      }
+    });
+</script>
+<script>
+    $("#allowded_customers").append('<option value="1">1</option>');
+    $('#customCheck').change(function () {
+    if ($('#customCheck').is(":checked")) {
+      $("#allowded_customers").append('<option value="2">2</option>');
+      $("#allowded_customers").append('<option value="3">3</option>');
+      $("#allowded_customers").append('<option value="4">4</option>');
+    } else {
+      $('#allowded_customers')
+      .find('option')
+      .remove()
+      .end()
+      .append('<option value="1">1</option>')
+    }
+  });
+</script>
+<script>
+    $("#allowded_customers_edit").append('<option value="1">1</option>');
+    $('#customCheckEdit').change(function () {
+    if ($('#customCheckEdit').is(":checked")) {
+      $("#allowded_customers_edit").append('<option value="2">2</option>');
+      $("#allowded_customers_edit").append('<option value="3">3</option>');
+      $("#allowded_customers_edit").append('<option value="4">4</option>');
+    } else {
+      $('#allowded_customers_edit')
+      .find('option')
+      .remove()
+      .end()
+      .append('<option value="1">1</option>')
+    }
+  });
+</script>
+<script>
+    $(document).ready(function () {
+      $("form[name='add-service']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+          name: {
+                required: true,
+                lettersonly: true,
+                maxlength: 50,
+                normalizer: function (value) {
+                return $.trim(value);
+                }
+          },
+          profileImage: {
+              required: true,
+              extension: "png|jpeg|jpg",
+              filesize: 5242880,  // in megabytes
+          },
+          duration_hours: {
+            required: true
+          },
+          duration_minutes: {
+            required: true
+          }, 
+          advance: {
+            required: true 
+          },
+          cancellation: {
+            required: true 
+          },
+          price: {
+            required: true,
+            number: true,
+            min:1
+          }, 
+          description: {
+            required: true 
+          },
+          allowded_customers: {
+            required: true,
+            decimal0: true  
+          }
+        },
+        messages: {
+          name_category: {
+            required: 'Please enter name.',
+            maxlength: "Please enter a maximum of 50 characters."
+          },
+          profileImage: {
+            required: 'Please select image.',
+            extension: 'Please upload a jpg or png file.',
+            filesize: 'Please upload a picture less than 5MB.',
+          },
+          duration_hours: {
+            required: "Please select hours"
+          },
+          duration_minutes: {
+            required: "Please select minutes"
+          },
+          advance: {
+            required: "Please select advance"
+          },
+          cancellation: {
+            required: "Please enter cancellation time" 
+          },
+          price: {
+            required: "Please enter price",  
+            number: "Please enter a valid number.",
+            min: "Please enter minimum amount."
+          },
+          description: {
+            required: "Please enter description"  
+          },
+          allowded_customers: {
+            required: "Please enter allowded customers"  
+          }
+        },
+  
+        submitHandler: function (form) {
+          $(":submit").attr("disabled", true);
+          form.submit();
+        }
+      });
+      $("form[name='editService']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+          name: {
+                required: true,
+                lettersonly: true,
+                maxlength: 50,
+                normalizer: function (value) {
+                return $.trim(value);
+                }
+          },
+          profileImage: {
+              required: false,
+              extension: "png|jpeg|jpg",
+              filesize: 5242880,  // in megabytes
+          },
+          duration_hours: {
+            required: true
+          },
+          duration_minutes: {
+            required: true
+          }, 
+          advance: {
+            required: true 
+          },
+          cancellation: {
+            required: true 
+          },
+          price: {
+            required: true,
+            number: true 
+          }, 
+          description: {
+            required: true 
+          },
+          allowded_customers: {
+            required: true,
+            decimal0: true  
+          }
+        },
+        messages: {
+          name_category: {
+            required: 'Please enter name.',
+            maxlength: "Please enter a maximum of 50 characters."
+          },
+          profileImage: {
+            required: 'Please select image.',
+            extension: 'Please upload a jpg or png file.',
+            filesize: 'Please upload a picture less than 5MB.',
+          },
+          duration_hours: {
+            required: "Please select hours"
+          },
+          duration_minutes: {
+            required: "Please select minutes"
+          },
+          advance: {
+            required: "Please select advance"
+          },
+          cancellation: {
+            required: "Please enter cancellation time" 
+          },
+          price: {
+            required: "Please enter price",  
+            number: "Please enter a valid number."
+          },
+          description: {
+            required: "Please enter description"  
+          },
+          allowded_customers: {
+            required: "Please enter allowded customers"  
+          }
+        },
+  
+        submitHandler: function (form) {
+          $(":submit").attr("disabled", true);
+          form.submit();
+        }
+      });
+    });
+</script>
+<script>
+    $('.isp_work_list').slick({
+    dots: true,
+    infinite: true,
+    arrows:false,
+    speed: 300,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    responsive: [
+        {
+        breakpoint: 768,
+        settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            infinite: true,
+            dots: true
+        }
+        },
+        {
+        breakpoint: 500,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+        }
+        }
+    ]
+    });
+</script>
+<script>
+  $(document).ready(function(){
+    $('.services-link').addClass('nav-active'); 
+    $(".hideShowBtn").click(function(){
+      $(".common-notification-hideShow").toggle();
+    });
+  });
+</script>
+</body>
+</html>

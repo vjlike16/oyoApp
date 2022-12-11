@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Express App</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+		
+		<!--
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+		-->
+		
+		<link rel="stylesheet" href="<%- baseUrl %>css/bootstrap.css">
+        <link rel="stylesheet" href="<%- baseUrl %>css/font-awesome.min.css">
+		<link rel="stylesheet" href="<%- baseUrl %>css/narrow-jumbotron.css">
+		<!-- <link rel="stylesheet" href="<%- baseUrl %>css/bootstrap-reboot.min.css">
+		<link rel="stylesheet" href="<%- baseUrl %>css/bootstrap-grid.min.css"> -->
+		
+     <!--
+        <link rel="stylesheet" href="<%- baseUrl %>css/style.css">-->
+
+    </head>
+
+    <body>
+		<div class="container">
+			 <div class="header clearfix">
+				<nav>
+				  	<ul class="nav nav-pills float-right">
+				   
+						<% if (user_session) { %>
+							<li role="presentation">
+								<a href="#" class="nav-link <% if (active == "home") { %>active <% } %>">Home</a>
+								<span class="sr-only">(current)</span>
+							</li>
+						    <li class="nav-item" role="presentation">
+						    	<a class="nav-link" href="<%- baseUrl %>logout">Logout</a>
+						    </li>
+						<% } else{ %> 
+							<li class="nav-item" role="presentation">
+								<a class="nav-link <% if (active == "login") { %>active <% } %>" href="<%- baseUrl %>login">Login</a>
+								<span class="sr-only">(current)</span>
+							</li>
+							<li class="nav-item" role="presentation">
+								<a class="nav-link <% if (active == "signup") { %>active <% } %>" href="<%- baseUrl %>signup">Signup</a>
+							</li>
+						<% } %>
+					
+				  	</ul>
+				</nav>
+				<h3 class="text-muted">Express Project</h3>
+			  </div>
+			  
+			  <% if (error.length > 0) { %>
+			  <div class="alert alert-danger"><%- error %></div>
+			  <% } %>
+
+			   <% if (success.length > 0) { %>
+			  <div class="alert alert-success"><%- success %></div>
+			  <% } %>
+       

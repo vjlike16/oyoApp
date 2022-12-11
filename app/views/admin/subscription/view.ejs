@@ -1,0 +1,55 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+	
+
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3> Format Details</h3>
+              </div>
+			</div>
+
+            <div class="clearfix"></div>
+			<div class="row">
+				<div class="panel-body">
+					<fieldset>
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input type="text" name="name" value="<%= result.name  %>" id="name" class="form-control"  disabled  placeholder="Name" />
+							</div>
+							<div class="form-group" >
+									<label for="status">Status</label>
+									<select id="status" name="status" class="form-control" placeholder="Role" disabled/>
+										<option value="">Select status</option>
+										<option value="active" <% if (result.status == "active") {%>
+										selected <% } %>>Active</option>
+										<option value="inactive" <% if (result.status == "inactive") {%>
+										selected <% } %>>Inactive</option>
+									</select>
+							</div>
+							<div class="form-group" >
+								<label for="image">Image</label>
+								<input type="text" name="image" id="image" value="<%= result.image  %>" class="form-control" disabled />
+							</div>
+							
+							<div class="form-group" >
+								<label for="favourite">Is_Favourate</label>
+								<select id="isfavourite" name="isfavourite" class="form-control" disabled />
+									<option value="">Select Is_Favourate</option>
+									<option value="Yes" <% if (result.state == "Yes"){%>
+									selected <% } %>>Yes</option>
+								</select>
+								
+							</div>
+							
+						</fieldset>
+				
+					<!-- /.table-responsive -->
+               </div>
+            </div>
+          </div>
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

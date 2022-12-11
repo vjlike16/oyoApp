@@ -1,0 +1,388 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+<style>
+	#datatable_filter {
+		display: none !important;
+	}
+
+	.table.dataTable thead .sorting:after {
+		display: none;
+		cursor: default;
+	}
+</style>
+
+<div class="row">
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Business Owners</h3>
+		</div>
+	</div>
+
+
+	<div class="form-inline text-right">
+		<div class="form-group">
+			<label style="display: block;text-align: left;">Search: </label>
+			<input class="form-control input-sm" id="searchCustomInput" placeholder="Search" />
+		</div>
+
+		<div class="form-group">
+			<label style="display: block;text-align: left;">Sign up date From & To: </label>
+			<input class="form-control input-sm" name="min" id="min" type="text" placeholder="Select from date">
+			<input class="form-control input-sm" name="max" id="max" type="text" placeholder="Select to date">
+		</div>
+		<!--<div class="form-group">
+			<label style="display: block;text-align: left;">Status: </label>
+			<select class="form-control input-sm" id="sortByStatus">
+				<option value="">Status</option>
+				<option value="active">Active</option>
+				<option value="inactive">Inactive</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label style="display: block;visibility: hidden;margin-bottom: 10px;">button</label>
+			<a title="Add ISPS" class="btn btn-primary btn-sm" href="<%- baseUrl %>admin/isps/add"
+				style="border-radius: 0;"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+				Add ISPS</a>
+		</div>-->
+		<div class="form-group">
+			<label style="display: block;visibility: hidden;margin-bottom: 10px;">Export as CSV</label>
+			<a id="exportToCSV" title="Export as CSV" class="btn btn-warning btn-sm" href="javascript:void(0);"
+				style="border-radius: 0;"><i class="fa fa-file-excel-o"></i>
+				Export as CSV</a>
+
+			<form name="exportToCSVForm" id="exportToCSVForm" method="POST"
+				action="<%- baseUrl %>admin/isps/exportToCsv">
+				<input type="hidden" name="userEmailsInForm">
+			</form>
+		</div>
+
+	</div>
+
+
+</div>
+<br />
+<div class="row">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>View All Business Owners</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="table-responsive listing-tbl">
+
+
+			<table id="datatable" class="datatable-responsive table table-striped table-bordered dt-responsive nowrap"
+				cellspacing="0" width="100%">
+				<thead class="bg-green">
+					<tr>
+						<th><input name="select_all" value="1" type="checkbox"></th>
+						<th class="column-title" data-field-name="name">Name</th>
+						<th class="column-title" data-field-name="mail">Email</th>
+						<th class="column-title" data-field-name="address">Address</th>
+						<th class="column-title" data-field-name="status">Status</th>
+						<th class="column-title" data-field-name="signed_up_on">Signed Up On</th>
+						<th class="column-title" data-field-name="last_active_on">Last Active On</th>
+
+						<th class="column-title" data-field-name="created_date">Created</th>
+						<th class="column-title">Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<% for(var i=0; i<result.length; i++) { %>
+					<tr>
+						<td class="datatable-text-wrap"><input type="checkbox" class="grid_checkbox" name="userIds"
+								data-user-names="<%- result[i].name %>" value="<%- result[i].id %>"></td>
+						<td class="datatable-text-wrap"><span
+								class="hidden"><%= lowerCase(trim(result[i].name)); %></span><%= result[i].name %></td>
+						<td class="datatable-text-wrap"><span
+								class="hidden"><%= lowerCase(trim(result[i].mail)); %></span><%= result[i].mail %></td>
+						<td class="datatable-text-wrap"><%= result[i].address %></td>
+						<td>
+							<% if(result[i].status == 'active'){ %>
+							<span class="label label-success">Active</span>
+							<% }else{ %>
+							<span class="label label-danger">Inactive</span>
+							<% } %>
+						</td>
+
+						<td class="datatable-text-wrap">
+							<%= dateFormat(result[i].created_date, "yyyy-mm-dd HH:MM:ss"); %></td>
+						<td class="datatable-text-wrap"><%= dateFormat(result[i].login_time ? result[i].login_time : result[i].created_date, "yyyy-mm-dd HH:MM:ss"); %>
+						</td>
+
+
+						<td><span
+								class="hidden"><%= dateFormat(result[i].created_date, "yyyy-mm-dd HH:MM:ss"); %></span><%= dateFormat(result[i].created_date, "dd-mm-yyyy h:MM:ss TT"); %>
+						</td>
+						<td>
+							<div class="ac_action"><i class="fa fa-cogs"></i>
+								<div>
+									<a href="<%- baseUrl %>admin/isps/edit/<%- result[i]._id %>"><i
+											class="fa fa-pencil-square-o"></i> Edit</a>
+									<% if(result[i].status == 'inactive'){ %>
+									<a href="<%- baseUrl %>admin/isps/changeStatus/active/<%- result[i]._id %>"><i
+											class="glyphicon glyphicon-minus-sign"></i> Active</a>
+									<% }else{ %>
+									<a href="<%- baseUrl %>admin/isps/changeStatus/inactive/<%- result[i]._id %>"><i
+											class="glyphicon glyphicon-minus-sign"></i> Inactive</a>
+									<% } %>
+
+									<a class="deleteButton"
+										onclick="return confirm('Do you really want to remove this record.');"
+										href="<%- baseUrl %>admin/isps/delete/<%- result[i]._id %>"><i
+											class="glyphicon glyphicon-remove-sign"></i> Delete</a>
+									<!-- <a href="<%- baseUrl %>admin/isps/reset_password_by_admin/<%- result[i]._id %>"><i
+											class="glyphicon glyphicon-lock"></i> Reset Password</a> -->
+
+								</div>
+							</div>
+						</td>
+
+
+					</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<!-- /.table-responsive -->
+</div>
+
+
+<!-- Datepicker -->
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+
+<!-- Datatable -->
+<script src="<%- baseUrl %>admin/vendors/datatables.net/jquery.dataTables.min.js"></script>
+<link href="<%- baseUrl %>admin/vendors/datatables.net/jquery.dataTables.min.css" rel="stylesheet">
+<script src="<%- baseUrl %>admin/vendors/datatables.net/natural.js"></script>
+<script src="<%- baseUrl %>js/sweetalert2.js"></script>
+<script>
+	function updateDataTableSelectAllCtrl(table) {
+		var $table = table.table().node();
+		var $chkbox_all = $('tbody input[type="checkbox"]', $table);
+		var $chkbox_checked = $('tbody input[type="checkbox"]:checked', $table);
+		var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
+
+		// If none of the checkboxes are checked
+		if ($chkbox_checked.length === 0) {
+			chkbox_select_all.checked = false;
+			if ('indeterminate' in chkbox_select_all) {
+				chkbox_select_all.indeterminate = false;
+			}
+
+			// If all of the checkboxes are checked
+		} else if ($chkbox_checked.length === $chkbox_all.length) {
+			chkbox_select_all.checked = true;
+			if ('indeterminate' in chkbox_select_all) {
+				chkbox_select_all.indeterminate = false;
+			}
+
+			// If some of the checkboxes are checked
+		} else {
+			chkbox_select_all.checked = true;
+			if ('indeterminate' in chkbox_select_all) {
+				chkbox_select_all.indeterminate = true;
+			}
+		}
+	}
+
+	$(document).ready(function () {
+		$.fn.dataTable.ext.search.push(
+			function (settings, data, dataIndex) {
+				var min = $('#min').datepicker("getDate");
+				var max = $('#max').datepicker("getDate");
+				var startDate = new Date(data[5]);
+				if (min == null && max == null) { return true; }
+				if (min == null && startDate <= max) { return true; }
+				if (max == null && startDate >= min) { return true; }
+				if (startDate <= max && startDate >= min) { return true; }
+				return false;
+			}
+		);
+
+		oTable = $('#datatable').DataTable({
+			order: false, // added css in the above page for hide sorting icons
+			//order: [[3, 'desc']],
+			"columnDefs": [{ "orderable": false, "targets": 4 }, { targets: 0, type: "natural" }, { targets: 1, type: "natural" }],
+			"dom": '<"top"i>rt<"bottom"flp><"clear">',
+		});
+
+		$("#min,#max").datepicker({
+			//minDate: new Date(),
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: 'yy-mm-dd'
+		});
+
+
+		// Event listener to the two range filtering inputs to redraw on input
+		$('#min, #max').change(function () {
+			oTable.draw();
+		});
+
+		$('#sortByStatus').change(function () {
+			var term = $(this).val(),
+				regex = '\\b' + term + '\\b';
+			oTable.columns(2).search(regex, true, false).draw();
+		});
+
+		$('#searchCustomInput').keyup(function () {
+			oTable.search($(this).val()).draw();
+		});
+
+		// Handle click on checkbox
+		$('#example tbody').on('click', 'input[type="checkbox"]', function (e) {
+			var $row = $(this).closest('tr');
+
+			// Get row data
+			var data = oTable.row($row).data();
+
+			// Get row ID
+			var rowId = data[0];
+
+			// Determine whether row ID is in the list of selected row IDs 
+			var index = $.inArray(rowId, rows_selected);
+
+			// If checkbox is checked and row ID is not in list of selected row IDs
+			if (this.checked && index === -1) {
+				rows_selected.push(rowId);
+
+				// Otherwise, if checkbox is not checked and row ID is in list of selected row IDs
+			} else if (!this.checked && index !== -1) {
+				rows_selected.splice(index, 1);
+			}
+
+			if (this.checked) {
+				$row.addClass('selected');
+			} else {
+				$row.removeClass('selected');
+			}
+
+			// Update state of "Select all" control
+			updateDataTableSelectAllCtrl(oTable);
+
+			// Prevent click event from propagating to parent
+			e.stopPropagation();
+		});
+
+		// Handle click on table cells with checkboxes
+		$('#example').on('click', 'thead th:first-child', function (e) {
+			$(this).parent().find('input[type="checkbox"]').trigger('click');
+		});
+
+		// Handle click on "Select all" control
+		$('thead input[name="select_all"]', oTable.table().container()).on('click', function (e) {
+			if (this.checked) {
+				$('#example tbody input[type="checkbox"]:not(:checked)').trigger('click');
+			} else {
+				$('#example tbody input[type="checkbox"]:checked').trigger('click');
+			}
+
+			// Prevent click event from propagating to parent
+			e.stopPropagation();
+		});
+
+		// Uncheck all checkboxes once page loaded or come back to previous page
+		$('#example tbody input[type="checkbox"]:checked').trigger('click');
+
+		// Handle table draw event
+		oTable.on('draw', function () {
+			// Update state of "Select all" control
+			updateDataTableSelectAllCtrl(oTable);
+		});
+
+	});
+
+	// Updates "Select all" control in a data table
+
+
+
+	$(document).ready(function () {
+		// Handle click on checkbox
+		var rows_selected = [];
+		$('#datatable tbody').on('click', 'input[type="checkbox"]', function (e) {
+			var $row = $(this).closest('tr');
+
+			// Get row data
+			var data = oTable.row($row).data();
+
+			// Get row ID
+			var rowId = data[0];
+
+			// Determine whether row ID is in the list of selected row IDs 
+			var index = $.inArray(rowId, rows_selected);
+
+			// If checkbox is checked and row ID is not in list of selected row IDs
+			if (this.checked && index === -1) {
+				rows_selected.push(rowId);
+
+				// Otherwise, if checkbox is not checked and row ID is in list of selected row IDs
+			} else if (!this.checked && index !== -1) {
+				rows_selected.splice(index, 1);
+			}
+
+			if (this.checked) {
+				$row.addClass('selected');
+			} else {
+				$row.removeClass('selected');
+			}
+
+			// Update state of "Select all" control
+			updateDataTableSelectAllCtrl(oTable);
+
+			// Prevent click event from propagating to parent
+			e.stopPropagation();
+		});
+
+		// Handle click on table cells with checkboxes
+		$('#datatable').on('click', 'thead th:first-child', function (e) {
+			$(this).parent().find('input[type="checkbox"]').trigger('click');
+		});
+
+		// Handle click on "Select all" control
+		$('thead input[name="select_all"]', oTable.table().container()).on('click', function (e) {
+			if (this.checked) {
+				$('#datatable tbody input[type="checkbox"]:not(:checked)').trigger('click');
+			} else {
+				$('#datatable tbody input[type="checkbox"]:checked').trigger('click');
+			}
+
+			// Prevent click event from propagating to parent
+			e.stopPropagation();
+		});
+
+		// Uncheck all checkboxes once page loaded or come back to previous page
+		$('#datatable tbody input[type="checkbox"]:checked').trigger('click');
+
+		// Handle table draw event
+		oTable.on('draw', function () {
+			// Update state of "Select all" control
+			updateDataTableSelectAllCtrl(oTable);
+		});
+
+		$('#exportToCSV').click(function () {
+			if ($('.grid_checkbox:checked').length == 0) {
+				Swal.fire("Please select a Business Owner first to export file.");
+			} else {
+				Swal.fire("Your file will be download soon..");
+				var userIds = []
+				$('[name="userIds"]:checked').each(function (i) {
+					userIds.push($(this).val());
+				});
+
+				console.log('userIds----', userIds);
+
+				$("[name='userEmailsInForm']").val(JSON.parse(JSON.stringify(userIds)));
+				$('form#exportToCSVForm').submit();
+			}
+		});
+	});
+</script>
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

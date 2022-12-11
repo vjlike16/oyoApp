@@ -1,0 +1,488 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+<style>
+	textarea{resize: none !important;width: 99.9% !important;}		
+</style>	
+
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Manage Staff</h3>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+			<div class="row">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Edit Staff</h2>
+						<div class="clearfix"></div>
+					</div>
+					<form enctype="multipart/form-data" role="form" name="staffForm" action="/admin/staff/update" role="form" method="post" class="login-form form-horizontal form-label-left">
+						<fieldset>
+									<div class="col-sm-12">
+										<span class="section">Basic Information</span>
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="name">Full Name <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="name" id="name" class="form-control" placeholder="Full Name"  value="<%= userDetails.name  %>"/>
+										</div>
+									</div>
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<div class="form-group">
+											   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="profileImage">Profile Image</label>
+												<div class="col-md-7 col-sm-7 col-xs-12 file-upload-wrapper-profileImage">
+													<div class="file-upload-wrapper" data-text="">
+														<input class="file-upload-field" type="file" name="profileImage" id="profileImage" style="margin-top: 6px;" placeholder="Profile Image" />
+													</div>	
+												</div>	
+												<div class="col-md-2 col-sm-2">
+													<% if (userDetails.profileImage == '' || userDetails.profileImage == 'null' || userDetails.profileImage == 'Null') {%>
+														<img class="img-thumbnail" src="<%= baseUrl%>admin/images/user.png"  class="form-control"  style="width:40px;height:34px;">
+														<input type="hidden" name="uploaded_profileImage" value="null"/>
+													<%}else{%>
+													<a target="_blank" href="<%= baseUrl%>uploads/profile/<%= userDetails.profileImage %>"><img class="img-thumbnail" src="<%= baseUrl%>uploads/profile/<%= userDetails.profileImage %>" class="form-control" style="width:40px;height:34px;"></a>
+														<input type="hidden" name="uploaded_profileImage" value="<%= userDetails.profileImage %>"/>
+													<%}%>
+												</div>	
+											 	
+										</div>
+									</div>	
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="email">Email <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="email" name="mail" id="email" class="form-control" placeholder="Email"  value="<%= userDetails.mail  %>"/>
+										</div>
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<select id="status" name="status" class="form-control" placeholder="Role" required/>
+												<option value="">Select status</option>
+												<option value="active" <% if (userDetails.status == "active") {%>
+												selected <% } %>>Active</option>
+												<option value="inactive" <% if (userDetails.status == "inactive") {%>
+												selected <% } %>>Inactive</option>
+											</select>
+										</div>	
+									</div>
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="mobile">Mobile <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input autocomplete="false" type="text" name="mobile" id="mobile" class="form-control" placeholder="Mobile"  value="<%= userDetails.mobile  %>"/>
+										</div>
+									</div>	
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="alternate_mobile">Alternate Mobile </label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input autocomplete="false" type="text" name="alternate_mobile" id="alternate_mobile" class="form-control" placeholder="Alternate Mobile"  value="<%= userDetails.alternate_mobile  %>"/>
+										</div>
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="dob">D.O.B </label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="dob" id="dob" class="datePicker form-control" placeholder="D.O.B" style="background-color: #fff;" value="<%= userDetails.dob %>" readonly>
+											
+										</div>
+									</div>
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="doa"> D.O.A </label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="doa" id="doa" class="datePicker form-control" placeholder="D.O.A"  value="<%= userDetails.doa %>"  style="background-color: #fff;" readonly/>
+											
+										</div>
+									</div>
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="role_id"  >Role <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<select id="role_id" name="role_id" class="form-control" placeholder="Role"/>
+												<option value="">Select Role</option>
+												<!--<option value="steno_l1" <% if (userDetails.role_id == "6" || userDetails.role_id == "7" || userDetails.role_id == "8") {%>
+												<!--selected <% } %>>Steno L1</option>-->
+												<option value="4" <% if (userDetails.role_id == "4") {%>
+												selected <% } %>>Steno L1</option>
+												<option value="5" <% if (userDetails.role_id == "5") {%>
+												selected <% } %>>Steno L2</option>
+											</select>
+										</div>	
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group steno_l1_container" style="display:none;">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12 steno_l1_label" for="steno_l1"  >Steno L1 <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<select id="steno_l1" name="steno_l1" class="form-control" placeholder="Role"/>
+												<option value="">Select Steno L1</option>
+												<option value="6" <% if (userDetails.role_id == "6") {%>
+												selected <% } %>>On roll</option>
+												<option value="7" <% if (userDetails.role_id == "7") {%>
+												selected <% } %>>Free Lancers</option>
+												<option value="8" <% if (userDetails.role_id == "8") {%>
+												selected <% } %>>Law Students/ Fresher</option>
+											</select>
+										</div>	
+									</div>									
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="address">Address</label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<textarea rows="1" type="text" name="address" id="address" class="form-control"  placeholder="Address" style="resize: vertical;"/><%= userDetails.address  %></textarea>
+										</div>
+									</div>
+								</fieldset>
+								
+								<!--====Law Students container start======---->
+								<fieldset class="for_law_student_container" style="display:none;">
+									<div class="col-sm-12">
+										<span class="section">Law Student / Fresher Information</span>
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="name_of_colleage">Name of College <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="name_of_colleage" id="name_of_colleage" class="form-control" placeholder="Name of College"  value="<%= userDetails.name_of_colleage  %>" />
+										</div>
+									</div>
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="university">University <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="university" id="university" class="form-control" placeholder="University"  value="<%= userDetails.university  %>"/>
+										</div>
+									</div>
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="passing_year">Passing Year <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="passing_year" id="passing_year" class="form-control" minlength="4" maxlength="4"  placeholder="Passing Year ex:- 2015"   value="<%= userDetails.passing_year  %>"/>
+										</div>
+									</div>
+									
+									<!--===Bar Council===--->
+									<div class="col-sm-12">
+										<span class="section">Bar Council</span>
+									</div>	
+									<div class="col-sm-12 col-xs-12 item form-group registered_bar_council_container">
+										<label class="pull-left" for="registered_bar_council">Have You Registered Yourself With Bar Council <span class="text-error">*</span></label>
+										<div class="col-md-1 col-sm-1 col-xs-1">
+											<label>
+												<input type="radio" name="registered_bar_council" value="yes" class="registered_bar_council" <% if (userDetails.registered_bar_council == "yes") {%>
+												checked <% } %>/> Yes
+											</label>
+										</div>
+										<div class="col-md-1 col-sm-1 col-xs-1">
+											<label>
+												<input type="radio" name="registered_bar_council" value="no" class="registered_bar_council"  <% if (userDetails.registered_bar_council == "no") {%>
+												checked <% } %>/> No
+											</label> 
+										</div>
+									</div>
+									
+									<div class="registered_bar_council_fields_container" style="display:none;">
+										<div class="col-sm-6 col-xs-12 item form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="name_of_bar_registered_with">Name of Bar Registered With </label>
+											<div class="col-md-9 col-sm-9 col-xs-12">
+												<input type="text" name="name_of_bar_registered_with" id="name_of_bar_registered_with" class="form-control"  placeholder="Name of Bar Registered With"  value="<%= userDetails.name_of_bar_registered_with  %> "     />
+											</div>
+										</div>
+										
+										<div class="col-sm-6 col-xs-12 item form-group">
+											<div class="form-group">
+												    <label class="control-label col-md-3 col-sm-3 col-xs-12"  for="bar_registration_certificate">Bar Registration Certificate </label>
+													<div class="col-md-7 col-sm-7 col-xs-12 file-upload-wrapper-certificate">
+														<div class="file-upload-wrapper" data-text="">
+															<input class="file-upload-field" type="file" name="bar_registration_certificate" id="bar_registration_certificate" style="margin-top: 6px;" placeholder="Bar registration certificate" />
+														</div>	
+													</div>
+													<div class="col-md-2 col-sm-2">
+														<% if (userDetails.bar_registration_certificate == '' || userDetails.bar_registration_certificate == 'null' || userDetails.bar_registration_certificate == 'Null') {%>
+															<img class="img-thumbnail" src="<%= baseUrl%>admin/images/user.png"  class="form-control"  style="width:40px;height:34px;">
+															<input type="hidden" name="uploaded_bar_registration_certificate" value="null"/>
+														<%}else{%>
+															<a target="_blank" href="<%= baseUrl%>uploads/profile/<%= userDetails.bar_registration_certificate %>">
+																<img class="img-thumbnail" src="<%= baseUrl%>uploads/profile/<%= userDetails.bar_registration_certificate %>" class="form-control" style="width:40px;height:34px;">
+															</a>	
+															<input type="hidden" name="uploaded_bar_registration_certificate" value="<%= userDetails.bar_registration_certificate %>"/>
+														<%}%>
+													</div>	
+												 	
+											</div>
+										</div>
+									</div>
+									
+								</fieldset>
+						
+						<div class="ln_solid"></div>
+						<div class="form-group">
+							<div class="col-sm-12">
+								<input type="hidden" name="_id" value="<%= userDetails._id  %>">
+								<button  disabled type="submit" class="btn btn-primary">Update</button>
+								<a href="<%- baseUrl %>admin/staff" class="btn btn-primary">Cancel</a>
+							</div>	
+						</div>
+					</form> 
+					<!-- /.table-responsive -->
+               </div>
+            </div>
+          </div>
+ 
+
+<!-- Datepicker -->
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+<script>
+	$(document).ready(function() {
+		var lastDate = new Date();
+		$(function() {
+			$(".datePicker").datepicker({
+				dateFormat: "mm-dd-yy",
+				changeMonth: true,
+				changeYear: true,
+				maxDate: lastDate,
+				yearRange: '1940:' + new Date().getFullYear()
+			});
+		});
+	});	
+</script>
+
+ 
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(document).ready(function(){
+         role_id_value = $('#role_id').find('option:selected').val();
+		  if(role_id_value == 'steno_l1'){
+				$('.steno_l1_container').show();
+		  }else{
+				$('.steno_l1_container').hide();
+		  }
+		  
+		  steno_l1_value = $('#steno_l1').find('option:selected').val();
+		  if(steno_l1_value == '8'){
+				$('.for_law_student_container').show();
+		  }else{
+		       $('.for_law_student_container').hide();
+		  }
+		  
+		  registered_bar_counsil = $('input[name=registered_bar_council]:checked').val();
+		  if(registered_bar_counsil == 'yes'){
+		      $('.registered_bar_council_fields_container').show();
+		  }else{
+		       $('.registered_bar_council_fields_container').hide();
+		  }
+			  
+			  
+		$('#role_id').change(function(){
+		           value = $(this).find('option:selected').val();
+			  if(value == 'steno_l1'){
+					$('.steno_l1_container').show();
+			  }else{
+					$('.steno_l1_container').hide();
+			  }
+		});
+		$('#steno_l1').change(function(){
+		      value = $(this).find('option:selected').val();
+			  if(value == '8'){
+					$('.for_law_student_container').show();
+			  }else{
+			       $('.for_law_student_container').hide();
+			  }
+		});
+		$('.registered_bar_council').change(function(){
+		      value = $('input[name=registered_bar_council]:checked').val();
+			  if(value == 'yes'){
+					$('.registered_bar_council_fields_container').show();
+			  }else{
+			       $('.registered_bar_council_fields_container').hide();
+			  }
+		});
+	});
+	
+jQuery.validator.setDefaults({
+	errorPlacement: function(error, element) {
+		if (element.attr("name") == "frequently_services") {
+			error.appendTo('.frequently_services_container');
+		}else if(element.attr("name") == "profileImage"){
+			error.appendTo('.file-upload-wrapper-profileImage');
+		}else if(element.attr("name") == "registered_bar_council"){
+			error.appendTo('.registered_bar_council_container');
+		}else if(element.attr("name") == "bar_registration_certificate"){
+			error.appendTo('.file-upload-wrapper-certificate');
+		}else{
+			error.insertAfter(element);
+		}
+	}
+});
+	
+$(function() {
+	  $("form[name='staffForm']").validate({
+		rules: {
+			  name: {
+					required: true,
+					lettersonly:true,
+					maxlength: 250,
+					normalizer: function( value ) {
+						return $.trim( value );
+				    },
+			  },
+			  profileImage:{
+						extension: "png|jpeg|jpg",
+						filesize: 5242880  // in megabytes
+			  },
+			  mail:{
+					required: true,
+					email: true,
+					noSpace: true,
+					remote: {
+						url: "<%- baseUrl %>user/checkemailexistexceptthis",
+						type: "post",
+						data: {
+							mail: function () {
+								return $('input[name="mail"]').val();
+							},
+							user_id: function () {
+								return $('input[name="_id"]').val();
+							}
+
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+								
+						}
+					}
+					
+			  }, 
+			  mobile:{
+					  required: true,
+					  number: true,
+					  noSpace: true,
+					  minlength:10,
+					  maxlength:10,
+					  number: true
+					
+			  },
+			  alternate_mobile:{
+					  number: true,
+					  noSpace: true,
+					  minlength:10,
+					  maxlength:10
+					
+			  },
+			  role_id:{
+						required:true,
+			  },
+			  steno_l1:{
+						 required: {	
+								depends: function(element) {
+									if ($('#role_id').find('option:selected').val() == 'steno_l1'){
+										return true;
+									}else{
+										return false;
+									}
+								}
+						 },							 
+			  },
+			  name_of_colleage:{
+						 required: {	
+								depends: function(element) {
+									if ($('#steno_l1').find('option:selected').val() == '8'){
+										return true;
+									}else{
+										return false;
+									}
+								}
+						 },
+						lettersonly:true,
+						 maxlength: 100,						 
+			  },
+			  university:{
+						 lettersonly:true,
+						 maxlength: 100,
+						 required: {	
+								depends: function(element) {
+									if ($('#steno_l1').find('option:selected').val() == '8'){
+										return true;
+									}else{
+										return false;
+									}
+								}
+						 },							 
+			  },
+			  passing_year:{
+						 required: {	
+								depends: function(element) {
+									if ($('#steno_l1').find('option:selected').val() == '8'){
+										return true;
+									}else{
+										return false;
+									}
+								}
+						 },maxlength: 4,number: true,							 
+			  },
+			  registered_bar_council:{
+						 required: {	
+								depends: function(element) {
+									if ($('#steno_l1').find('option:selected').val() == '8'){
+										return true;
+									}else{
+										return false;
+									}
+								}
+						 },							 
+			  },
+			  bar_registration_certificate:{
+						extension: "png|jpeg|jpg",
+						filesize: 5242880
+			  },
+			  name_of_bar_registered_with: {
+					lettersonly:true,
+					maxlength: 100,
+			  },
+			  
+			  
+			  
+		},
+		messages: {
+			name: {
+					required: "Please enter your full name."
+				  },
+			profileImage: "File must be JPEG, JPG or PNG, less than 5MB",
+			mail : {
+					  required: "Please enter your email",
+					  email : "Invalid email.",
+					  remote: "This email already exist in our system, Please use another."
+            },
+			mobile:{
+					  required: "Please enter your mobile",
+					  minlength:"Minimum length is 10.",
+					  maxlength:"Maximum length is 10.",
+					  number: "It should be number only."
+					
+			},
+			alternate_mobile:{
+					  minlength:"Minimum length is 10.",
+					  maxlength:"Maximum length is 10.",
+					  number: "It should be number only."
+					
+			},
+			bar_registration_certificate: "File must be JPEG, JPG or PNG, less than 5MB",
+		},
+	    
+		
+		submitHandler: function(form) {
+			$(":submit").attr("disabled", true);
+			form.submit();
+		}
+	  });
+	});
+       
+</script>             
+        
+    
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

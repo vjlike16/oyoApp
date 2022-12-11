@@ -1,0 +1,297 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+<style>
+#datatable_filter{display: none !important;}
+</style>
+			
+			<div class="row">
+					<div class="page-title">
+						  <div class="title_left">
+							<h3>Subscriptions</h3>
+							
+						  </div>
+					</div>
+					
+					<!--%= JSON.stringify(result.free[0].wordlimitfree); %-->
+					
+					 		
+						
+			</div>	
+			<br />
+			<div class="row">
+			<form  role="form" name="customerForm" action="/admin/subscription/save" role="form" method="post" class="login-form form-horizontal form-label-left">
+				<div class="x_panel">
+							<div class="x_title">
+
+								<div class="clearfix"></div>
+						    </div>
+							<div class="table-responsive listing-tbl">
+								<table id="datatable" class="datatable-responsive table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+										<thead class="bg-green">
+											<tr>
+												<th class="column-title" style="width:60%;">Features</th>
+												<th class="column-title">Free <input class="pull-right" type="checkbox" id="free_package" value="free" name="package[]"></th>
+												 <th class="column-title">Bronze <input class="pull-right" type="checkbox" id="bronze_package" value="bronze" name="package[]"></th>
+												 <th class="column-title">Silver <input class="pull-right" type="checkbox" id="silver_package" value="silver" name="package[]"></th>
+												<th class="column-title">Gold <input class="pull-right" type="checkbox" id="gold_package" value="gold" name="package[]"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Dedicated Login ID</td>
+												<td><input type="checkbox"  name="dloginidfree" <% if(result.free[0].dloginidfree=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="dloginidbronze" <% if(result.bronze[0].dloginidbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="dloginidsilver" <% if(result.silver[0].dloginidsilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="dloginidgold" <% if(result.gold[0].dloginidgold=="1"){%> checked <%}%>></td>
+											</tr>
+											<tr>
+												<td>Save Favourite formats</td>
+												<td><input type="checkbox"  name="favfformatfree" <% if(result.free[0].favfformatfree=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="favfformatbronze" <% if(result.bronze[0].favfformatbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="favfformatsilver" <% if(result.silver[0].favfformatsilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="favfformatgold" <% if(result.gold[0].favfformatgold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>Continue dictation from last saved</td>
+												<td><input type="checkbox"  name="contdictationfree"  <% if(result.free[0].contdictationfree=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="contdictationbronze" <% if(result.bronze[0].contdictationbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="contdictationsilver" <% if(result.silver[0].contdictationsilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="contdictationgold" <% if(result.gold[0].contdictationgold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>Get draft of PDF and word file on Email</td>
+												<td><input type="checkbox"  name="getdraftfree" <% if(result.free[0].getdraftfree=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="getdraftbronze" <% if(result.bronze[0].getdraftbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="getdraftsilver" <% if(result.silver[0].getdraftsilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="getdraftgold" <% if(result.gold[0].getdraftgold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>No. of Revisions for each drafts</td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="norevisiondraftfree" value="<%= result.free[0].norevisiondraftfree %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="norevisiondraftbronze" value="<%= result.bronze[0].norevisiondraftbronze %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="norevisiondraftsilver" value="<%= result.silver[0].norevisiondraftsilverval %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="norevisiondraftgold" value="<%= result.gold[0].norevisiondraftgold %>"></td>
+											</tr>
+											
+											<!-- 
+											     ============  Hidden Div
+											-->
+											<tr class="hidden">
+												<td><label for="wordlimit">Word Limit</label></td>
+												<td><input type="number" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="wordlimitfree" value="<%= result.free[0].wordlimitfree %>"  placeholder="Word Limit" /></td>
+												<td><input type="number" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="wordlimitbronze" value="<%= result.bronze[0].wordlimitbronze %>"   placeholder="Word Limit" /></td>
+												<td><input type="number" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="wordlimitsilver" value="<%= result.silver[0].wordlimitsilver %>"  placeholder="Word Limit" /></td>
+												<td><input type="number" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="wordlimitgold" value="<%= result.gold[0].wordlimitgold %>"  placeholder="Word Limit" /></td>
+											</tr>
+											
+											
+											<tr>
+												<th class="column-title" style="width:60%;" data-field-name="archivefiles">Access archieves files</th>
+												<th class="column-title" ></th>
+												 <th class="column-title" ></th>
+												 <th class="column-title" ></th>
+												<th class="column-title" ></th>
+											</tr>
+											
+											<tr>
+												<td>-From App</td>
+												<td><input type="checkbox"  name="fromappfree" <% if(result.free[0].from_appfree=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="fromappbronze" <% if(result.bronze[0].from_appbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="fromappsilver" <% if(result.silver[0].fromappsilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="fromappgold" <% if(result.gold[0].fromappgold=="1"){%> checked <%}%>></td>
+											</tr>
+											<tr>
+												<td>-From Website</td>
+												<td><input type="checkbox"  name="fromwebsitefree" <% if(result.free[0].fromwebsitefree=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="fromwebsitebronze" <% if(result.bronze[0].fromwebsitebronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="fromwebsitesilver" <% if(result.silver[0].fromwebsitesilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="fromwebsitegold" <% if(result.gold[0].fromwebsitegold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>Get live transcription</td>
+												<td><input type="checkbox"  name="livetransactionfree"  <% if(result.free[0].livetransactionfree=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="livetransactionbronze"  <% if(result.bronze[0].livetransactionbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="livetransactionsilver"  <% if(result.silver[0].livetransactionsilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="livetransactiongold"  <% if(result.gold[0].livetransactiongold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>Payment or recharge option </td>
+												<td><input type="checkbox"  name="paymentrechargefree" <% if(result.free[0].paymentrechargefree=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="paymentrechargebronze" <% if(result.bronze[0].paymentrechargebronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="paymentrechargesilver" <% if(result.silver[0].paymentrechargesilver=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="paymentrechargegold" <% if(result.gold[0].paymentrechargegold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>Get Customised formats as per your office need </td>
+												<td><input type="checkbox"  name="customizdformatofficefree" <% if(result.free[0].customizdformatofficefree=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="customizdformatofficebronze" <% if(result.bronze[0].customizdformatofficebronze=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="customizdformatofficesilver" <% if(result.silver[0].customizdformatofficesilver=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="customizdformatofficegold" <% if(result.gold[0].customizdformatofficegold=="1"){%> checked <%}%> ></td>
+											</tr>
+											
+											<tr>
+												<td>Dedicated server space - limited </td>
+												<td><input type="checkbox"  name="serverspacefree" <% if(result.free[0].serverspacefree=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="serverspacebronze" <% if(result.bronze[0].serverspacebronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="serverspacesilver" <% if(result.silver[0].serverspacesilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="serverspacegold" <% if(result.gold[0].serverspacegold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>Can give dictation in parts  </td>
+												<td><input type="checkbox"  name="dictinpartfree" <% if(result.free[0].dictinpartfree=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="dictinpartbronze" <% if(result.bronze[0].dictinpartbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="dictinpartsilver" <% if(result.silver[0].dictinpartsilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="dictinpartgold" <% if(result.gold[0].dictinpartgold=="1"){%> checked <%}%>></td>
+											</tr>
+											 
+											<tr>
+												<td>Offline mode</td>
+												<td><input type="checkbox"  name="offmodefree" <% if(result.free[0].offmodetfree=="1"){%> checked <%}%>  ></td>
+												<td><input type="checkbox"  name="offmodebronze" <% if(result.bronze[0].offmodetbronze=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="offmodesilver" <% if(result.silver[0].offmodetsilver=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="offmodegold" <% if(result.gold[0].offmodetgold=="1"){%> checked <%}%> ></td>
+											</tr>
+											
+											<tr>
+												<td>Online mode </td>
+												<td><input type="checkbox"  name="onmodefree" <% if(result.free[0].onmodefree=="1"){%> checked <%}%>   ></td>
+												<td><input type="checkbox"  name="onmodebronze" <% if(result.bronze[0].onmodebronze=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="onmodesilver" <% if(result.silver[0].onmodesilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="onmodegold" <% if(result.gold[0].onmodegold=="1"){%> checked <%}%> ></td>
+											</tr>
+											
+											<tr>
+												<td>Transcription error, if any </td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="transactionerrorfree"  value="<%= result.free[0].transactionerrorfree %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="transactionerrorbronze"  value="<%= result.bronze[0].transactionerrorbronze %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="transactionerrorsilver"  value="<%= result.silver[0].transactionerrorsilver %>" ></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="transactionerrorgold"  value="<%= result.gold[0].transactionerrorgold %>" ></td>
+											</tr>
+											
+											<tr>
+												<td>Upload of formats </td>
+												<td><input type="checkbox"  name="uploadformatfree" <% if(result.free[0].uploadformatfree=="1"){%> checked <%}%>  ></td>
+												<td><input type="checkbox"  name="uploadformatbronze" <% if(result.bronze[0].uploadformatbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="uploadformatsilver" <% if(result.silver[0].uploadformatsilver=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="uploadformatgold" <% if(result.gold[0].uploadformatgold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>Add image </td>
+												<td><input type="checkbox"  name="addimagefree"  <% if(result.free[0].addimagefree=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="addimagebronze"  <% if(result.bronze[0].addimagebronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="addimagesilver"  <% if(result.silver[0].addimagesilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="addimagegold"  <% if(result.gold[0].addimagegold=="1"){%> checked <%}%>></td>
+											</tr>
+											
+											<tr>
+												<td>Add Annexures </td>
+												<td><input type="checkbox"  name="addannexuresfree"  <% if(result.free[0].addannexuresfree=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="addannexuresbronze"  <% if(result.bronze[0].addannexuresbronze=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="addannexuressilver"  <% if(result.silver[0].addannexuressilver=="1"){%> checked <%}%>></td>
+												<td><input type="checkbox"  name="addannexuresgold"  <% if(result.gold[0].addannexuresgold=="1"){%> checked <%}%>></td>
+											</tr>
+											<tr>
+												<td>Can listen your own dictation </td>
+												<td><input type="checkbox"  name="listenurdictationfree" <% if(result.free[0].listenurdictationfree=="1"){%> checked <%}%>  ></td>
+												<td><input type="checkbox"  name="listenurdictationbronze" <% if(result.bronze[0].listenurdictationbronze=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="listenurdictationsilver" <% if(result.silver[0].listenurdictationsilver=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="listenurdictationgold" <% if(result.gold[0].listenurdictationgold=="1"){%> checked <%}%> ></td>
+											</tr>
+											<tr>
+												<td>Welcome kit with yearly subscriptions</td>
+												<td><input type="checkbox"  name="welcomekitsubscriptionfree" <% if(result.free[0].welcomekitsubscriptionfree=="1"){%> checked <%}%>  ></td>
+												<td><input type="checkbox"  name="welcomekitsubscriptionbronze" <% if(result.bronze[0].welcomekitsubscriptionbronze=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="welcomekitsubscriptionsilver" <% if(result.silver[0].welcomekitsubscriptionsilver=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="welcomekitsubscriptiongold" <% if(result.gold[0].welcomekitsubscriptiongold=="1"){%> checked <%}%> ></td>
+											</tr>
+											
+											<tr>
+												<td>Free time <b>(in minutes)</b></td>
+												<td><input type="text" min="1" max="10000" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="freewordsfree" value="<%- result.free[0].freewordsfree %>"></td>
+												<td><input type="text" min="1" max="10000" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="freewordsbronze" value="<%- result.bronze[0].freewordsbronze %>"></td>
+												<td><input type="text" min="1" max="10000" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="freewordssilver"  value="<%- result.silver[0].freewordssilver %>" ></td>
+												<td><input type="text" min="1" max="10000" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="freewordsgold"  value="<%- result.gold[0].freewordsgold %>" ></td>
+											</tr>
+											<tr>
+												<td>Expiry of words purchased</td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="expirywordspurchasedfree"  value="<%- result.free[0].expirywordspurchasedfree %>"></td>
+												<td><input type="checkbox"  name="expirywordspurchasedbronze" <% if(result.bronze[0].expirywordspurchasedbronze=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="expirywordspurchasedsilver" <% if(result.silver[0].expirywordspurchasedsilver=="1"){%> checked <%}%> ></td>
+												<td><input type="checkbox"  name="expirywordspurchasedgold" <% if(result.gold[0].expirywordspurchasedgold=="1"){%> checked <%}%> ></td>
+											</tr>
+											<tr>
+												<td>Priority in transcription</td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="priorityintransactionfree" value="<%- result.free[0].priorityintransactionfree %>" ></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="priorityintransactionbronze" value="<%- result.bronze[0].priorityintransactionbronze %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="priorityintransactionsilver" value="<%- result.silver[0].priorityintransactionsilver %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="priorityintransactiongold"  value="<%- result.gold[0].priorityintransactiongold %>" ></td>
+											</tr>
+											<tr>
+												<td>Yearly Packages benefits</td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="yearlypackagebenifitfree" value="<%- result.free[0].yearlypackagebenifitfree %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="yearlypackagebenifitbronze" value="<%- result.bronze[0].yearlypackagebenifitbronze %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="yearlypackagebenifitsilver" value="<%- result.silver[0].yearlypackagebenifitsilver %>" ></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="yearlypackagebenifitgold" value="<%- result.gold[0].yearlypackagebenifitgold %>"></td>
+											</tr>
+											
+											<tr>
+												<td>Rates per month</td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="ratepermonthfree" value="<%- result.free[0].ratepermonthfree %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="ratepermonthbronze" value="<%- result.bronze[0].ratepermonthbronze %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="ratepermonthsilver" value="<%- result.silver[0].ratepermonthsilver %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="ratepermonthgold" value="<%- result.gold[0].ratepermonthgold %>"></td>
+											</tr>
+											
+											<!-- 
+											     ============  Hidden Div
+											-->
+											<tr class="hidden">
+												<td>Extra Words rate</td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="extrawordsratefree" value="<%- result.free[0].extrawordsratefree %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="extrawordsratebronze" value="<%- result.bronze[0].extrawordsratebronze %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="extrawordsratesilver" value="<%- result.silver[0].extrawordsratesilver %>"></td>
+												<td><input type="text" minlength="1" maxlength="7" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="extrawordsrategold" value="<%- result.gold[0].extrawordsrategold %>"></td>
+											</tr>
+										</tbody>
+								</table>
+							</div>
+							
+							
+							
+							<div class="ln_solid"></div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<!-- Change this to a button or input when using this as a form -->
+									<button type="submit" class="btn btn-primary">Update</button>
+									<a href="<%- baseUrl %>admin/dashboard" class="btn btn-primary">Cancel</a>
+								</div>	
+							</div>
+						
+				</div>			
+				<!-- /.table-responsive -->
+				
+				
+				</form>
+           </div>
+
+ <script type='text/javascript'>
+	  var package = <%-JSON.stringify(result.package)%>
+	  var array = package.split(',');
+	  
+	  $.each(array, function (key, val) {
+			$('#'+val+'_package').attr('checked','true');
+	  });
+</script>
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

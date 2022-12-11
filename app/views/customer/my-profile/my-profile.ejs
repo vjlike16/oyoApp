@@ -1,0 +1,1012 @@
+<!-- include header -->
+<% include ../../customer/common/loggedIn-header %>
+  <!-- / end include -->
+
+  <div class="main_content">
+    <div class="container-fluid">
+      <section class="">
+        <div class="alert alert-success common-notification-hideShow text-center"
+          style="margin-bottom: 0px; padding: 10px 0px; display: none;">Profile update completed!</div>
+        <form enctype="multipart/form-data" action="/my-profile/update" name="profile_form" method="POST" id="profile_form"
+          class="my_profile_sec">
+          <div class="my_profile_pic_box">
+            <div class="my_profile_img">
+              <img src="<%-baseUrl%>uploads/profile/<%- userDetails.profileImage %>" alt="" id="pic">
+            </div>
+            <!-- <a href="#" class="btn_sty_2">
+                 <input class="file-upload-field form-control" type="file" name="profileImage" id="profileImage"  accept="image/jpeg,image/png,jpg|png" hidden>
+                 <input type="hidden" name="uploaded_profileImage" value="<%= userDetails.profileImage %>" accept="image/jpeg,image/png,jpg|png" />
+                  Change Profile Photo</a> -->
+
+            <div class="file-upload-wrapper crop" data-text="" style="margin-top: 7px;">
+              <input class="file-upload-field" type="file" accept=".jpeg, .jpg, .png" name="profileImage" id="profileImage" value="<%- userDetails.profileImage %>"
+                onchange="document.getElementById('pic').src = window.URL.createObjectURL(this.files[0]);">
+              <input class="file-upload-field" type="hidden" name="uploaded_profileImage"
+                value="<%- userDetails.profileImage %>" hidden>
+            </div>
+
+            <style>
+              label#profileImage-error {
+                margin-top: 40px;
+              }
+
+              .file-upload-wrapper {
+                position: relative;
+                width: 100%;
+                height: 20px;
+              }
+
+              .file-upload-wrapper:after {
+                content: attr(data-text);
+                font-size: 20px;
+                position: absolute;
+                top: 0;
+                text-align: left;
+                left: 66px;
+                background: transparent;
+                padding: 12px 20px;
+                display: block;
+                width: calc(100% - 40px);
+                pointer-events: none;
+                z-index: 1;
+                height: 34px;
+                line-height: 19px;
+                color: #999;
+                border-radius: 10px;
+                font-weight: 300;
+              }
+
+              .file-upload-wrapper:before {
+                content: 'Change Profile Photo';
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: inline-block;
+                height: 34px;
+                background: #fff;
+                color: #333;
+                z-index: 1;
+                font-size: 15px;
+                padding: 6px 20px;
+                pointer-events: none;
+                border-radius: 10px;
+                background: #fff;
+                border: 1px solid #ced4da;
+                width: 100%;
+              }
+
+              .file-upload-wrapper:hover:before {
+                background: #fff;
+              }
+
+              .file-upload-wrapper input {
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 99;
+                height: 33px;
+                margin: 0;
+                padding: 0;
+                display: block;
+                cursor: pointer;
+                width: 100%;
+                font-size: 0;
+              }
+            </style>
+
+          </div>
+          <!-- end:my_profile_pic_box -->
+          <div class="my_profile_form">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Full Name</label> <span class="text-error">*</span>
+                  <input type="text" name="name" id="name" class="form-control" value="<%- userDetails.name %>">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Email Address</label><span class="text-error">*</span>
+                  <input type="text" class="form-control" name="mail" id="mail" value="<%- userDetails.mail %>"
+                    readonly>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Mobile number</label><span class="text-error">*</span>
+                  <input type="text" class="form-control" name="mobile" id="mobile" value="<%- userDetails.mobile %>">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Gender</label><span class="text-error">*</span>
+                  <!-- <select class="form-control" name="gender" id="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                      </select> -->
+                  <select id="gender" name="gender" class="form-control" placeholder="Role" required />
+                  <option value="">Select Gender</option>
+                  <option value="male" <% if (userDetails.gender=="male" || userDetails.gender=="undefined" ) {%>
+                    selected <% } %>>Male
+                  </option>
+                  <option value="female" <% if (userDetails.gender=="female" || userDetails.gender=="undefined" ) {%>
+                    selected <% } %>>
+                      Female</option>
+                  <option value="other" <% if (userDetails.gender=="other" || userDetails.gender=="undefined" ) {%>
+                    Other selected <% } %>>
+                      Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Birthday</label><span class="text-error">*</span>
+                  <% if(!userDetails.birthdate || userDetails.birthdate=="" || userDetails.birthdate==null ||
+                    userDetails.birthdate=='undefined' ){ %>
+                    <input type="text" class="form-control birth_datePicker" name="birthdate" id="birthdate" value=""
+                      readonly>
+                    <% }else{%>
+                      <input type="text" class="form-control birth_datePicker" name="birthdate" id="birthdate"
+                        value="<%- dateFormat(userDetails.birthdate, 'mmmm dd yyyy'); %>" readonly>
+                      <% }%>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Address</label><span class="text-error">*</span>
+                  <!-- <input type="text" class="form-control" name="address" id="address"
+                    value="<%- userDetails.address %>"> -->
+                    <input type="text" id="autocomplete" name="address" onFocus="geolocate()"
+									onkeypress="return event.keyCode != 13;" class="form-control"
+									placeholder="Enter your location" value="<%- userDetails.address %>">
+                </div>
+              </div>
+              <div class="form-group col-sm-6" style="display:none">
+                <label class="control-label">Latitude <span class="text-danger">*</span></label>
+                <input name="lat" id="latitude" class="form-control" type="text" placeholder="Latitude" value="<%= userLat  %>">
+              </div>
+              <div class="form-group col-sm-6" style="display:none">
+                <label class="control-label">Longitude <span class="text-danger">*</span></label>
+                <input name="lng" id="longitude" class="form-control" type="text" placeholder="Longitude" value="<%= userLng  %>">
+              </div>
+              <div class="form-group col-sm-6" style="display:none">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">City </label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<input name="city" id="locality" class="form-control" type="text" placeholder="City"
+										value="<%= userDetails.city  %>">
+								</div>
+							</div>
+							<div class="form-group col-sm-6" style="display:none">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">State/Province
+								</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<input name="state" id="administrative_area_level_1" class="form-control"
+										type="text" placeholder="State" value="<%= userDetails.state  %>">
+
+									<input type="hidden" class="field" id="street_number" disabled="true"></input>
+									<input type="hidden" class="field" id="route" disabled="true"></input>
+								</div>
+							</div>
+							<div class="form-group col-sm-6" style="display:none">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="postal_code">Zip/Postal
+									Code
+								</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<input name="postal_code" id="postal_code" type="text" class="form-control"
+										placeholder="Zip/Postal" value="<%= userDetails.zipcode  %>">
+								</div>
+							</div>
+							<div class="form-group col-sm-6" style="display:none">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Country
+								</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<input name="country" id="country" type="text" class="form-control"
+										placeholder="Country" value="<%= userDetails.country  %>">
+								</div>
+							</div>
+              <% if( userDetails.role_id == 3){ %>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Business Name</label><span class="text-error">*</span>
+                    <input type="text" class="form-control" value="<%- userDetails.business_name %>" name="business_name">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Website</label>
+                    <input type="text" class="form-control" value="<%- userDetails.website %>" name="website">
+                  </div>
+                </div>
+                <% if(typeof business_category != undefined){ %>
+                  <div class="col-md-6" id="category_div">
+                    <div class="form-group">
+                      <label>Service Business Type</label><span class="text-error">*</span>
+                      <div class="select_wrap">
+                        <select class="form-control service_cat" name="category" id="category" placeholder="Please Select">
+                          <option value="<%-business_category_id %>"><%- business_category_name %></option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                <% } else { %> 
+                  <!-- <div class="col-md-6" id="category_div">
+                    <div class="form-group">
+                      <label>Service Category</label>
+                      <div class="select_wrap">
+                        <select class="form-control service_cat" name="category" id="category">
+                            <option value=""></option> 
+                        </select>
+                      </div>
+                    </div>
+                  </div> -->
+                <% } %>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Experience (Years)</label><span class="text-error">*</span>
+                    <input type="number" class="form-control" value="<%- userDetails.experience %>" name="experience">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Expectations & Policies</label><span class="text-error">*</span>
+                    <textarea class="form-control" name="bio" id="bio"  rows="6"><%-userDetails.bio %></textarea>
+                  </div>
+                </div>
+              <% } %>
+              <% if( userDetails.role_id == 3){ %>
+                <div class="col-md-12">
+                  <div class="profile_pastwork_title">
+                    <h2>Past Work Images</h2>
+                    <a href="#" class=""><input  class="form-control" type="file" accept="image/*"  name="pastWorkImage" placeholder="Please select file here"></a>
+                  </div>
+
+                  <div class="profile_work_sec form-group">
+                    <div class="row">
+                      <% for(var i=0; i<pasworkImages.length; i++) { %>
+                      <div class="col-md-3">
+                        <div class="profile_img_sec">
+                          <img src="<%- baseUrl %>uploads/profile/<%= pasworkImages[i].image %>" alt="">
+                          <a href="<%- baseUrl %>image-delete/<%= pasworkImages[i].image %>/<%= pasworkImages[i]._id %>" class="profile_work_delete_img"><i class="icofont-close"></i></a>
+                        </div>
+                      </div>  
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+              <div class="modal" id="import_csv_file" data-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Please select images here</h4>
+                      <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+                    </div>
+                    <div class="modal-body">
+                    <!-- <form enctype="multipart/form-data" name="past_work_image" method="post" action="<%- baseUrl %>past-work-images"> -->
+                      <div class="row">
+                        <div class="col-md-6"></div>
+                        <!-- <div class="col-md-6"><button type="submit" class="btn_sty_1" style="float: right;">Submit</button></div> -->
+                      </div>
+                    <!-- </form> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button type="submit" class="btn_sty_1 hideShowBtn">Save</button>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label style="width: 100%;">Added Cards <a href="#" data-toggle="modal" style="float: right;"
+                      data-target="#addcardModal">(Add New)</a></label>
+                  <% if(typeof cardList != "undefined"){ %>
+                  <div class="row">
+                    <% for(var i=0; i<cardList.length; i++) { %>
+                      <div class="col-xl-6">
+                        <div class="payment_cart">
+                          <div class="card_logo">
+                            <img src="<%-baseUrl%>img/mastercard.png" alt="">
+                          </div>
+                          <div class="card_info">
+                            <h4 class="card_number">**** **** **** <span id="getCardNumber"></span>
+                              <span id="card_number">
+                                <%= cardList[i].last4 %>
+                              </span>
+                            </h4>
+                            <h5 class="card_expire">Expires <%= cardList[i].exp_month %>/<%= cardList[i].exp_year %></h5>
+                          </div>
+                          <a href="<%- baseUrl %>my-profile/remove/<%- cardList[i].id %>" class="delete_card"><i
+                              class="icofont-trash"></i></a>
+                        </div>
+                      </div>
+                      <% } %>
+                  </div>
+                  <% } %>
+                </div>
+              </div>
+              <!-- <% if ( userDetails.bankDetails && userDetails.role_id == 3) { %>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Account Holder Name</label>
+                  <input type="text" class="form-control" name="account_holder_name" value="<%- userDetails.bankDetails.account_holder_name %>">
+                </div>
+              </div> -->
+
+              <!-- <div class="col-md-6">
+                <div class="form-group">
+                  <label>Account Number</label>
+                  <input type="text" class="form-control" name="account_number" id="account_number" value="<%- userDetails.bankDetails.account_number %>" readonly>
+                </div>
+              </div> -->
+
+              <!-- <div class="col-md-6">
+                <div class="form-group">
+                  <label>Re-enter Account Number</label>
+                  <input type="text" class="form-control" name="re_account_number" value="<%- userDetails.bankDetails.account_number %>" readonly>
+                </div>
+              </div> -->
+
+              <!-- <div class="col-md-6">
+                <div class="form-group">
+                  <label>Routing number</label>
+                  <input type="text" class="form-control" name="routing_number" value="<%- userDetails.bankDetails.routing_number %>" readonly>
+                </div>
+              </div>
+              <% } %> -->
+            </div>
+          </div>
+        </form>
+      </section>
+      <!-- end:my_profile_sec -->
+    </div>
+  </div>
+  <!-- end:main_content -->
+
+
+
+
+  <!-- add card start -->
+  <div class="modal" id="addcardModal" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Add Card</h4>
+          <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="col-md-12">
+            <label class="payment_info_popup_title">Add Payment Card</label>
+            <div id="card-element" style="width: 450px; max-width:100%;">
+              <!-- A Stripe Element will be inserted here. -->
+            </div>
+            <!-- Used to display form errors. -->
+            <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+            </div>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <div class="form-group">
+              <button type="submit" id="save_card_btn" class="btn_sty_1">Save</button>
+            </div>
+          </div>
+          <form action="/card/save" name="save_card_form" id="save_card_form" method="POST">
+          </form>
+        <!-- <div class="modal-body">
+          <form action="/card/save" name="card" method="POST">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-control" onkeydown="return /[a-zåäö ]/i.test(event.key)" name="name" id="name" maxlength="25">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Card Number</label>
+                  <input type="text" class="form-control cardNumber" name="cardNumber" id="cardNumber"
+                    placeholder="0000-0000-0000-0000">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Expires</label>
+                  <input type="text" class="form-control" name="expires" id="expires">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>CVV</label>
+                  <input type="password" class="form-control" name="cvv" id="cvv">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button type="submit" class="btn_sty_1">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <!-- add card end -->
+</div>
+<!-- End Import Contact modal -->
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+  <script src="<%- baseUrl %>validation/custom.validate.js"></script>
+  <script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+
+  <!-- Datepicker -->
+  <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+  <link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+  <script>
+    $(document).ready(function () {
+
+      // console.log("date");
+      // var date = $('#birthdate').val();
+      // console.log(date);
+      // if(date == "22-06-2021"){
+      //   $(".birth_datePicker").datepicker("update");
+      // }
+      // console.log("lakje :" +date);
+
+      var lastDate = new Date();
+      lastDate.setDate(lastDate.getDate()-1);
+      $(function () {
+        $(".birth_datePicker").datepicker({
+          dateFormat: "dd MM  yy",
+          changeMonth: true,
+          changeYear: true,
+          maxDate: lastDate,
+          //	minDate:lastDate,
+          yearRange: '1940:' + new Date().getFullYear(),
+          onSelect: function () {
+        $("#profile_form").valid();
+          }
+        });
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+
+      $("#profileImage").change(function(){
+        var img = $('#profileImage')[0].files[0]
+        // $(this).parent().attr('data-text',img.name);
+        document.styleSheets[0].addRule('div.file-upload-wrapper:before','content: "'+img.name+'";');
+      });
+
+      var loadFile = function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+          var output = document.getElementById('output');
+          output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      };
+
+      var lastDate = new Date();
+      $(function () {
+        $(".datePicker").datepicker({
+          changeMonth: true,
+          changeYear: true,
+          showButtonPanel: true,
+          minDate: lastDate,
+          dateFormat: 'mm-yy',
+          onClose: function (dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+          },
+          // beforeShow: function (input, inst) {
+          //   if ((datestr = $(this).val()).length > 0) {
+          //     actDate = datestr.split('-');
+          //     year = actDate[0];
+          //     month = actDate[1] - 1;
+          //     $(this).datepicker('option', 'defaultDate', new Date(year, month));
+          //     $(this).datepicker('setDate', new Date(year, month));
+          //   }  
+          // }
+        })
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+
+      $("#expires").keyup(function(){
+        if($(this).val().length == 2){
+          console.log($(this).val())
+          if(parseInt($(this).val()) > 12){
+            $(this).val($(this).val().slice(0,-1))
+          }else{
+            $(this).val($(this).val()+'/')
+          }    
+        }
+      });
+
+
+      $(".mobile_menu_btn").click(function () {
+        $(".mobile_menu").addClass("menu_open");
+      });
+
+      $(".menu_close").click(function () {
+        $(".mobile_menu").removeClass("menu_open");
+      });
+      $.validator.addMethod(
+          "invalidNumer", 
+          function(value, element) {
+            if(value.charAt(0) == "-"){
+              return false;
+            }else{
+              return true;
+            }
+          },
+          "Please use numbers only."
+      );
+      $("form[name='profile_form']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+          name: {
+            required: true,
+            lettersonly: true,
+            maxlength: 50,
+            normalizer: function (value) {
+              return $.trim(value);
+            }
+          },
+          email: {
+            required: true
+          },
+          mobile: {
+            required: true,
+            number: true,
+            invalidNumer:true,
+            noSpace: true,
+            minlength: 10,
+            maxlength: 10,
+          },
+          address: {
+            required: true
+          },
+          gender: {
+            required: true
+          },
+          birthdate: {
+            required: true
+          },
+          profileImage: {
+            extension: "png|jpeg|jpg",
+            filesize: 5242880,  // in megabytes
+            //required: true
+          },
+          website: {
+						// required: false,
+            my_url: true
+					},
+          experience: {
+						required: true,
+            noSpace: true,
+            min: 0,
+            max: 100,
+					},
+          bio: {
+						required: true
+					},
+          business_name: {
+						required: true,
+            maxlength: 50,
+					},
+          category: {
+						required: true
+					},
+          otherService: {
+            required: true,
+            remote: {
+              url: "<%- baseUrl %>check_Service_Cetagory",
+              type: "POST",
+              data: {
+                name: function () {
+                  return $('input[name="otherService"]').val();
+                }
+              }
+            }
+          },
+        },
+        messages: {
+          name: {
+            required: 'Please enter full name.',
+            maxlength: 'Please enter a maximum of 50 characters.',
+          },
+          email: {
+            required: 'Please enter email.'
+          },
+          mobile: {
+            required: 'Please enter mobile number.',
+            minlength: 'Minimum length is 10.',
+            maxlength: 'Please enter no more than 10 numbers.',
+            number: 'Please use numbers only.',
+            invalidNumer: 'Please use numbers only.'
+          },
+          address: {
+            required: 'Please enter address.'
+          },
+          gender: {
+            required: 'Please select gender.'
+          },
+          birthdate: {
+            required: 'Please select birthday.'
+          },
+          profileImage: {
+            //"File must be JPEG, JPG or PNG, less than 5MB.",
+            extension: 'Please upload a jpg or png file.',
+            filesize: 'Please upload a picture less than 5MB.',
+            //	required:'Please  select an image'
+          },
+          birthdate: {
+						required: "Please enter your birthdate."
+					},
+          otherService: {
+            required: "Please enter your service name.",
+            remote: "This service business type is  already exist in our system, Please use another.",
+          },
+					website: {
+						required: "Please enter your website.",
+            my_url: "Enter a valid website with www."
+					},
+          experience: {
+						required: "Please enter your experience in years.",
+            min: "Enter positve value",
+            max: "Enter less than 100",
+					},
+          bio: {
+						required: "Please enter your bio."
+					},
+          business_name: {
+						required: "Please enter your business name.",
+            maxlength: 'Please enter a maximum of 50 characters.',
+					},
+          category: {
+						required: 'Please enter business category'
+					},
+        //   account_holder_name: {
+        //   required: 'Please enter account holder  name.',
+        // },
+        // account_number: {
+        //   required: 'Please enter account number.',
+        // },
+        // re_account_number: {
+        //   required: 'Please enter account number again.',
+        // },
+        // routing_number: {
+        //   required: 'Please enter routing number.',
+        // },
+        },
+
+        submitHandler: function (form) {
+          $(":submit").attr("disabled", true);
+          notify();
+          form.submit();
+        }
+      });
+    });
+    $("form[name='past_work_image']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        profileImage: {
+          required: true,
+          extension: "png|jpeg|jpg",
+          filesize: 5242880,  // in megabytes
+        },
+      },
+      messages: {
+        profileImage: {
+          required: 'Please select file.',
+          extension: 'Please upload a jpg or png file.',
+          filesize: 'Please upload a picture less than 5MB.',
+        }
+      },
+      submitHandler: function (form) {
+       $(":submit").attr("disabled", true);
+       form.submit();
+      }
+    });
+function notify(){
+  $(".common-notification-hideShow").toggle();
+}
+    $("form[name='card']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        name: {
+          required: true,
+          maxlength: 50,
+          normalizer: function (value) {
+            return $.trim(value);
+          }
+        },
+        cardNumber: {
+          required: true,
+          // number: true,
+          // minlength: 16,
+          // maxlength: 16,
+          creditNum: true
+        },
+        expires: {
+          required: true,
+        },
+        cvv: {
+          required: true,
+          number: true,
+          minlength: 3,
+          maxlength: 4,
+        }
+      },
+      messages: {
+        name: {
+          required: 'Please enter card holder  name.',
+          maxlength: 'Maximum length is 50.',
+        },
+        cardNumber: {
+          required: 'Please enter card number.',
+          minlength: "Minimum length is 14.",
+          maxlength: "Maximum length is 16.",
+        },
+        expires: {
+          required: 'Please enter the expiration date.'
+        },
+        cvv: {
+          required: 'Please enter cvv.',
+          minlength: 'Minimum length is 3.',
+          maxlength: 'Maximum length is 4.',
+          number: 'Please enter numbers.'
+        },
+      },
+
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+  </script>
+<script>
+  $('.cardNumber').on('keypress change', function () {
+    $(this).val(function (index, value) {
+      return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+    });
+  });
+</script>
+  <!-- SOCIAL Places API KEY -->
+<script>
+	// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+	var placeSearch, autocomplete;
+	var componentForm = {
+		street_number: 'short_name',
+		route: 'long_name',
+		locality: 'long_name',
+		administrative_area_level_1: 'short_name',
+		country: 'long_name',
+		postal_code: 'short_name'
+	};
+
+	function initAutocomplete() {
+		// Create the autocomplete object, restricting the search to geographical
+		// location types.
+		autocomplete = new google.maps.places.Autocomplete(
+          /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+			{ types: ['geocode'] });
+
+		// When the user selects an address from the dropdown, populate the address
+		// fields in the form.
+		autocomplete.addListener('place_changed', fillInAddress);
+	}
+
+	function fillInAddress() {
+		// Get the place details from the autocomplete object.
+		var place = autocomplete.getPlace();
+		document.getElementById('latitude').value = place.geometry.location.lat();
+		document.getElementById('longitude').value = place.geometry.location.lng();
+
+
+		for (var component in componentForm) {
+			document.getElementById(component).value = '';
+			document.getElementById(component).disabled = false;
+		}
+
+		// Get each component of the address from the place details
+		// and fill the corresponding field on the form.
+		for (var i = 0; i < place.address_components.length; i++) {
+			var addressType = place.address_components[i].types[0];
+			if (componentForm[addressType]) {
+				var val = place.address_components[i][componentForm[addressType]];
+				document.getElementById(addressType).value = val;
+			}
+		}
+		var fullAddress = autocomplete.getPlace().formatted_address;
+		var addressArray = fullAddress.split(',');
+		//addressArray.splice(addressArray.length - 3);
+		document.getElementById('autocomplete').value = addressArray.toString();
+	}
+
+	// Bias the autocomplete object to the user's geographical location, 
+	// as supplied by the browser's 'navigator.geolocation' object.
+	function geolocate() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function (position) {
+				var geolocation = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				};
+				var circle = new google.maps.Circle({
+					center: geolocation,
+					radius: position.coords.accuracy
+				});
+				autocomplete.setBounds(circle.getBounds());
+			});
+		}
+	}
+</script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJ6uwVCSWkHJlZD-qZ8hmG--apu2Q76L4&libraries=places&callback=initAutocomplete"
+	async defer></script>
+  <script>
+    $(document).ready(function () {
+      //Disabled edit category
+      var hasCategory = "<%-business_category_id %>";
+      console.log("HAS CAT::",hasCategory)
+      if(hasCategory == "" || hasCategory == null){
+        $("#category").prop('readonly', false);
+        $.ajax({
+        type: "GET",
+        url: "<%- baseUrl %>loggedIn_service_category",
+        success: function (data) {
+          //   console.log(data); // show response from the php script.
+          var numbers = data;
+          var option = '';
+          var otherId = '';
+          var selectedCategory = "<%-business_category_id %>";
+          $("#category").empty().append('<option value="">Please select</option>');
+            for (var i = 0; i < numbers.length; i++) {
+              if(numbers[i].name == 'Other'){
+                otherId = numbers[i]._id;
+              }else{
+                if(numbers[i]._id == selectedCategory){
+                  option += '<option selected value="' + numbers[i]._id + '">' + numbers[i].name + '</option>';
+                }else{
+                  option += '<option value="' + numbers[i]._id + '">' + numbers[i].name + '</option>';
+                }
+              }
+            }
+            if(otherId != '' && otherId  != null){
+              if(selectedCategory == otherId){
+                option += '<option selected value="'+otherId+'">Other</option>';
+              }else{
+                option += '<option value="'+otherId+'">Other</option>';
+              }
+            }
+            $('#category').append(option);
+        }
+      });
+    }else{
+      $("#category").prop('readonly', true);
+    }
+  $(".service_cat").change(function () {
+			let val = $(this).val()
+			if(val == "other"){
+			$('#category_div').append(`
+            
+                <input type="text" name="otherService" id="otherService" class="form-control" placeholder="Please enter service name" required>
+            
+              `);
+			}
+			else{
+				$('#otherService').remove();
+			}
+	    })
+});
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+
+  //Stripe card views
+// Create a Stripe client.
+var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+
+// Create an instance of Elements.
+var elements = stripe.elements();
+
+// Custom styling can be passed to options when creating an Element.
+// (Note that this demo uses a wider set of styles than the guide below.)
+var style = {
+  base: {
+    color: '#32325d',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
+
+// Create an instance of the card Element.
+var card = elements.create('card', {hidePostalCode: true, style: style});
+
+// Add an instance of the card Element into the `card-element` <div>.
+card.mount('#card-element');
+
+// Handle real-time validation errors from the card Element.
+card.addEventListener('change', function (event) {
+  var displayError = document.getElementById('card-errors');
+  if (event.error) {
+    displayError.textContent = event.error.message;
+  } else {
+    displayError.textContent = '';
+  }
+});
+
+$("#save_card_btn").click(function(){
+  stripe.createToken(card).then(function (result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+});
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('save_card_form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    $(".pay_now_btn").attr("disabled", true);
+    // Submit the form
+    form.submit();
+  }
+
+
+
+// function preventBack() {
+//   window.history.forward(); 
+// }
+// setTimeout("preventBack()", 0);
+// window.onunload = function () { null };
+</script>
+</body>
+
+</html>

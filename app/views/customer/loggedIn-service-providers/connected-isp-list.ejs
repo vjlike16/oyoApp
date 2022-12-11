@@ -1,0 +1,169 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->	      
+
+      <div class="main_content">
+        <div class="search_info_bar">
+          <div class="container-fluid">
+            <div class="sib_left">
+              <h3 class="sib_left_title">Connected Business Owners</h3>
+            </div>
+            <!-- <div class="sib_right">
+              <div class="search_wrap">
+                <select class="form-control" id="filter">
+                  <option value="">Business Category</option>
+                  <% for(var i=0; i<service_categories.length; i++) { %>
+                    <option value="<%= service_categories[i].name %>"><%= service_categories[i].name %></option>
+                    <% } %>
+                </select>
+             </div>
+            </div> -->
+            <form action="/customer/customSearch" name="customSearch" method="POST">
+              <div class="sib_right">
+                <div class="search_wrap"> 
+                  <input type="text" class="form-control" placeholder="Name, Category or Invite Code" name="name_category" id="name_category">
+                  <input type="text" class="form-control" placeholder="Location or Zip Code" name="location" id="location">
+                </div>
+        
+                <div class="search_btn_wrap">
+                  <button type="submit" class="search_btn"><i class="icofont-search-1"></i></button>
+                </div>
+        
+                <div class="view_toggle">
+                  <a href="<%- baseUrl %>connectedIspMap"><img src="<%- baseUrl %>img/map.png" alt=""></a>
+                </div>
+        
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- end:search_info_bar -->
+
+        <div class="container-fluid">
+          <% for(var i=0; i<result.length; i++) { %>
+          <div class="isp_list_block size" data-size="<%= result[i].business_category %>">
+            <div class="isp_list_box">
+              <a href="<%- baseUrl %>customer/service-providers/<%= result[i]._id %>" class="isp_list_anchor">
+                <div class="isp_list_pic">
+                  <% if (result.profileImage == '' || result.profileImage == 'null' || result.profileImage == 'Null') {%>
+                    <img src="<%= baseUrl%>admin/images/user.png"> 
+                    <%}else{%>
+                    <img src="<%= baseUrl%>uploads/profile/<%= result[i].profileImage %>">
+                    <%}%>
+                </div>
+                <div class="isp_list_info">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h3 class="isp_list_name"><%= result[i].name %></h3>
+                      <img src="<%- baseUrl %>img/rating.png" alt="">
+                      <h5><%= result[i].business_category %></h5>
+                      <h5>Connected Since: 05 Feb 2020</h5>
+                    </div>
+                    <div class="col-md-6">
+                      <% if (result[i].connect == "yes") {%>
+                        <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span class="isp_status connected"></span>Connected</h5>
+                        <%}else{%>
+                          <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span class="isp_status disconnected"></span>Not Connected</h5>
+                        <%}%>
+                      <h5 class="isp_listinfo_al_right">Address: <%= result[i].address %></h5>
+                      <h5 class="isp_listinfo_al_right">Last Transacted: 02 Jan 2021</h5>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            </div>
+            <% } %>
+            <!-- end:isp_list_box -->
+
+            <!-- <div class="isp_list_box">
+              <a href="connected-isp-detail.html" class="isp_list_anchor">
+                <div class="isp_list_pic">
+                  <img src="img/john_morison.png" alt="">
+                </div>
+                <div class="isp_list_info">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h3 class="isp_list_name">John Morison</h3>
+                      <img src="img/rating.png" alt="">
+                      <h5>Hair Salon</h5>
+                      <h5>Connected Since: 05 Feb 2020</h5>
+                    </div>
+                    <div class="col-md-6">
+                      <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span class="isp_status connected"></span>Connected</h5>
+                      <h5 class="isp_listinfo_al_right">Address: Miami, Florida</h5>
+                      <h5 class="isp_listinfo_al_right">Last Transacted: 02 Jan 2021</h5>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div> -->
+            <!-- end:isp_list_box -->
+          </div>
+          <!-- isp_list_block -->
+
+          <div class="alphabet_bar">
+            <a href="#">A</a>
+            <a href="#">B</a>
+            <a href="#">C</a>
+            <a href="#">D</a>
+            <a href="#">E</a>
+            <a href="#">F</a>
+            <a href="#">G</a>
+            <a href="#">H</a>
+            <a href="#">I</a>
+            <a href="#">J</a>
+            <a href="#">K</a>
+            <a href="#">L</a>
+            <a href="#">M</a>
+            <a href="#">N</a>
+            <a href="#">O</a>
+            <a href="#">P</a>
+            <a href="#">Q</a>
+            <a href="#">R</a>
+            <a href="#">S</a>
+            <a href="#">T</a>
+            <a href="#">U</a>
+            <a href="#">V</a>
+            <a href="#">W</a>
+            <a href="#">X</a>
+            <a href="#">Y</a>
+            <a href="#">Z</a>
+          </div>
+          <!-- end:alphabet_bar -->
+         
+          
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script>
+
+$('select').on('change', function() {
+  filter(this.value);
+});
+function filter(e) {
+    var regex = new RegExp('\\b\\w*' + e + '\\w*\\b');
+    $('.size').hide().filter(function () {
+        return regex.test($(this).data('size'))
+    }).show();
+}
+    </script>
+    <script>
+      $(document).ready(function(){
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+    </script>
+  </body>
+</html>

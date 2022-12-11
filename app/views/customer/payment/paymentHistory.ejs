@@ -1,0 +1,736 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->	
+ 
+      <div class="main_content">
+        <div class="inner_fixed_tbar">
+          <div class="container-fluid">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active first_tab_link" data-toggle="tab" href="#Reminders">Reminders</a>
+              </li>
+ 
+              <li class="nav-item">
+                <a class="nav-link second_tab_link" data-toggle="tab" href="#History">History</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="container-fluid">
+          <div class="tab-content page_tab_content">
+            <div id="Reminders" class="tab-pane active">
+              <% if (role_id == "2") { %>
+                <% for(var i=0; i<paymentReminder.length; i++) { %>
+                  <% if (paymentReminder[i].cusMail == userEmail) { %>
+                    <% if (paymentReminder[i].type == 'PaymentFailedReminder') { %>
+                      <div class="white_block_box">
+                        <div class="white_block_icon">
+                          <img src="img/wallet.svg" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p> You have booked <%= paymentReminder[i].title %> service with <%= paymentReminder[i].ispName %> and you have pending amount of $<%= paymentReminder[i].remaining_payment %> which you need to pay.</p>
+                          <p> Error: <%= paymentReminder[i].stripeError %></p>
+                          <div class="white_box_btn_group">
+                            <div class="white_box_btn_group">
+                              <a href="#" class="btn_sty_1 make_payment" 
+                              data-id="<%= paymentReminder[i].appointmentId %>"
+                              data-price="<%= paymentReminder[i].remaining_payment %>"
+                              id="Book_add_off_ser" >Make Payment</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% } %>
+                    <!-- <% if (paymentReminder[i].type == 'AppointmentReminder') { %>
+                      <div class="white_block_box">
+                        <div class="white_block_icon">
+                          <img src="img/wallet.svg" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <% if (paymentReminder[i].full_payment) { %>
+                            <p class="white_info_box_p"> You have booked <%= paymentReminder[i].title %> service with <%= paymentReminder[i].ispName %> and you have paid amount of $<%= paymentReminder[i].amount %>.</p>
+                          <% } else { %>
+                            <p> You have booked <%= paymentReminder[i].title %> service with <%= paymentReminder[i].ispName %> and you have pending amount of $<%= paymentReminder[i].remaining_payment %> which you need to pay.</p>
+                            <div class="white_box_btn_group">
+                              <div class="white_box_btn_group">
+                                <a href="#" class="btn_sty_1 make_payment" 
+                                data-id="<%= paymentReminder[i].appointmentId %>"
+                                data-price="<%= paymentReminder[i].remaining_payment %>"
+                                id="Book_add_off_ser">Make Payment</a>
+                              </div>
+                            </div>
+                          <% } %>
+                        </div>
+                      </div>
+                    <% } %> -->
+                    <% if (paymentReminder[i].type == 'BOreminder') { %>
+                      <div class="white_block_box">
+                        <div class="white_block_icon">
+                          <img src="img/wallet.svg" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p><%= paymentReminder[i].ispName %> sent you a reminder related to the <%= paymentReminder[i].title %> service and you have pending amount of $<%= paymentReminder[i].remaining_payment %> which you need to pay.</p>
+                          <div class="white_box_btn_group">
+                            <div class="white_box_btn_group">
+                              <a href="#" class="btn_sty_1 make_payment" 
+                              data-id="<%= paymentReminder[i].appointmentId %>"
+                              data-price="<%= paymentReminder[i].remaining_payment %>"
+                              id="Book_add_off_ser">Make Payment</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% } %>
+                  <% } %>
+                <% } %>
+              <% } else { %>
+                <% for(var i=0; i<paymentReminder.length; i++) { %>
+                  <% if (paymentReminder[i].cusMail != userEmail && paymentReminder[i].ispId == userId) { %>
+                    <% if (paymentReminder[i].type == 'AppointmentReminder') { %>
+                      <% if (!paymentReminder[i].full_payment && ( paymentReminder[i].remaining_payment != '0' || paymentReminder[i].remaining_payment != 0 )) { %>
+                        <form name="sendReminder" action="<%- baseUrl %>sendReminder" method="post">
+                          <div class="white_block_box">
+                            <div class="white_block_img">
+                              <img src="<%= baseUrl%>uploads/profile/<%= paymentReminder[i].profile %>" alt="">
+                            </div>
+                            <input type="hidden" name="id" value="<%= paymentReminder[i].appointmentId %>">
+                            <input type="hidden" name="cusMail" value="<%= paymentReminder[i].cusMail %>">
+                            <input type="hidden" name="name" value="<%= paymentReminder[i].name %>">
+                            <input type="hidden" name="profile" value="<%= paymentReminder[i].profile %>">
+                            <input type="hidden" name="title" value="<%= paymentReminder[i].title %>">
+                            <input type="hidden" name="start_date" value="<%= paymentReminder[i].start_date %>">
+                            <input type="hidden" name="utc_start" value="<%= paymentReminder[i].utc_start %>">
+                            <input type="hidden" name="utc_end" value="<%= paymentReminder[i].utc_end %>">
+                            <input type="hidden" name="amount" value="<%= paymentReminder[i].amount %>">
+                            <input type="hidden" name="remaining_payment" value="<%= paymentReminder[i].remaining_payment %>">
+                            <div class="white_info_box">
+                              <p> <%= paymentReminder[i].name %> has booked <%= paymentReminder[i].title %> service with you on <span class="ispDate<%= paymentReminder[i]._id %>"><%= dateFormat(paymentReminder[i].start_date, "mmmm dd yyyy"); %></span>, <span class="ispTime<%= paymentReminder[i]._id %>"></span> and still
+                                has to pay the remaining $<%= paymentReminder[i].remaining_payment %> for the service.</p>
+                              <div class="white_box_btn_group">
+                                <div class="white_box_btn_group">
+                                  <button type="submit" class="btn_sty_1">Send Reminder</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      <% } %>
+                      <script>
+                        var finalTimeZone = moment.tz.guess();
+                        var paymentReminderStartTime = moment("<%=paymentReminder[i].utc_start%>").format();
+                        var dateTz = moment.tz(paymentReminderStartTime, "GMT");
+                        var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                        var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                        $(".ispDate<%= paymentReminder[i]._id %>").html(newDate);
+                        $(".ispTime<%= paymentReminder[i]._id %>").html(newTime);
+                      </script>
+                    <% } %>
+                  <% } %>
+                  <% if (paymentReminder[i].cusMail == userEmail) { %>
+                    <% if (paymentReminder[i].type == 'PaymentFailedReminder') { %>
+                      <div class="white_block_box">
+                        <div class="white_block_icon">
+                          <img src="img/wallet.svg" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p> You have booked <%= paymentReminder[i].title %> service with <%= paymentReminder[i].ispName %> and you have pending amount of $<%= paymentReminder[i].remaining_payment %> which you need to pay.</p>
+                          <p> Error: <%= paymentReminder[i].stripeError %></p>
+                          <div class="white_box_btn_group">
+                            <div class="white_box_btn_group">
+                              <a href="#" class="btn_sty_1 make_payment" 
+                              data-id="<%= paymentReminder[i].appointmentId %>"
+                              data-price="<%= paymentReminder[i].remaining_payment %>"
+                              id="Book_add_off_ser" >Make Payment</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% } %>
+                    <!-- <% if (paymentReminder[i].type == 'AppointmentReminder') { %>
+                      <div class="white_block_box">
+                        <div class="white_block_icon">
+                          <img src="img/wallet.svg" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <% if (paymentReminder[i].full_payment) { %>
+                            <p class="white_info_box_p"> You have booked <%= paymentReminder[i].title %> service with <%= paymentReminder[i].ispName %> and you have paid amount of $<%= paymentReminder[i].amount %>.</p>
+                          <% } else { %>
+                            <p> You have booked <%= paymentReminder[i].title %> service with <%= paymentReminder[i].ispName %> and you have pending amount of $<%= paymentReminder[i].remaining_payment %> which you need to pay.</p>
+                            <div class="white_box_btn_group">
+                              <div class="white_box_btn_group">
+                                <a href="#" class="btn_sty_1 make_payment" 
+                                data-id="<%= paymentReminder[i].appointmentId %>"
+                                data-price="<%= paymentReminder[i].remaining_payment %>"
+                                id="Book_add_off_ser">Make Payment</a>
+                              </div>
+                            </div>
+                          <% } %>
+                        </div>
+                      </div>
+                    <% } %> -->
+                    <% if (paymentReminder[i].type == 'BOreminder') { %>
+                      <div class="white_block_box">
+                        <div class="white_block_icon">
+                          <img src="img/wallet.svg" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p><%= paymentReminder[i].ispName %> sent you a reminder related to the <%= paymentReminder[i].title %> service and you have pending amount of $<%= paymentReminder[i].remaining_payment %> which you need to pay.</p>
+                          <div class="white_box_btn_group">
+                            <div class="white_box_btn_group">
+                              <a href="#" class="btn_sty_1 make_payment" 
+                              data-id="<%= paymentReminder[i].appointmentId %>"
+                              data-price="<%= paymentReminder[i].remaining_payment %>"
+                              id="Book_add_off_ser">Make Payment</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% } %>
+                  <% } %>
+                <% } %>
+                <!-- <% for(var i=0; i<ispAppointments.length; i++) { %>
+
+                  <% if (ispAppointments[i].ispEmail != userEmail) { %>
+                    <% if (!ispAppointments[i].full_payment) { %>
+                      <div class="white_block_box">
+                        <div class="white_block_icon">
+                          <img src="img/wallet.svg" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p> You have booked <%= ispAppointments[i].title %> service with <%= ispAppointments[i].ispName %> and you have pending amount of $<%= ispAppointments[i].remaining_payment %> which you need to pay.</p>
+                          <div class="white_box_btn_group">
+                            <div class="white_box_btn_group">
+                              <a href="#" class="btn_sty_1 make_payment" 
+                              data-id="<%= ispAppointments[i]._id %>"
+                              data-price="<%= ispAppointments[i].remaining_payment %>"
+                              id="Book_add_off_ser" >Make Payment</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <% } %>
+                  <% } %>
+                  <% if (ispAppointments[i].ispEmail == userEmail && ispAppointments[i].full_payment != true) { %>
+                    <form name="sendReminder" action="sendReminder" method="post">
+                      <div class="white_block_box">
+                        <div class="white_block_icon">
+                          <img src="<%= ispAppointments[i].profile %>" alt="">
+                        </div>
+                        <input type="hidden" name="id" value="<%= ispAppointments[i]._id %>">
+                        <input type="hidden" name="cusMail" value="<%= ispAppointments[i].mail %>">
+                        <input type="hidden" name="name" value="<%= ispAppointments[i].name %>">
+                        <input type="hidden" name="profile" value="<%= ispAppointments[i].profile %>">
+                        <input type="hidden" name="title" value="<%= ispAppointments[i].title %>">
+                        <input type="hidden" name="start_date" value="<%= ispAppointments[i].start_date %>">
+                        <input type="hidden" name="amount" value="<%= ispAppointments[i].amount %>">
+                        <input type="hidden" name="remaining_payment" value="<%= ispAppointments[i].remaining_payment %>">
+                        <div class="white_info_box">
+                          <p> <%= ispAppointments[i].name %> has booked <%= ispAppointments[i].title %> service with you on <%= dateFormat(ispAppointments[i].start_date, "mmmm dd yyyy"); %> and still
+                            have to pay the remaining $<%= ispAppointments[i].remaining_payment %> for the service.</p>
+                          <div class="white_box_btn_group">
+                            <div class="white_box_btn_group">
+                              <button type="submit" class="btn_sty_1">Send Reminder</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  <% } %>
+
+                <% } %> -->
+              <% } %>
+              <div id="add_payment"></div>
+            </div>
+            <!-- end:Reminders -->
+
+            <div id="History" class="tab-pane fade">
+
+              <!-- <div class="isp_titile_block">
+                <div class="transaction_filter ml-auto">
+                  <select class="form-control">
+                    <option>All</option>
+                    <option>This Month</option>
+                    <option>Last 3 Months</option>
+                    <option>Last 6 Months</option>
+                    <option>2020</option>
+                    <option>2019</option>
+                  </select>
+                </div>
+              </div> -->
+            <% if (role_id == "2") { %>
+              <% for(var i=0; i<cusHistory.length; i++) { %>
+                <% if (cusHistory[i].amount != 0) { %>
+                <div class="transaction_box">
+                  <div class="row">
+                    <div class="col-md-2 col-6">
+                      <h3>Business Owner</h3>
+                      <h4><%= cusHistory[i].ispName %></h4>
+                    </div>
+
+                    <div class="col-md-2 col-6">
+                      <h3>Service</h3>
+                      <h4><%= cusHistory[i].title %></h4>
+                    </div>
+
+                    <div class="col-md-2 col-6">
+                      <h3>Amount</h3>
+                      <% if (cusHistory[i].status == "Cancelled" && cusHistory[i].full_payment) { %>
+                        <h4 style="color: green;">$<%= cusHistory[i].amount %></h4>
+                      <% } else { %>
+                        <h4 style="color: red;">$<%= cusHistory[i].amount %></h4>
+                      <% } %>
+                    </div>
+
+                    <div class="col-md-1 col-6">
+                      <h3>Tip</h3>
+                      <% if (cusHistory[i].status == "Cancelled" && cusHistory[i].full_payment) { %>
+                        <% if (cusHistory[i].tip == "0") { %>
+                          <h4 style="color: green;">$0</h4>
+                        <% } else { %>
+                          <h4 style="color: green;">$<%= cusHistory[i].tip %></h4>
+                        <% } %>
+                      <% } else { %>
+                        <% if (cusHistory[i].tip == "0") { %>
+                          <h4 style="color: red;">$0</h4>
+                        <% } else { %>
+                          <h4 style="color: red;">$<%= cusHistory[i].tip %></h4>
+                        <% } %>
+                      <% } %>
+                    </div>
+
+                    <div class="col-md-2 col-6">
+                      <h3>Status</h3>
+                      <% if (cusHistory[i].status == "Cancelled" && cusHistory[i].full_payment) { %>
+                        <h4>Refunded</h4>
+                      <% } else { %>
+                        <h4>Paid</h4>
+                      <% } %>
+                    </div>
+
+                    <div class="col-md-3 col-6">
+                      <h3>Date and Time</h3>
+                      <h4><span class="cusDate<%= cusHistory[i]._id %>"></span>, <span class="cusTime<%= cusHistory[i]._id %>"></span></h4>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  var cusHistoryStartTime = moment("<%= cusHistory[i].utc_start%>").format();
+                  var dateTz = moment.tz(cusHistoryStartTime, "GMT");
+                  var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                  var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                  $(".cusDate<%= cusHistory[i]._id %>").html(newDate);
+                  $(".cusTime<%= cusHistory[i]._id %>").html(newTime);
+                </script>
+              <% } %>
+            <% } else { %>
+              <% for(var i=0; i<ispHistory.length; i++) { %>
+
+                <% if (ispHistory[i].ispEmail != userEmail) { %>
+                  <% if (ispHistory[i].amount != 0) { %>
+                  <div class="transaction_box">
+                    <div class="row">
+                      <div class="col-md-2 col-6">
+                        <h3>Business Owner</h3>
+                        <h4><%= ispHistory[i].ispName %></h4>
+                      </div>
+  
+                      <div class="col-md-2 col-6">
+                        <h3>Service</h3>
+                        <h4><%= ispHistory[i].title %></h4>
+                      </div>
+  
+                      <div class="col-md-2 col-6">
+                        <h3>Amount</h3>
+                        <% if (ispHistory[i].status == "Cancelled") { %>
+                          <h4 style="color: green;">$<%= ispHistory[i].amount %></h4>
+                        <% } else { %>
+                          <h4 style="color: red;">$<%= ispHistory[i].amount %></h4>
+                        <% } %>
+                      </div>
+
+                      <div class="col-md-1 col-6">
+                        <h3>Tip</h3>
+                        <% if (ispHistory[i].status == "Cancelled") { %>
+                          <% if (ispHistory[i].tip == "0") { %>
+                            <h4 style="color: green;">$0</h4>
+                          <% } else { %>
+                            <h4 style="color: green;">$<%= ispHistory[i].tip %></h4>
+                          <% } %>
+                        <% } else { %>
+                          <% if (ispHistory[i].tip == "0") { %>
+                            <h4 style="color: red;">$0</h4>
+                          <% } else { %>
+                            <h4 style="color: red;">$<%= ispHistory[i].tip %></h4>
+                          <% } %>
+                        <% } %>
+                      </div>
+
+                      <div class="col-md-2 col-6">
+                        <h3>Status</h3>
+                        <% if (ispHistory[i].status == "Cancelled" && ispHistory[i].full_payment) { %>
+                          <h4>Refunded</h4>
+                        <% } else { %>
+                          <h4>Paid</h4>
+                        <% } %>
+                      </div>
+  
+                      <div class="col-md-3 col-6">
+                        <h3>Date and Time</h3>
+                        <h4><span class="ispDate<%= ispHistory[i]._id %>"></span>, <span class="ispTime<%= ispHistory[i]._id %>"></span></h4>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+                <% } %>
+                <% if (ispHistory[i].ispEmail == userEmail) { %>
+                  <div class="transaction_box">
+                    <div class="row">
+                      <div class="col-md-2 col-6">
+                        <h3>Customer</h3>
+                        <h4><%= ispHistory[i].name %></h4>
+                      </div>
+  
+                      <div class="col-md-2 col-6">
+                        <h3>Service</h3>
+                        <h4><%= ispHistory[i].title %></h4>
+                      </div>
+  
+                      <div class="col-md-2 col-6">
+                        <h3>Amount</h3>
+                        <% if (ispHistory[i].status == "Cancelled" && ispHistory[i].full_payment) { %>
+                          <h4 style="color: red;">$<%= ispHistory[i].amount %></h4>
+                        <% } else { %>
+                          <h4 style="color: green;">$<%= ispHistory[i].amount %></h4>
+                        <% } %>
+                      </div>
+
+                      <div class="col-md-1 col-6">
+                        <h3>Tip</h3>
+                        <% if (ispHistory[i].status == "Cancelled" && ispHistory[i].full_payment) { %>
+                          <% if (ispHistory[i].tip == "0") { %>
+                            <h4 style="color: red;">$0</h4>
+                          <% } else { %>
+                            <h4 style="color: red;">$<%= ispHistory[i].tip %></h4>
+                          <% } %>
+                        <% } else { %>
+                          <% if (ispHistory[i].tip == "0") { %>
+                            <h4 style="color: green;">$0</h4>
+                          <% } else { %>
+                            <h4 style="color: green;">$<%= ispHistory[i].tip %></h4>
+                          <% } %>
+                        <% } %>
+                      </div>
+
+                      <div class="col-md-2 col-6">
+                        <h3>Status</h3>
+                        <% if (ispHistory[i].status == "Cancelled" && ispHistory[i].full_payment) { %>
+                          <h4>Refunded</h4>
+                        <% } else { %>
+                          <h4>Recieved</h4>
+                        <% } %>
+                      </div>
+  
+                      <div class="col-md-3 col-6">
+                        <h3>Date and Time</h3>
+                        <h4><span class="ispDate<%= ispHistory[i]._id %>"></span>, <span class="ispTime<%= ispHistory[i]._id %>"></span></h4>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  var ispHistoryStartTime = moment("<%= ispHistory[i].utc_start%>").format();
+                  var dateTz = moment.tz(ispHistoryStartTime, "GMT");
+                  var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                  var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                  $(".ispDate<%= ispHistory[i]._id %>").html(newDate);
+                  $(".ispTime<%= ispHistory[i]._id %>").html(newTime);
+                </script>
+              <% } %>
+            <% } %>
+            <!-- <% if (role_id == "2") { %>
+                <% if (cusHistory.length > 6) { %>
+                <ul class="custom_pagination mt-3">
+                    <li><a href="#"><i class="icofont-simple-left"></i></a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#"><i class="icofont-simple-right"></i></a></li>
+                </ul>
+                <% } %>
+            <% } %>
+            <% if (role_id == "3") { %>
+                <% if (ispHistory.length > 6) { %>
+                <ul class="custom_pagination mt-3">
+                    <li><a href="#"><i class="icofont-simple-left"></i></a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#"><i class="icofont-simple-right"></i></a></li>
+                </ul>
+                <% } %>
+            <% } %> -->
+            </div>
+            <!-- end:History -->
+          </div>
+        </div>
+
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+
+
+
+<!-- make payment start -->
+<div class="modal" id="paymentModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Payment</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <% if(typeof cardList != "undefined" && cardList != ""){ %>
+        <form action="<%- baseUrl %>completePaymentSaveCard" method="POST" id="completePaymentSaveCard">
+          <h5 class="payment_select_card">Select Card</h5>
+          <div class="row">
+            <% for(var i=0; i<cardList.length; i++) { %>
+            <div class="col-xl-12" id="append_amount" style="display: flex; align-items: center;">
+                <input name="existingCardRadio" type="radio" class="existingCardRadio" value="<%- cardList[i].id %>" style="margin-right: 10px;" checked>
+                <div class="payment_cart">
+                  <div class="card_logo">
+                      <img src="<%= baseUrl%>img/visa.png" alt="">
+                  </div>
+                  <div class="card_info">
+                      <h4 class="card_number">**** **** **** <span id="getCardNumber"></span>
+                        <span id="card_number">
+                          <%= cardList[i].last4 %>
+                        </span></h4>
+                      <h5 class="card_expire">Expires <%= cardList[i].exp_month %>/<%= cardList[i].exp_year %></h5>
+                  </div>
+                </div>
+                <script>
+                  $("#completePaymentSaveCard").click(function(){
+                    let appointmentId = $("#add_payment_id").val();
+                    let remainingAmount = $("#add_payment_amount").val();
+    
+                    $('#completePaymentSaveCard [name="remainingAmount1"]').remove();
+                    $('#completePaymentSaveCard [name="remainingAmountappointmentId"]').remove();
+                     
+                    $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');
+                    $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                  });
+                </script>
+            </div>
+            <% } %>
+          </div>
+          <Button type="submit" class="btn_sty_1 pay_now_using_existing_btn">Pay Now</Button>
+        </form>
+          <div class="form_seprator">
+            <div class="sep_or">OR</div>
+          </div>
+        <% } %>
+        <div class="row">
+            <div class="form_container" style="width: 100%;margin-top: 37px;">
+              <div class="col-md-12">
+                <h4>Payment with new card.</h4>
+              </div>
+  
+              <div class="col-md-12">
+                <label for="card-element">
+                  Credit or debit card
+                </label>
+                <div id="card-element" style="width: 450px; max-width:100%;">
+                  <!-- A Stripe Element will be inserted here. -->
+                </div>
+                <!-- Used to display form errors. -->
+                <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+                </div>
+
+              <form action="<%- baseUrl %>completePayment" method="post" id="completePayment">
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group mb-0">
+                    <button type="submit" class="btn_sty_1 pay_now_btn">Pay Now</button>
+                  </div>
+                  <script>
+                    $("#completePayment").click(function(){
+                      let appointmentId = $("#add_payment_id").val();
+                      let remainingAmount = $("#add_payment_amount").val();
+                      
+                      $('#completePayment [name="remainingAmountappointmentId"]').remove();
+                      $('#completePayment [name="remainingAmount1"]').remove();
+                       
+                      $('#completePayment').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');    
+                      $('#completePayment').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                    });
+                  </script>
+                </div>
+              </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- make payment end -->
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<style>
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 40px;
+
+  padding: 10px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.linkFor:hover {
+  text-decoration: none;
+  color: #333
+}
+
+.linkFor {
+  text-decoration: none;
+}
+
+
+.payment_card_sec .card_block {width: calc(100% - 30px); float: right;}
+
+@media (max-width: 550px){
+.card_block_left {margin:0 10px 0 0;}
+.card_block_right {width:auto; text-align: left;}
+.card_block_right h4 {font-size: 16px;}
+}
+
+</style>
+
+<script>
+    
+$(document).ready(function(){
+	$('.payments-link').addClass('nav-active'); 
+}); 
+	
+// Create a Stripe client.
+var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+
+// Create an instance of Elements.
+var elements = stripe.elements();
+
+// Custom styling can be passed to options when creating an Element.
+// (Note that this demo uses a wider set of styles than the guide below.)
+var style = {
+  base: {
+    color: '#32325d',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
+
+// Create an instance of the card Element.
+var card = elements.create('card', {hidePostalCode: true, style: style});
+
+// Add an instance of the card Element into the `card-element` <div>.
+card.mount('#card-element');
+
+// Handle real-time validation errors from the card Element.
+card.addEventListener('change', function (event) {
+  var displayError = document.getElementById('card-errors');
+  if (event.error) {
+    displayError.textContent = event.error.message;
+  } else {
+    displayError.textContent = '';
+  }
+});
+
+// Handle form submission.
+var form = document.getElementById('completePayment');
+form.addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  stripe.createToken(card).then(function (result) {
+    if (result.error) {
+      // Inform the user if there was an error.
+      var errorElement = document.getElementById('card-errors');
+      errorElement.textContent = result.error.message;
+    } else {
+      // Send the token to your server.
+      stripeTokenHandler(result.token);
+    }
+  });
+});
+
+// Submit the form with the token ID.
+function stripeTokenHandler(token) {
+  // Insert the token ID into the form so it gets submitted to the server
+  var form = document.getElementById('completePayment');
+  var hiddenInput = document.createElement('input');
+  hiddenInput.setAttribute('type', 'hidden');
+  hiddenInput.setAttribute('name', 'stripeToken');
+  hiddenInput.setAttribute('value', token.id);
+  form.appendChild(hiddenInput);
+  $(".pay_now_btn").attr("disabled", true);
+  // Submit the form
+  form.submit();
+}
+
+$(function () {
+  $('.linkFor').one('click', function () {
+    window.location.replace($(this).data('href'));
+    $(this).removeAttr('data-href');
+  });
+});
+</script> 
+<script>
+$(document).on('click', '.make_payment', function(){
+  var appointmentId = $(this).data('id');
+  var remainingAmount = $(this).data('price');
+
+  $('#add_payment').html('');
+  $('#add_payment').append(`
+    <input type="hidden" name="add_payment_id" id="add_payment_id" value="${appointmentId}">
+    <input type="hidden" name="add_payment_amount" id="add_payment_amount" value="${remainingAmount}">
+  `);
+  $('#paymentModal').modal('show');
+});
+</script>
+
+
+
+  </body>
+</html>

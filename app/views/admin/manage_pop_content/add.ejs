@@ -1,0 +1,237 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+
+<div>
+
+
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Popup Content</h3>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Add  Popup Content</h2>
+					<div class="clearfix"></div>
+				</div>
+				<form enctype="multipart/form-data" role="form" name="PopupcontentForm"
+					action="/admin/manage_pop_content/save" role="form" method="post"
+					class="login-form form-horizontal form-label-left">
+					<fieldset>
+						<div class="col-sm-12">
+							<span class="section">Information</span>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name"> Content For <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<div class="row">
+									<div class="col-md-2">
+									  <div class="form-check" style="margin-top: 5px;">
+										<!-- <label class="form-check-label">
+										  <input type="radio" class="form-check-input" name="content_for" id="customer" value="Customer"> Customer
+										</label> -->
+										<label class="closed_checkbox">
+											<input type="checkbox" name="Customer" class="Customer" checked>
+										Customer</label>
+									  </div>
+									</div>
+			  
+									<div class="col-md-2">
+									  <div class="form-check" style="margin-top: 5px;">
+										<!-- <label class="form-check-label">
+										  <input type="radio" class="form-check-input" name="content_for" id="businessOwner" value="Business Owner"> Business Owner 
+										</label> -->
+										<label class="closed_checkbox">
+											<input type="checkbox" name="BusinessOwner" class="BusinessOwner" checked>
+										Business Owner</label>
+									  </div>
+									</div>
+								  </div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name"> Content Title <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<input type="text" name="content_title" id="content_title" class="form-control" required
+									placeholder="Content Title" />
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Expiring On<span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<input type="text" name="expiring_on" id="expiring_on" class="datetimepicker" placeholder="Please select a expiry date" autocomplete="off"/>
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Content Image
+								<span	class="text-error">*</span>
+							</label>
+							<div class="col-md-9 col-sm-9 col-xs-12 file-upload-wrapper-profileImage">
+							<div class="file-upload-wrapper" data-text="">
+								<input class="file-upload-field form-control" type="file" name="profileImage" id="profileImage" accept=".jpeg, .jpg, .png"
+									 placeholder="Content Imagee" style="position: static;width: 100px;" />
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-xs-12" style="margin-top: 30px;">
+						<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content"> Content <span
+								class="text-error">*</span></label>
+						<div class="col-md-10 col-sm-10 col-xs-12 errorPlacement" >
+							<textarea type="text" name="content" id="content" class="form-control" placeholder="Page Content"></textarea>
+						</div>
+					</div>
+					</fieldset>
+
+
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<!-- Change this to a button or input when using this as a form -->
+							<button type="submit" class="btn btn-primary">Submit</button>
+							<a href="<%- baseUrl %>admin/manage_pop_content" class="btn btn-primary">Cancel</a>
+						</div>
+					</div>
+				</form>
+				<!-- /.table-responsive -->
+			</div>
+		</div>
+	</div>
+</div>
+<script src="<%- baseUrl %>ckeditor/ckeditor.js"></script>     
+<script>
+	 $(document).ready(function() {
+			var CK = CKEDITOR.replace('content');
+			CK.config.autoParagraph = false;
+			CK.config.tabSpaces = 4;
+			CK.config.removeButtons = 'Select,Button,Form,Print,HiddenField,Templates,Save,Textarea,Radio,Checkbox,TextField,Table,ImageButton,Image,UploadImage,Iframe,SpecialChar,Smiley,Flash,Language';
+			CK.config.font_defaultLabel = 'Verdana';
+			CK.config.fontSize_defaultLabel = '16px';
+	  });
+ </script> 		
+
+<!-- Datepicker -->
+<!-- <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css"> -->
+<script src="jquery.min.js"></script>
+<!-- <script src="<%- baseUrl %>admin/vendors/jquery-datetimepicker/build/jquery.datetimepicker.full.js>"></script>
+<script src="<%- baseUrl %>admin/vendors/jquery-datetimepicker/jquery.js"></script> 
+<link rel="stylesheet" type="text/css" href="<%- baseUrl %>admin/vendors/jquery-datetimepicker/jquery.datetimepicker.css"/> -->
+<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js">
+   </script>
+<script>
+		jQuery.validator.setDefaults({
+		errorPlacement: function(error, element) {
+			if (element.attr("name") == "content") {
+				error.appendTo('.errorPlacement');
+			}else{
+				error.insertAfter(element);
+			}	
+		}
+	});
+	
+</script>
+<script>
+	$(".datetimepicker").datetimepicker({
+		defaultTime : "23:59",
+		minDate: moment()
+	});
+  </script>
+
+<!--image uplooad -->
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(function () {
+		$("form[name='PopupcontentForm']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 50,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+					remote: {
+						url: "<%- baseUrl %>admin/manage_pop_content/checknameexist",
+						type: "post",
+						data: {
+							name: function () {
+								return $('input[name="name"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					},
+				},
+				profileImage: {
+					extension: "png|jpeg|jpg",
+					filesize: 5242880,  // in megabytes
+					required: true
+				},
+				content: {
+					ckrequired:true
+				},
+				content_title:{
+					required : true,
+					maxlength : 50
+				},
+				expiring_on:{
+					required:true,
+
+				}
+			},
+
+			messages: {
+				name: {
+					required: "Please enter name.",
+					maxlength: "Maximum length is 40.",
+					remote: "This name already exist in our system, Please use another."
+				},
+				profileImage: {
+					extension: 'File must be JPEG, JPG or PNG',
+					filesize :'Please upload a picture less than 5MB.',
+					required:'Please select an image'
+				//	"File must be JPEG, JPG or PNG, less than 5MB."
+				},
+				content:{
+					ckrequired:'Please enter content.',
+				},
+				content_title:{
+					required : 'Please enter content title.',
+					maxlength: "Maximum length is 50.", 
+				},
+				expiring_on:{
+                    required:'Please enter the expiration date.'
+				}
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

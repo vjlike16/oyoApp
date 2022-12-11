@@ -1,0 +1,7 @@
+{
+    "gcm_sender_id": "716669500088",
+    "serviceworker": {
+        "src": "firebase-messaging-sw.js",
+        "scope": "/"
+    }
+}

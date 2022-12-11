@@ -1,0 +1,163 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+
+<div>
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Service Business Type</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Edit Service Business Type</h2>
+					<div class="clearfix"></div>
+				</div>
+				<form enctype="multipart/form-data" role="form" name="serviceCategoryForm"
+					action="/admin/service_category/update" role="form" method="post"
+					class="login-form form-horizontal form-label-left">
+					<fieldset>
+						<div class="col-sm-12">
+							<span class="section">Information</span>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="status">Status <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<select id="status" name="status" class="form-control" placeholder="Role" required />
+								<option value="">Select status</option>
+								<option value="active" <% if (result.status == "active") {%> selected <% } %>>Active
+								</option>
+								<option value="inactive" <% if (result.status == "inactive") {%> selected <% } %>>
+									Inactive</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Category Name <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<input type="text" name="name" value="<%= result.name  %>" id="name"
+									class="form-control" required placeholder="Category Name" />
+							</div>
+						</div>
+
+						<!-- <div class="col-sm-6 col-xs-12 item form-group">
+							<div class="form-group">
+								<label class="control-label col-md-4 col-sm-4 col-xs-12" for="profileImage">Category Icon
+								<span class="text-error">*</span></label>
+								<div class="col-md-4 col-sm-4 col-xs-12 file-upload-wrapper-profileImage">
+									<div class="file-upload-wrapper" data-text="">
+										<input class="file-upload-field" type="file" name="profileImage" accept="image/jpeg,image/png,jpg|png"
+											id="profileImage" style="margin-top: 6px; position: static;" placeholder="Profile Image" />
+									</div>
+								</div> -->
+								<!-- <div class="col-md-2 col-sm-2">
+									<% if (result.icon == '' || result.icon == 'null' || result.icon == 'Null') {%>
+									<label class="control-label col-md-3 col-sm-3 col-xs-12" for="profileImage"
+										style="visibility: hidden;">Image</label>
+									<img class="img-thumbnail" src="<%= baseUrl%>admin/images/user.png"
+										class="form-control" style="width:40px;height:34px;">
+									<input type="hidden" name="uploaded_profileImage" value="" />
+									<%}else{%>
+									<label class="control-label col-md-3 col-sm-3 col-xs-12" for="profileImage"
+										style="visibility: hidden;">Image</label>
+									<a title="Click to view large." target="_blank"
+										href="<%= baseUrl%>uploads/profile/<%= result.icon %>"><img
+											class="img-thumbnail" src="<%= baseUrl%>uploads/profile/<%= result.icon %>"
+											class="form-control" style="width:40px;height:34px;"></a>
+									<input type="hidden" name="uploaded_profileImage" value="<%= result.icon %>" accept="image/jpeg,image/png,jpg|png" />
+									<%}%>
+									</div>	
+									
+							</div> -->
+						</div>
+
+					</fieldset>
+
+
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<input type="hidden" name="_id" value="<%= result._id  %>" />
+									<button type="submit" class="btn btn-primary">Submit</button>
+									<a href="<%- baseUrl %>admin/service_category" class="btn btn-primary">Cancel</a>
+								</div>
+							</div>
+				</form>
+				<!-- /.table-responsive -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(function () {
+		$("form[name='serviceCategoryForm']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 40,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+					remote: {
+						url: "<%- baseUrl %>admin/service_category/checknameexistexceptthis",
+						type: "post",
+						data: {
+							name: function () {
+								return $('input[name="name"]').val();
+							},
+							user_id: function () {
+								return $('input[name="_id"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					}
+				},
+				profileImage: {
+					extension: "png|jpeg|jpg",
+					filesize: 5242880,  // in megabytes
+					required : false
+				}
+			},
+
+			messages: {
+				name: {
+					required: "Please enter name.",
+					maxlength: "Maximum length is 50.",
+					remote: "This name already exist in our system, Please use another."
+				},
+				profileImage: {
+					extension: 'File must be JPEG, JPG or PNG',
+					filesize :'Please upload a picture less than 5MB.',
+					required:'Please  select an image.'
+				}
+				//"File must be JPEG, JPG or PNG, less than 5MB.",
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

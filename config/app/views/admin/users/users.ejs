@@ -1,0 +1,68 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+	
+    <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Users</h3>
+              </div>
+			</div>
+
+            <div class="clearfix"></div>
+			<div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                 <div class="panel-body">
+					<table id="example" class="table table-striped jambo_table bulk_action" cellspacing="0" width="100%">
+						<thead>
+							<tr>
+								<th class="column-title">Name</th>
+								<th class="column-title">Email</th>
+								<th class="column-title">Updated</th>
+								<th class="column-title">Created</th>
+								<th class="column-title">Edit</th>
+								<th class="column-title">Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% for(var i=0; i < userDetails.length; i++) { %>
+								<tr>
+									<td><%= userDetails[i].name %></td>
+									<td><%= userDetails[i].mail %></td>
+									<td><%= userDetails[i].updated_date %></td>
+									<td class="center"><%= userDetails[i].created_date %></td>
+									<td><a href="<%- baseUrl %>admin/users/edit/<%= userDetails[i]._id %>">Edit</a></td>
+									<td><a onclick="return confirm('Do you really want to remove this user.');" href="<%- baseUrl %>admin/users/delete/<%= userDetails[i]._id %>">Delete</a></td>
+								</tr>
+							<% } %>
+							
+							<% if (userDetails.length < 1) { %>
+							   <div class="alert alert-warning text-center">
+								   <b>Sorry</b> We do not find any data.   
+							   </div>
+							 <% } %>
+						</tbody>
+					</table>
+					<!-- /.table-responsive -->
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+           
+ <!-- Datatable -->
+   
+<script src="<%- baseUrl %>admin/vendors/datatables.net/js/jquery.dataTables.min.js"></script>    
+<link href="<%- baseUrl %>datatable/jquery.dataTables.min.css" rel="stylesheet">  
+<script>
+	$(document).ready(function() {
+		$('#example').DataTable();
+	} );
+</script>      
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

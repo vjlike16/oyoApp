@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <meta name="robots" content="noindex, follow">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="<%- title %>">
+      <meta name="twitter:description" content="<%- description %>"> 
+      
+	  <meta name="twitter:image" content="<%- baseUrl %>img/logo.png">
+	  <meta property="twitter:image:width" content="232"/>
+      <meta property="twitter:image:height" content="320"/>
+	  
+      <meta property="twitter:updated_time" content="<%- dateTime %>"/>
+       
+      <title>OyoApp.com</title>
+      <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+
+   </head>
+   <body style="color: white !important;">
+      <script>
+         var url_string = location.href;
+         var url = new URL(url_string);
+         var c = url.searchParams.get("verifyCode");
+         //window.location.href = `<%- baseUrl %>inviteCodeRedirection/${c}`;
+		 
+		 
+      </script>
+   </body>
+</html>

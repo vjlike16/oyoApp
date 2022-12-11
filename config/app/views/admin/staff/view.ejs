@@ -1,0 +1,246 @@
+<!-- include header -->
+	<% include ../common/header %>
+<!-- / end include -->	
+<style>
+	textarea{resize: none !important;width: 99.9% !important;}		
+</style>	
+
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Manage Staff</h3>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+			<div class="row">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2> Staff</h2>
+						<div class="clearfix"></div>
+					</div>
+					
+						<fieldset>
+									<div class="col-sm-12">
+										<span class="section">Basic Information
+										<a href="<%= baseUrl%>admin/staff" class="btn btn-primary btn-sm pull-right" style="margin-top: -6px;">Back</a>
+										</span>
+									</div>	
+									
+									<div class="col-sm-6 col-xs-12 item form-group" style="height: 114px;">
+										<div class="form-group">
+											   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="profileImage">Profile Image</label>
+												<div class="col-md-9 col-sm-9">
+													<% if (userDetails.profileImage == '' || userDetails.profileImage == 'null' || userDetails.profileImage == 'Null') {%>
+														<img class="img-thumbnail" src="<%= baseUrl%>admin/images/user.png"  class="form-control" style="width:100px;height:100px;">
+														
+													<%}else{%>
+													<a target="_blank" href="<%= baseUrl%>uploads/profile/<%= userDetails.profileImage %>"><img class="img-thumbnail" src="<%= baseUrl%>uploads/profile/<%= userDetails.profileImage %>" class="form-control" style="width:100px;height:100px;"></a>
+														
+													<%}%>
+												</div>	
+											 	
+										</div>
+									</div>
+									<div class="col-sm-6 col-xs-12 item form-group" style="height: 114px;"></div>
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="name">Name <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="name" id="name" class="form-control" placeholder="Name" disabled  value="<%= userDetails.name  %>"/>
+										</div>
+									</div>
+									
+										
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="email">Email <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="email" name="mail" id="email" class="form-control" disabled placeholder="Email"  value="<%= userDetails.mail  %>"/>
+										</div>
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="status"  >Status</label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<select id="status" name="status" class="form-control" placeholder="Role" disabled required/>
+												<option value="">Select status</option>
+												<option value="active" <% if (userDetails.status == "active") {%>
+												selected <% } %>>Active</option>
+												<option value="inactive" <% if (userDetails.status == "inactive") {%>
+												selected <% } %>>Inactive</option>
+											</select>
+										</div>	
+									</div>
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="mobile">Mobile <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input autocomplete="false" type="number" name="mobile" disabled id="mobile" class="form-control" placeholder="Mobile"  value="<%= userDetails.mobile  %>"/>
+										</div>
+									</div>	
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="alternate_mobile">Alternate Mobile </label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input autocomplete="false" type="number" disabled name="alternate_mobile" id="alternate_mobile" class="form-control" placeholder="Alternate Mobile"  value="<%= userDetails.alternate_mobile  %>"/>
+										</div>
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="dob">D.O.B </label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="dob" id="dob" disabled class="datePicker form-control" placeholder="D.O.B" value="<%= userDetails.dob %>">
+										</div>
+									</div>
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="doa"> D.O.A </label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="doa" id="doa" disabled class="datePicker form-control" placeholder="D.O.A"  value="<%= userDetails.doa  %>"/>
+										</div>
+									</div>
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="role_id"  >Role <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<select id="role_id" name="role_id" class="form-control" placeholder="Role" disabled />
+												<option value="">Select Role</option>
+												<option value="steno_l1" <% if (userDetails.role_id == "6" || userDetails.role_id == "7" || userDetails.role_id == "8") {%>
+												selected <% } %>>Steno L1</option>
+												<option value="4" <% if (userDetails.role_id == "4") {%>
+												selected <% } %>>Steno L2</option>
+												<option value="5" <% if (userDetails.role_id == "5") {%>
+												selected <% } %>>Steno L3</option>
+											</select>
+										</div>	
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group steno_l1_container" style="display:none;">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12 steno_l1_label" for="steno_l1"  >Steno L1 <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<select id="steno_l1" name="steno_l1" class="form-control" placeholder="Role" disabled />
+												<option value="">Select Steno L1</option>
+												<option value="6" <% if (userDetails.role_id == "6") {%>
+												selected <% } %>>On roll</option>
+												<option value="7" <% if (userDetails.role_id == "7") {%>
+												selected <% } %>>Free Lancers</option>
+												<option value="8" <% if (userDetails.role_id == "8") {%>
+												selected <% } %>>Law Students/ Fresher</option>
+											</select>
+										</div>	
+									</div>									
+									
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="address">Address</label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<textarea rows="1" type="text" name="address" id="address" class="form-control"  placeholder="Address"  disabled style="resize: vertical;"/><%= userDetails.address  %></textarea>
+										</div>
+									</div>
+								</fieldset>
+								
+								<!--====Law Students container start======---->
+								<fieldset class="for_law_student_container" style="display:none;">
+									<div class="col-sm-12">
+										<span class="section">Law Student / Fresher Information</span>
+									</div>	
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="name_of_colleage">Name of College <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="name_of_colleage" disabled id="name_of_colleage" class="form-control" placeholder="Name of College"  value="<%= userDetails.name_of_colleage  %>"/>
+										</div>
+									</div>
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="university">University <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="text" name="university" disabled id="university" class="form-control" placeholder="University"  value="<%= userDetails.university  %>"/>
+										</div>
+									</div>
+									<div class="col-sm-6 col-xs-12 item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="passing_year">Passing Year <span class="text-error">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<input type="number" name="passing_year" disabled  id="passing_year" class="form-control" minlength="4" maxlength="4"  placeholder="Passing Year"   value="<%= userDetails.passing_year  %>"/>
+										</div>
+									</div>
+									
+									<!--===Bar Council===--->
+									<div class="col-sm-12">
+										<span class="section">Bar Council</span>
+									</div>	
+									<div class="col-sm-12 col-xs-12 item form-group registered_bar_council_container">
+										<label class="pull-left" for="registered_bar_council">Have You Registered Yourself With Bar Council <span class="text-error">*</span></label>
+										<div class="col-md-1 col-sm-1 col-xs-1">
+											<label>
+												<input type="radio" disabled name="registered_bar_council" value="yes" class="registered_bar_council" <% if (userDetails.registered_bar_council == "yes") {%>
+												checked <% } %>/> Yes
+											</label>
+										</div>
+										<div class="col-md-1 col-sm-1 col-xs-1">
+											<label>
+												<input type="radio"  disabled name="registered_bar_council" value="no" class="registered_bar_council"  <% if (userDetails.registered_bar_council == "no") {%>
+												checked <% } %>/> No
+											</label> 
+										</div>
+									</div>
+									
+									<div class="registered_bar_council_fields_container" style="display:none;">
+										<div class="col-sm-6 col-xs-12 item form-group" style="height: 114px;">
+											<div class="form-group">
+												    <label class="control-label col-md-3 col-sm-3 col-xs-12"  for="bar_registration_certificate">Bar Registration Certificate </label>
+													<div class="col-md-9 col-sm-9">
+														<% if (userDetails.bar_registration_certificate == '' || userDetails.bar_registration_certificate == 'null' || userDetails.bar_registration_certificate == 'Null') {%>
+															<img class="img-thumbnail" src="<%= baseUrl%>admin/images/user.png"  class="form-control"  style="width:100px;height:100px;">
+														<%}else{%>
+															<a target="_blank" href="<%= baseUrl%>uploads/profile/<%= userDetails.bar_registration_certificate %>">
+																<img class="img-thumbnail" src="<%= baseUrl%>uploads/profile/<%= userDetails.bar_registration_certificate %>" class="form-control" style="width:100px;height:100px;">
+															</a>	
+														<%}%>
+													</div>	
+												 	
+											</div>
+										</div>
+										<div class="col-sm-6 col-xs-12 item form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12"  for="name_of_bar_registered_with">Name of Bar Registered With </label>
+											<div class="col-md-9 col-sm-9 col-xs-12">
+												<input type="text" disabled  name="name_of_bar_registered_with" id="name_of_bar_registered_with" class="form-control"  placeholder="Name of Bar Registered With"  value="<%= userDetails.name_of_bar_registered_with  %>"/>
+											</div>
+										</div>
+									</div>
+									
+								</fieldset>
+						
+						
+					 
+					<!-- /.table-responsive -->
+               </div>
+            </div>
+          </div>
+        
+ <script>
+	$(document).ready(function(){
+		  
+	      role_id_value = $('#role_id').find('option:selected').val();
+		  if(role_id_value == 'steno_l1'){
+				$('.steno_l1_container').show();
+		  }else{
+				$('.steno_l1_container').hide();
+		  }
+		  
+		  steno_l1_value = $('#steno_l1').find('option:selected').val();
+		  if(steno_l1_value == '8'){
+				$('.for_law_student_container').show();
+		  }else{
+		       $('.for_law_student_container').hide();
+		  }
+		  
+		  registered_bar_counsil = $('input[name=registered_bar_council]:checked').val();
+		  if(registered_bar_counsil == 'yes'){
+		      $('.registered_bar_council_fields_container').show();
+		  }else{
+		       $('.registered_bar_council_fields_container').hide();
+		  }
+	});	  
+</script>		  
+        
+    
+
+<!-- include footer -->
+	<% include ../common/footer %>
+<!-- / end footer -->	

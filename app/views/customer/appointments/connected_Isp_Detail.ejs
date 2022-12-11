@@ -1,0 +1,2309 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->	      
+<style>
+  .ui-timepicker-container {
+    z-index: 9999999999999999999 !important;
+  }
+  .ui-datepicker-container {
+    z-index: 9999999999999999999 !important;
+  }
+  .ui-datepicker {
+    z-index: 9999999999999999999 !important;
+  }
+</style>
+<!-- <div class="loader-bg"><div id="spinner"></div></div> -->
+      <div class="main_content">
+        <div class="container-fluid">
+          <section class="isp_info">
+            
+                <div class="isp_info_block">
+                  <div class="isp_pic_circle">
+                    <% if (result.profileImage == '' || result.profileImage == 'null' || result.profileImage == 'Null') {%>
+                      <img src="<%= baseUrl%>admin/images/user.png"> 
+                      <%}else{%>
+                      <img src="<%= baseUrl%>uploads/profile/<%= result.profileImage %>">
+                      <%}%>
+                  </div>
+                  <!-- end:isp_pic_circle -->
+      
+                  <div class="isp_info_sec">
+                    <div class="row mb-2">
+                      <div class="col-md-6">
+                        <% if (result.bankDetails) {%>
+                          <input type="hidden" id="ispAccId" value="<%= result.bankDetails.bankAccountId %>">
+                        <% } else { %>
+                          <input type="hidden" id="ispAccId" value="">
+                        <% } %>
+                        <h3 class="isp_detail_name"><%= result.name %></h3>
+                        <input type="hidden" id="businessOwnerId" name="businessOwnerId" value="<%= result._id %>">
+                        <div class="rating rating_review_isp_details" data-rateyo-rating="<%= avgRating || 0 %>" style="margin-top: 2px; z-index: -1;"></div>
+                        <span class="isp_detail_no_of_reviews"><a href="#" data-toggle="modal" data-target="#reviewsModal">Reviews (<%= appointments.length %>)</a></span>
+                      </div>
+
+                      <div class="col-md-6">
+                        <% if (checkStatus == "success") {%>
+                          <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span class="isp_status connected"></span>Connected</h5>
+                        <% } else { %>
+                          <h5 class="isp_listinfo_al_right isp_list_status_wrap"><span class="isp_status disconnected"></span>Not Connected</h5>
+                        <% } %>
+                        <!-- <a href="#" class="isp_info_sec_al_right report"><i class="icofont-flag"></i> Report/Block</a> -->
+                      </div>
+                    </div>
+      
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h5>Business Name: <%= result.business_name %></h5>
+                      </div>
+                      <div class="col-md-6">
+                        <% if(result.website != undefined) { %>
+                          <h5 class="isp_info_sec_al_right">Website: <a href="https://<%= result.website %>" target="_blank"><%= result.website %></a></h5>
+                        <% } else { %>
+                          <h5 class="isp_info_sec_al_right">Website: <a href="# %>" target="_blank">Not Yet</a></h5>
+                        <% } %>
+                        <h5 class="isp_info_sec_al_right">Email: <%= result.mail %></h5>
+                        <h5 class="isp_info_sec_al_right">Phone No: <%= result.mobile %></h5>
+                      </div>
+                    </div>
+      
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h5>Category: <%= business_category_name %></h5>
+                      </div>
+
+                      <div class="col-md-6">
+                        <h5 class="isp_info_sec_al_right">Last Transacted: 
+                          <% if (lastTrasaction != undefined) { %>
+                            <%= dateFormat(lastTrasaction, "mmm dd yyyy"); %>
+                          <% } else { %>
+                            Not yet
+                          <% } %>
+                        </h5>
+                      </div>
+                    </div>
+      
+                    <div class="row">
+                      <div class="col-md-6">
+                        <% if(result.experience != undefined) { %>
+                          <h5>Experience: <%= result.experience %> Years</h5>
+                        <% } else { %>
+                          <h5>Experience: Not Yet</h5>
+                        <% } %>
+                      </div>
+
+                      <% if (checkStatus == "success") {%>
+                      <div class="col-md-6">
+                        <h5 class="isp_info_sec_al_right">Connected Since: 
+                          <% if (connectedSince != undefined) { %>
+                            <%= dateFormat(connectedSince, "mmm dd yyyy"); %>
+                          <% } else { %>
+                            Not yet
+                          <% } %>
+                        </h5>
+                      </div>
+                      <% } %>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h5>Address: <%= result.address %></h5>
+                      </div>
+
+                      <div class="col-md-6">
+                        <% if (checkStatus == "success") { %>
+                          <h5 class="isp_info_sec_al_right" style="font-weight: 500;"><a href="<%- baseUrl %>remove/<%= result._id %>">Remove Connection</a></h5>
+                        <% } %>
+                      </div>
+                    </div>
+      
+                    <div class="row">
+                      <div class="col-md-6 business_hours">
+                        <h3>Business Hours</h3>
+                        <% if (todayEndTime == undefined) { %>
+                          <h5><span class="business_status">Not Set</span>
+                            <a href="#" class="business_hours_details" data-toggle="modal" data-target="#business_hoursModal">More Details</a>
+                          </h5>
+                        <% } else { %>
+                          <h5>
+                            <% if (isTodayOff == "true") { %>
+                              <span class="business_status" style="color:#E74C3C;">Closed</span>
+                            <% } %>
+                            <% if (isTodayOff == "false") { %>
+                              <span class="business_status" style="color:#27AE60;">Open</span>
+                              <% if (todayEndTime != "Closed") { %>
+                                Closes <%= todayEndTime %>
+                              <% } %>
+                            <% } %>
+                            <a href="#" class="business_hours_details" data-toggle="modal" data-target="#business_hoursModal">More Details</a>
+                          </h5>
+                        <% } %>
+                      </div>
+      
+                      <div class="col-md-6 isp_detail_side_btns">
+                        <a href="#" class="btn_sty_1" data-toggle="modal" data-target="#shareModalDetaisPage"><i class="icofont-share"></i> Share</a>
+                        <% if (checkStatus == "Not sent") { %>
+                          <a href="<%- baseUrl %>connect-to-isp/<%= result._id %>" class="btn_sty_1"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="17" viewBox="0 0 27 17" style="vertical-align: sub;">
+                            <g id="Group_7413" data-name="Group 7413" transform="translate(-129 -11)">
+                            <text id="_" data-name="" transform="translate(140 25)" fill="#fff" font-size="16" font-family="icofont, IcoFont"><tspan x="0" y="0"></tspan></text>
+                            <text id="_2" data-name="" transform="translate(129 22)" fill="#fff" font-size="10" font-family="icofont, IcoFont"><tspan x="0" y="0"></tspan></text>
+                            </g>
+                          </svg> Connect</a>
+                        <% } %>
+                        <% if (checkStatus == "pending") { %>
+                          <a href="<%- baseUrl %>connect-to-isp/<%= result._id %>" class="btn_sty_1" onclick="return false;"> Connection Pending</a>
+                        <% } %>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 business_hours">
+                        <h3>Expectations and Policies</h3>
+                        <% if(result.bio != undefined) { %>
+                          <p><%= result.bio %></p>
+                        <% } %>
+                      </div>
+                    </div>
+      
+                  </div>
+                  <!-- end:isp_info_sec -->
+                </div>
+                <!-- end:isp_info_block -->
+          </section>
+          <!-- end:isp_info -->
+
+          <section class="offered_services">
+            <input type="hidden" class="addedServices" value="1">
+            <div class="isp_titile_block">
+              <h3 class="isp_detail_head_2">Offered Services</h3>
+            </div>
+            <% for(var i=0; i<services.length; i++) { %>
+              <div class="offer_ser_box">
+                <div class="offer_ser_img" id="service_img1">
+                  <% if (services.icon == '' || services.icon == 'null' || services.icon == 'Null') {%>
+                    <img src="<%= baseUrl%>admin/images/user.png"> 
+                    <%}else{%>
+                    <img src="<%= baseUrl%>uploads/profile/<%= services[i].icon %>">
+                    <%}%>
+                </div>
+                <div class="offer_ser_info">
+                  <h3 class="offer_ser_heading" id="service_title1"><%= services[i].name %></h3>
+                  <h4 class="offer_ser_price">Price: $<span id="service_price1"><%= services[i].price %></span></h4>
+                  <h4 class="offer_ser_price">Advance: <span><%= services[i].advance %></span>%</h4>
+                  <% if (services[i].minutes < 60) {%>
+                    <h4 class="offer_ser_price">Duration: <span><%= services[i].minutes %> min</span></h4>
+                  <% } else { %>
+                    <h4 class="offer_ser_price">Duration: <span><%= services[i].minutes/60 %> hr</span></h4>
+                  <% } %>
+                  
+                  <% if (services[i].cancellation < 60) {%>
+                    <h4 class="offer_ser_price">Cancellation Time: <span><%= services[i].cancellation %> min</span></h4>
+                  <% } else { %>
+                    <h4 class="offer_ser_price">Cancellation Time: <span><%= services[i].cancellation/60 %> <%= services[i].cancellation/60 > 1 ? 'hrs' : 'hr' %></span></h4>
+                  <% } %>
+                  <p class="hidden" id="service_advance1" style="display: none;"><%= services[i].advance %></p>
+                  <p><%= services[i].description %></p>
+                  <a href="#" class="btn_sty_1 book_now" 
+                    data-id="<%= services[i]._id %>"
+                    data-img="<%= baseUrl%>uploads/profile/<%= services[i].icon %>"
+                    data-name="<%= services[i].name %>"
+                    data-price="<%= services[i].price %>"
+                    data-advance="<%= services[i].advance %>"
+                    data-duration="<%= services[i].minutes %>"
+                    id="Book_add_off_ser" >Book Now</a>
+                </div>
+              </div>
+              <div id="add_off_ser"></div>
+            <% } %>
+          </section>
+          <!-- end:offered_services -->
+
+
+          <section class="reviews_sec">
+            <div class="isp_titile_block">
+              <h3 class="isp_detail_head_2">Reviews <span>(<%= appointments.length%>)</span></h3>
+              <a href="#" data-toggle="modal" data-target="#reviewsModal">View All</a>
+            </div>
+
+            <% for(var i=0; i<ratingAppointments.length; i++) { %>
+              <div class="review_box">
+                <div class="review_pic">
+                  <img src="<%= baseUrl%>uploads/profile/<%= ratingAppointments[i].profile %>" alt="">
+                </div>
+                <div class="review_info">
+                  <h4 class="isp_ration_user"><%= ratingAppointments[i].name %></h4>
+                  <div class="rating_date">
+                    <div class="isp_rating">
+                      <div class="rateYo rating_review_isp_details" data-rateyo-rating="<%= appointments[i].rate %>" style="z-index: -1;"></div>
+                    </div>
+                    <div class="isp_rating_date"><%= dateFormat(ratingAppointments[i].start_date, "mmm dd yyyy"); %></div>
+                  </div>
+                  <p><%= ratingAppointments[i].review %></p>
+                </div>
+              </div>
+            <% } %>
+          </section>
+          <!-- end:reviews_sec -->
+
+          <section class="recent_transactions">
+            
+              <div class="isp_titile_block">
+                <h3 class="isp_detail_head_2">Recent Transactions</h3>
+                <a href="#" data-toggle="modal" data-target="#historyModal">View All</a>
+              </div>
+            <% if(cusHistoryLimit.length < 1) { %>
+              <p>Not Yet</p>
+            <% } else { %>
+              <% for(var i=0; i<cusHistoryLimit.length; i++) { %>
+                <div class="transaction_box">
+                  <div class="row">
+                    <div class="col-md-3 col-6">
+                      <h3>Service</h3>
+                      <h4><%= cusHistoryLimit[i].title %></h4>
+                    </div>
+
+                    <div class="col-md-3 col-6">
+                      <h3>Amount</h3>
+                      <h4>$<%= cusHistoryLimit[i].amount %></h4>
+                    </div>
+
+                    <div class="col-md-3 col-6">
+                      <h3>Date and Time</h3>
+                      <h4><%= dateFormat(cusHistoryLimit[i].start_date, "mmmm dd yyyy"); %>, <%= cusHistoryLimit[i].start_time %></h4>
+                    </div>
+
+                    <div class="col-md-3 col-6">
+                      <h3>Status</h3>
+                      <h4><%= cusHistoryLimit[i].status %></h4>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            <% } %>
+          </section>
+          <!-- end:recent_transactions -->
+
+
+          <div class="ips_past_work">
+            
+              <div class="isp_titile_block">
+                <h3 class="isp_detail_head_2">Past Work Images</h3>
+              </div>
+              <% if(pastWorkImages.length < 1) { %>
+                <p>Not Yet</p>
+              <% } else { %>
+                <ul class="isp_work_list">
+                  <% for(var i=0; i<pastWorkImages.length; i++) { %>
+                    <!-- <li><img style="max-height: 230px;" src="<%= baseUrl%>uploads/past_work_images/<%= pastWorkImages[i].image %>" alt=""></li> -->
+                    <li><img src="<%= baseUrl%>uploads/profile/<%= pastWorkImages[i].image %>" alt=""></li>
+                  <% } %>
+                </ul>
+              <% } %>
+          </div>
+          <!-- end:ips_past_work -->
+
+          <div class="my_notes">
+            <form action="/customerNotes" name="myNotes" method="POST">
+            
+              <div class="isp_titile_block">
+                <h3 class="isp_detail_head_2">My Notes</h3>
+              </div>
+              <input type="hidden" name="connectedId" value="<%= connectedId %>">
+              <input type="hidden" name="mail" value="<%= result.mail %>">
+              <input type="hidden" name="profileImage" value="<%= result.profileImage %>">
+              <input type="hidden" name="ispId" value="<%= result._id %>">
+              <% if(myNotes) { %>
+                <textarea class="form-control mb-3" cols="30" rows="5" name="myNotes" id="myNotes"><%= myNotes.customerNotes %></textarea>
+              <% } else { %>
+                <textarea class="form-control mb-3" cols="30" rows="5" name="myNotes" id="myNotes"></textarea>
+              <% } %>
+              <div class="row">
+              <% if(myNotesUpdate == undefined) { %>
+                <div class="col-md-6 mb-2">Last Updated On: Not Yet</div>
+              <% } else { %>
+                <div class="col-md-6 mb-2">Last Updated On: <%= dateFormat(myNotesUpdate, "mmm dd yyyy"); %></div>
+              <% } %>
+                <div class="col-md-6 text-right mb-2">
+                  <button type="submit" class="btn_sty_1 mr-1 btn_sty_01">Save</button>
+                  <% if(myNotes) { %>
+                    <a href="/customerNotes/<%= myNotes._id %>/<%= result._id %>" class="btn_red" onclick="confirmFormAlert(this,'Are you sure you want to delete?','click'); return false">Delete</a>
+                  <% } else { %>
+                    <a href="#" class="btn_red">Delete</a>
+                  <% } %>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- end:ips_past_work -->
+          
+
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+  
+
+
+    <!-- Business hours start -->
+    <div class="modal" id="business_hoursModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Business Hours</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="table-responsive">
+              <% if(businessHours == null) { %>
+                <p>Not set</p>
+              <% } else { %>
+              <table class="table">
+              <% for(var i=0; i<dateDataArr.length; i++) { %>
+                <tr>
+                  <td><%= dateDataArr[i].day %></td>
+                  <% if(dateDataArr[i].startTime == 'Closed') { %>
+                    <td style="text-align: right; font-weight: 500;">Closed</td>
+                  <% } else { %>
+                    <td style="text-align: right; font-weight: 500;"><%= dateDataArr[i].startTime %> - <%= dateDataArr[i].endTime %></td>
+                  <% } %>
+                </tr>
+              <% } %>
+                <!-- <tr>
+                  <td>Monday</td>
+                  <% if(businessHours.mondayStartTime == 'Closed') { %>
+                    <td style="text-align: right; font-weight: 500;">Closed</td>
+                  <% } else { %>
+                    <td style="text-align: right; font-weight: 500;"><%= businessHours.mondayStartTime %> - <%= businessHours.mondayEndTime %></td>
+                  <% } %>
+                </tr>
+                <tr>
+                  <td>Tuesday</td>
+                  <% if(businessHours.tuesdayStartTime == 'Closed') { %>
+                    <td style="text-align: right; font-weight: 500;">Closed</td>
+                  <% } else { %>
+                    <td style="text-align: right; font-weight: 500;"><%= businessHours.tuesdayStartTime %> - <%= businessHours.tuesdayEndTime %></td>
+                  <% } %>
+                </tr>
+                <tr>
+                  <td>Wednesday</td>
+                  <% if(businessHours.wednesdayStartTime == 'Closed') { %>
+                    <td style="text-align: right; font-weight: 500;">Closed</td>
+                  <% } else { %>
+                    <td style="text-align: right; font-weight: 500;"><%= businessHours.wednesdayStartTime %> - <%= businessHours.wednesdayEndTime %></td>
+                  <% } %>
+                </tr>
+                <tr>
+                  <td>Thursday</td>
+                  <% if(businessHours.thrusdayStartTime == 'Closed') { %>
+                    <td style="text-align: right; font-weight: 500;">Closed</td>
+                  <% } else { %>
+                    <td style="text-align: right; font-weight: 500;"><%= businessHours.thrusdayStartTime %> - <%= businessHours.thrusdayEndTime %></td>
+                  <% } %>
+                </tr>
+                <tr>
+                  <td>Friday</td>
+                  <% if(businessHours.fridayStartTime == 'Closed') { %>
+                    <td style="text-align: right; font-weight: 500;">Closed</td>
+                  <% } else { %>
+                    <td style="text-align: right; font-weight: 500;"><%= businessHours.fridayStartTime %> - <%= businessHours.fridayEndTime %></td>
+                  <% } %>
+                </tr>
+                <tr>
+                  <td>Saturday</td>
+                  <% if(businessHours.saturdayStartTime == 'Closed') { %>
+                    <td style="text-align: right; font-weight: 500;">Closed</td>
+                  <% } else { %>
+                    <td style="text-align: right; font-weight: 500;"><%= businessHours.saturdayStartTime %> - <%= businessHours.saturdayEndTime %></td>
+                  <% } %>
+                </tr>
+                <tr>
+                  <td>Sunday</td>
+                  <% if(businessHours.sundayStartTime == 'Closed') { %>
+                    <td style="text-align: right; font-weight: 500;">Closed</td>
+                  <% } else { %>
+                    <td style="text-align: right; font-weight: 500;"><%= businessHours.sundayStartTime %> - <%= businessHours.sundayEndTime %></td>
+                  <% } %>
+                </tr> -->
+              </table>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Business hours end -->
+
+    <!-- reviews start -->
+    <div class="modal" id="reviewsModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Reviews</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <% for(var i=0; i<appointments.length; i++) { %>
+              <div class="review_box">
+                <div class="review_pic">
+                  <img src="<%= baseUrl%>uploads/profile/<%= appointments[i].profile %>" alt="">
+                </div>
+                <div class="review_info">
+                  <h4 class="isp_ration_user"><%= appointments[i].name %></h4>
+                  <div class="rating_date">
+                    <div class="isp_rating">
+                      <div class="rateYo rating_review_isp_details" data-rateyo-rating="<%= appointments[i].rate %>"></div>
+                    </div>
+                    <div class="isp_rating_date"><%= dateFormat(appointments[i].start_date, "mmm dd yyyy"); %></div>
+                  </div>
+                  <p><%= appointments[i].review %></p>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- reviews end -->
+    <!-- history start -->
+    <div class="modal" id="historyModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Recent Transactions</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <% for(var i=0; i<cusHistory.length; i++) { %>
+              <div class="transaction_box">
+                <div class="row">
+                  <div class="col-md-3 col-6">
+                    <h3>Service</h3>
+                    <h4><%= cusHistory[i].title %></h4>
+                  </div>
+
+                  <div class="col-md-3 col-6">
+                    <h3>Amount</h3>
+                    <h4>$<%= cusHistory[i].amount %></h4>
+                  </div>
+
+                  <div class="col-md-3 col-6">
+                    <h3>Date and Time</h3>
+                    <h4><%= dateFormat(cusHistory[i].start_date, "mmmm dd yyyy"); %>, <%= cusHistory[i].start_time %></h4>
+                  </div>
+
+                  <div class="col-md-3 col-6">
+                    <h3>Status</h3>
+                    <h4><%= cusHistory[i].status %></h4>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- history end -->
+    <!-- book appointments start -->
+    <div class="modal" id="book_appointmentsModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Book Appointments</h4>
+            <button type="button" class="close" id="empty_appointments" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form name="appointmentForm" id="appointmentForm">
+              <div class="row">
+                <div class="col-md-12 mb-2 text-right">
+                  <a href="#" data-toggle="modal" data-target="#service_popModal" data-dismiss="modal" class="add_more_service_book">Add More Services</a>
+                </div>
+              </div>
+              <div class="row" id="addServices">
+                <div class="row book_now_row" id="book_now_row" style="margin: 0em;"></div>
+
+                <div id="newRow"></div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="hidden" id="findtimezone" name="timezone" value="">
+                  <script>
+                    var finalTimeZone = moment.tz.guess();
+                    console.log("final time zoneeeeee", finalTimeZone)
+                    document.getElementById("findtimezone").value = finalTimeZone;
+                  </script>
+                  <!-- <div class="form-group">
+                    <label>Tip (Optional)</label>
+                      <input type="text" class="form-control" name="tip" id="tip" min="0" pattern="^\d*(\.\d{0,6})?$" title="Only 6 digits allow after decimal" onblur="getval(this);">
+                      <input type="hidden" id="prevTip" value="0">
+                  </div> -->
+                </div>
+
+                <div class="col-md-12">
+                  <div class="book_apt_payment_type mb-4">
+                    <h4>Payment Type</h4>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optradio" id="service_price_radio_val">Full Payment 
+                            <input type="hidden" id="totalPriceValue">
+                            <span class="payment_value">$<span id="service_price_radio"></span></span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-check" id="advanceHide">
+                          <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optradio" id="service_advance_radio_val"><span id="advancePaymentTxt">Advanced Payment</span> 
+                            <input type="hidden" id="advancePriceValue">
+                            <span class="payment_value">$<span id="service_advance_radio"></span></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <!-- <button type="submit" class="btn_sty_1" class="btn_sty_1">Submit</button> -->
+                    <button type="submit" class="btn_sty_1" id="checkValidation"
+                    data-toggle="modal"
+                    onClick="checkVal(this.form); return false;">Book Now</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <form action="paymentSaveCard" method="POST" id="zeroAdvancePaymentForm">
+              <div class="dateContainerDiv"></div>
+              <input type="hidden" id="zeroPaymentFindtimezone" name="timezone" value="">
+              <script>
+                var finalTimeZone = moment.tz.guess();
+                document.getElementById("zeroPaymentFindtimezone").value = finalTimeZone;
+              </script>
+              <div id="hideButton">
+                <Button type="submit" class="btn_sty_1 zero_price_pay">Pay Now</Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- book appointments end -->
+
+    <!-- service_popup start -->
+    <div class="modal" id="service_popModal">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Add Service</h4>
+            <button type="button" class="close" data-toggle="modal" data-target="#book_appointmentsModal" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+          <% for(var i=0; i<services.length; i++) { %>
+            <div class="offer_ser_box">
+              <div class="offer_ser_img" id="offer_ser_img">
+                <% if (services.icon == '' || services.icon == 'null' || services.icon == 'Null') {%>
+                  <img src="<%= baseUrl%>admin/images/user.png"> 
+                  <%}else{%>
+                  <img src="<%= baseUrl%>uploads/profile/<%= services[i].icon %>">
+                <%}%>
+              </div>
+              <div class="offer_ser_info">
+                <h3 class="offer_ser_heading" id="offer_ser_heading"><%= services[i].name %></h3>
+                <h4 class="offer_ser_price">Price: $<span id="offer_ser_price"><%= services[i].price %></span></h4>
+                <h4 class="offer_ser_price">Advance: <span><%= services[i].advance %></span>%</h4>
+                <% if (services[i].cancellation < 60) {%>
+                  <h4 class="offer_ser_price">Cancellation Time: <span><%= services[i].cancellation %> min</span></h4>
+                <% } else { %>
+                  <h4 class="offer_ser_price">Cancellation Time: <span><%= services[i].cancellation/60 %> <%= services[i].cancellation/60 > 1 ? 'hrs' : 'hr' %></span></h4>
+                <% } %>
+                <p><%= services[i].description %></p>
+                <a href="#" class="btn_sty_1 Add_ser"
+                data-id="<%= services[i]._id %>"
+                data-img="<%= baseUrl%>uploads/profile/<%= services[i].icon %>"
+                data-name="<%= services[i].name %>"
+                data-price="<%= services[i].price %>"
+                data-advance="<%= services[i].advance %>"
+                data-duration="<%= services[i].minutes %>"
+                id="addRow">Book Now</a>
+              </div>
+            </div>
+            <div id="add_ser"></div>
+          <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- service_popup end -->
+
+    <!-- make payment start -->
+    <div class="modal yScroll" id="paymentModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Payment</h4>
+            <button type="button" class="close" data-dismiss="modal" id="empty_div"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <% if(typeof cardList != "undefined" && cardList != ""){ %>
+              <form action="paymentSaveCard" method="POST" id="saveCardForm">
+                <div class="dateContainerDiv"></div>
+                <input type="hidden" id="timezone" name="timezone" value="">
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  document.getElementById("timezone").value = finalTimeZone;
+                </script>
+                <h5 class="payment_select_card">Select Card</h5>
+                <div class="row">
+                  <% for(var i=0; i<cardList.length; i++) { %>
+                  <div class="col-xl-12" id="append_amount" style="display: flex; align-items: center;">
+                      <input name="existingCardRadio" type="radio" class="existingCardRadio" value="<%- cardList[i].id %>" style="margin-right: 10px;">
+                      <div class="payment_cart">
+                        <div class="card_logo">
+                            <img src="<%= baseUrl%>img/visa.png" alt="">
+                        </div>
+                        <div class="card_info">
+                            <h4 class="card_number">**** **** **** <span id="getCardNumber"></span>
+                              <span id="card_number">
+                                <%= cardList[i].last4 %>
+                              </span></h4>
+                            <h5 class="card_expire">Expires <%= cardList[i].exp_month %>/<%= cardList[i].exp_year %></h5>
+                        </div>
+                      </div>
+                      <script>
+                        $("#saveCardForm").submit(function(){
+
+                          let selected_radio = $('input[name="optradio"]:checked').attr('id');
+                          let tip_val = $("#tip").val() || 0;
+                          let discountAmount = $(".discountAmount").val() || 0;
+                          let couponCode = $(".applied_coupon_code").val();
+                          let coupon_based_on = $(".coupon_based_on").val();
+                          let coupon_type = $(".coupon_type").val();
+                          let discount = $(".discount").val();
+                          let ispAccId = $("#ispAccId").val();
+
+                          $('#saveCardForm [name="tip1"]').remove();
+                          $('#saveCardForm [name="userId"]').remove();
+                          $('#saveCardForm [name="selectedRadio"]').remove();
+                          $('#saveCardForm [name="discountAmount"]').remove();
+                          $('#saveCardForm [name="coupon_code"]').remove();
+                          $('#saveCardForm [name="coupon_based_on"]').remove();
+                          $('#saveCardForm [name="coupon_type"]').remove();
+                          $('#saveCardForm [name="discount"]').remove();
+                          $('#saveCardForm [name="ispAccId"]').remove();
+                          
+                          $('#saveCardForm').append('<input type="hidden" name="tip1" value="'+tip_val+'">');
+                          $('#saveCardForm').append('<input type="hidden" name="userId" value="<%- userId %>">');
+                          $('#saveCardForm').append('<input type="hidden" name="selectedRadio" value="'+selected_radio+'">');
+                          $('#saveCardForm').append('<input type="hidden" name="discountAmount" value="'+discountAmount+'">');
+                          $('#saveCardForm').append('<input type="hidden" name="coupon_code" value="'+couponCode+'">');
+                          $('#saveCardForm').append('<input type="hidden" name="coupon_based_on" value="'+coupon_based_on+'">');
+                          $('#saveCardForm').append('<input type="hidden" name="coupon_type" value="'+coupon_type+'">');
+                          $('#saveCardForm').append('<input type="hidden" name="discount" value="'+discount+'">');
+                          $('#saveCardForm').append('<input type="hidden" name="ispAccId" value="'+ispAccId+'">');
+                        });
+                      </script>
+                  </div>
+                  <% } %>
+                </div>
+                <Button type="submit" class="btn_sty_1 pay_now_using_existing_btn">Pay Now</Button>
+              </form>
+
+              <div class="form_seprator">
+                <div class="sep_or">OR</div>
+              </div>
+            <% } %>
+            <div class="row">
+              <div class="form_container" style="width: 100%;margin-top: 37px;">
+                <div class="col-md-12">
+                  <h4>Payment with new card.</h4>
+                </div>
+    
+                <div class="col-md-12">
+                  <label for="card-element">
+                    Credit or debit card
+                  </label>
+                  <div id="card-element" style="width: 450px; max-width:100%;">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+                  </div>
+                  
+                <form action="payment" method="post" id="payment-form">
+                  <div class="dateContainerDiv1"></div>
+                  <input type="hidden" id="timezone1" name="timezone" value="">
+                  <script>
+                    var finalTimeZone = moment.tz.guess();
+                    document.getElementById("timezone1").value = finalTimeZone;
+                  </script>
+                  <div class="col-md-12" style="padding-top: 10px;">
+                    <div class="form-group mb-0">
+                      <input type="hidden" name="userId" value="<%- userId %>">
+                      <button type="submit" class="btn_sty_1 pay_now_btn">Pay Now</button>
+                    </div>
+                    <script>
+                      $("#payment-form").click(function(){
+
+                      let selected_radio = $('input[name="optradio"]:checked').attr('id');
+                      let tip_val = $("#tip").val() || 0;
+                      let discountAmount = $(".discountAmount").val() || 0;
+                      let couponCode = $("#couponCode").val();
+                      let coupon_based_on = $(".coupon_based_on").val();
+                      let coupon_type = $(".coupon_type").val();
+                      let discount = $(".discount").val();
+                      let ispAccId = $("#ispAccId").val();
+
+                      $('#payment-form [name="tip1"]').remove();
+                      $('#payment-form [name="userId"]').remove();
+                      $('#payment-form [name="selectedRadio"]').remove();
+                      $('#payment-form [name="discountAmount"]').remove();
+                      $('#payment-form [name="coupon_code"]').remove();
+                      $('#payment-form [name="coupon_based_on"]').remove();
+                      $('#payment-form [name="coupon_type"]').remove();
+                      $('#payment-form [name="discount"]').remove();
+                      $('#payment-form [name="ispAccId"]').remove();
+                        
+                      $('#payment-form').append('<input type="hidden" name="tip1" value="'+tip_val+'">');
+                      $('#payment-form').append('<input type="hidden" name="userId" value="<%- userId %>">');
+                      $('#payment-form').append('<input type="hidden" name="selectedRadio" value="'+selected_radio+'">');
+                      $('#payment-form').append('<input type="hidden" name="discountAmount" value="'+discountAmount+'">');
+                      $('#payment-form').append('<input type="hidden" name="coupon_code" value="'+couponCode+'">');
+                      $('#payment-form').append('<input type="hidden" name="coupon_based_on" value="'+coupon_based_on+'">');
+                      $('#payment-form').append('<input type="hidden" name="coupon_type" value="'+coupon_type+'">');
+                      $('#payment-form').append('<input type="hidden" name="discount" value="'+discount+'">');
+                      $('#payment-form').append('<input type="hidden" name="ispAccId" value="'+ispAccId+'">');
+                      });
+                    </script>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-xl-4"><div class="price_des">$<span class="totalAmount"></span></div></div>
+              <input type="hidden" value="" class="totalAmountBeforeCoupon">
+              <input type="hidden" value="" class="discountAmount" name="discountAmount">
+              <input type="hidden" value="" class="applied_coupon_code" name="applied_coupon_code">
+              <input type="hidden" value="" class="coupon_based_on" name="coupon_based_on">
+              <input type="hidden" value="" class="coupon_type" name="coupon_type">
+              <input type="hidden" value="" class="discount" name="discount">
+              <div class="col-xl-8">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="couponCode" id="couponCode">
+                  <span class="coupon_code_error hidden" style="font-weight:500; color: red;"></span>
+                  <button type="button" class="apply_coupon">Apply Coupon</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- make payment end -->
+    <!-- share start -->
+    <div class="modal" id="shareModalDetaisPage">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Share</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="invitation_code_sec">
+              <label>Invitation Code</label>
+              <div class="invitation_code"><%- result.inviteCode %></div>
+            </div>
+            <div class="share_seprator">
+              <span>Share Link</span>
+            </div>
+            <ul class="social_share">
+              <li>
+                <a href="https://www.facebook.com/sharer.php?u=<%- baseUrl %>share?verifyCode=<%= result._id %>
+					&client_id=3199387653679851
+					&redirect_uri=https://stage.oyoapp.com/connectedIspList
+					&display=popup"> 
+                  <img src="<%= baseUrl%>img/facebook.png" alt="">
+                  <span>Facebook</span>
+                </a>
+              </li>
+
+              <li>
+                <a target="_blank" href="https://twitter.com/intent/tweet?url=<%- baseUrl %>share?verifyCode=<%= result._id %>">
+                  <img src="<%= baseUrl%>img/twitter.png" alt="">
+                  <span>Twitter</span>
+                </a>
+              </li>
+              <li>
+                <a href="mailto:?subject=Invitation code&body= <%= result.name %> - <%= result.inviteCode %> , Please visit oyoapp.com use my invitation code to search and connect with me. <%- baseUrl %>">
+                  <img src="<%- baseUrl %>img/email.png" alt="">
+                  <span>E-Mail</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" onClick="return  myFunction();">
+                  <img src="<%= baseUrl%>img/copy-code.png" alt="">
+                  <span>Copy</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- share end -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <!-- Stripe Payment -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <style>
+      .StripeElement {
+        box-sizing: border-box;
+    
+        height: 40px;
+    
+        padding: 10px 12px;
+    
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: white;
+    
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+      }
+    
+      .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+      }
+    
+      .StripeElement--invalid {
+        border-color: #fa755a;
+      }
+    
+      .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+      }
+    
+      .linkFor:hover {
+        text-decoration: none;
+        color: #333
+      }
+    
+      .linkFor {
+        text-decoration: none;
+      }
+    
+    
+     .payment_card_sec .card_block {width: calc(100% - 30px); float: right;}
+    
+     @media (max-width: 550px){
+     .card_block_left {margin:0 10px 0 0;}
+     .card_block_right {width:auto; text-align: left;}
+     .card_block_right h4 {font-size: 16px;}
+     }
+    
+  </style>
+  
+  <script>
+    function myFunction() {
+      /* Get the text field */
+      var copyText = "<%- result.inviteCode %>";
+
+      /* Select the text field */
+      // copyText.select()
+      // copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      navigator.clipboard.writeText(copyText);
+
+      /* Alert the copied text */
+      // alert("Copied the text: " + copyText);
+      Swal.fire("Copied the text: " + copyText)
+    }
+      // Create a Stripe client.
+      var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+    
+      // Create an instance of Elements.
+      var elements = stripe.elements();
+    
+      // Custom styling can be passed to options when creating an Element.
+      // (Note that this demo uses a wider set of styles than the guide below.)
+      var style = {
+        base: {
+          color: '#32325d',
+          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+          fontSmoothing: 'antialiased',
+          fontSize: '16px',
+          '::placeholder': {
+            color: '#aab7c4'
+          }
+        },
+        invalid: {
+          color: '#fa755a',
+          iconColor: '#fa755a'
+        }
+      };
+    
+      // Create an instance of the card Element.
+      var card = elements.create('card', {hidePostalCode: true, style: style});
+    
+      // Add an instance of the card Element into the `card-element` <div>.
+      card.mount('#card-element');
+    
+      // Handle real-time validation errors from the card Element.
+      card.addEventListener('change', function (event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+          displayError.textContent = event.error.message;
+        } else {
+          displayError.textContent = '';
+        }
+      });
+    
+      // Handle form submission.
+      var form = document.getElementById('payment-form');
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+    
+        stripe.createToken(card).then(function (result) {
+          if (result.error) {
+            // Inform the user if there was an error.
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+          } else {
+            // Send the token to your server.
+            stripeTokenHandler(result.token);
+          }
+        });
+      });
+    
+      // Submit the form with the token ID.
+      function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+        $(".pay_now_btn").attr("disabled", true);
+        // Submit the form
+        form.submit();
+      }
+    
+      $(function () {
+        $('.linkFor').one('click', function () {
+          window.location.replace($(this).data('href'));
+          $(this).removeAttr('data-href');
+        });
+      });
+
+      var saveCardForm = document.getElementById('saveCardForm');
+      saveCardForm.addEventListener('submit', function (event) {
+        $(".pay_now_using_existing_btn").attr("disabled", true);
+        console.log("-------------------->");
+        form.submit();
+      });
+  </script>
+
+  <!-- Datepicker -->
+  <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+  <link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+  <script src="<%- baseUrl %>js/sweetalert2.js"></script>
+  <script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+  <script src="<%- baseUrl %>validation/custom.validate.js"></script>
+  <script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+  <script>
+      const confirmFormAlert = async function (events,msg,type) {
+        const sweetConfirm = await Swal.fire({
+          title: msg,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          confirmButtonColor: 'limegreen',
+          cancelButtonText: 'No',
+          cancelButtonColor:'red'
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            if(type == 'click'){
+              window.location=events.href;
+            }else{
+              events.submit();
+            }
+          }else{
+            return false;
+          }
+        });
+        return sweetConfirm;
+      }
+  </script>
+  <script>
+    $(function () {
+      $(".rating").rateYo({
+          readOnly: true,
+          starWidth: "15px",
+          ratedFill: "#fe724c"
+      });
+      $(".rating").rateYo();
+    });
+  </script>
+  <script>
+    $(".rateYo").rateYo({
+      readOnly: true,
+      starWidth: "17px",
+      ratedFill: "#fe724c"
+    });
+  </script>
+  <script>
+    $("#tip").keypress(function(e) {
+      if (String.fromCharCode(e.which).match(/[^0-9.]/)) {
+        e.preventDefault();
+      }
+    });
+  </script>
+  <script>
+    window.onload = function() {
+      document.getElementById('tip').value = '';
+      document.getElementById('prevTip').value = '';
+    }
+    function getval(sel){
+      var price = $('#service_price_radio').text();
+      var advance = $('#service_advance_radio').text();
+      var tip = parseFloat(sel.value);
+      console.log("tip",tip);
+      var prevTip = $('#prevTip').val();
+      console.log("prevTip",prevTip);
+      $('#prevTip').val(tip);
+      if( isNaN(tip)){
+        var totalPriceValue = $('#service_price_radio').html();
+        var advancePriceValue = $('#service_advance_radio').html();
+        totalPriceValue = parseFloat(totalPriceValue);
+        advancePriceValue = parseFloat(advancePriceValue);
+        totalPriceValue = totalPriceValue - prevTip;
+        advancePriceValue = advancePriceValue - prevTip;
+        $("#service_price_radio").html(totalPriceValue);
+        $("#service_advance_radio").html(advancePriceValue);
+        return false
+      }
+      
+      price = parseFloat(price);
+      console.log("price",price);
+      prevTip = parseFloat(prevTip);
+      if( isNaN(prevTip)){
+        var prevTip = 0;
+      }
+      console.log("prevTip",prevTip);
+      advance = parseFloat(advance);
+      console.log("advance",advance);
+      price = price + tip - prevTip;
+      console.log("price",price);
+      advance = advance + tip - prevTip;
+      console.log("advance",advance);
+
+      $("#service_price_radio").html(price);
+      $("#service_advance_radio").html(advance);
+    }
+  </script>
+  <script>
+    $(document).ready(function(){
+      $('input:radio[name="existingCardRadio"]').filter('.existingCardRadio').attr('checked', true);
+      $('input:radio[name="optradio"]').filter('#service_price_radio_val').attr('checked', true);
+      $('.timepicker').timepicker({
+        timeFormat: 'h:mm p',
+        // interval: 120,
+        'step': '30',
+        minTime: '12:00am',
+        maxTime: '11:00pm',
+        // defaultTime: '11',
+        startTime: '00:00',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true,
+      });
+    });
+  </script>
+  <script>
+    jQuery.validator.addMethod("checkPrevTime1", function(value, element, params) {
+      var date = $('input[name="date"]').val() || 0;
+      var date1 = $('input[name="date1"]').val() || 0;
+      if( date == date1){
+        var duration = $('#get_service_duration').val();
+        var startTime1 = $('#time').val();
+        startTime1 = moment(startTime1, 'HH:mm A').format('HH:mm');
+        var endTime1 = moment(startTime1, 'HH:mm A').add(duration, 'm').format('HH:mm');
+
+        var startTime2 = $('#time1').val();
+        startTime2 = moment(startTime2, 'HH:mm A').format('HH:mm');
+
+        if((startTime1 == startTime2) || (startTime2 > startTime1 && startTime2 < endTime1)){
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return true
+      }
+    }, 'Please, choose different time.');
+    jQuery.validator.addMethod("checkPrevTime2", function(value, element, params) {
+      var date1 = $('input[name="date1"]').val() || 0;
+      var date2 = $('input[name="date2"]').val() || 0;
+      if( date1 == date2){
+        var duration = $('#get_service_duration1').val();
+        var startTime1 = $('#time1').val();
+        startTime1 = moment(startTime1, 'HH:mm A').format('HH:mm');
+        var endTime1 = moment(startTime1, 'HH:mm A').add(duration, 'm').format('HH:mm');
+
+        var startTime2 = $('#time2').val();
+        startTime2 = moment(startTime2, 'HH:mm A').format('HH:mm');
+        if((startTime1 == startTime2) || (startTime2 > startTime1 && startTime2 < endTime1)){
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return true
+      }
+    }, 'Please, choose different time.');
+    jQuery.validator.addMethod("checkPastTime", function(value, element, params) {
+      var finalTimeZone = moment.tz.guess();
+      var val = value;
+      var dateIdName = ($(element).data('row') == undefined) ? 'date' : 'date'+$(element).data('row');
+      var dateInputValue = $('#'+dateIdName).val();
+      dateInputValue = moment(dateInputValue).format('MM-DD-YYYY');
+      dateInputValue = moment.utc(dateInputValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateInputValue----------->",dateInputValue);
+      var todayDate = new Date().toISOString();
+      // IST time zone code
+      todayDate = todayDate.split('.')[0];
+      var dateTz = moment.tz(todayDate, "GMT");
+      todayDate = dateTz.clone().tz(finalTimeZone).format("YYYY-MM-DD");
+		  var todayTime = dateTz.clone().tz(finalTimeZone).format("HH:mm:ss");
+      // IST time zone code end
+      val = moment.utc(val, 'hh:mm A').format('HH:mm:ss');
+      if(todayDate >= dateInputValue){
+        if(todayDate == dateInputValue){
+          return todayTime < val
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
+    }, 'To Time must be greater than current Time.');
+    function is_past_time() {
+      return $('[name="date"]').val().length > 0;
+    }function is_past_time1() {
+      return $('[name="date1"]').val().length > 0;
+    }function is_past_time2() {
+      return $('[name="date2"]').val().length > 0;
+    }function is_past_time3() {
+      return $('[name="date3"]').val().length > 0;
+    }
+
+    $validator= $("form[name='appointmentForm']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+            date: {
+              required: true,
+              // remote: {
+              //   url: "<%- baseUrl %>checkOffDay",
+              //   type: "POST",
+              //   data: {
+              //       date: function () {
+              //           return $("#date").val();
+              //       },
+              //       ispId: function () {
+              //           return $("#businessOwnerId").val();
+              //       }
+              //   },
+              // },
+            },
+            time: {
+              required: true,
+              checkPastTime:{
+                depends: is_past_time,
+                param: $('input[name="date"]').val(),
+              },
+            },
+            date1: {
+              required: true,
+            },
+            time1: {
+              required: true,
+              checkPastTime:{
+                depends: is_past_time1,
+                param: $('input[name="date1"]').val(),
+              },
+              checkPrevTime1:{
+                depends: is_past_time1,
+                param: $('input[name="date1"]').val(),
+              },
+            },
+            date2: {
+              required: true,
+            },
+            time2: {
+              required: true,
+              checkPastTime:{
+                depends: is_past_time2,
+                param: $('input[name="date2"]').val(),
+              },
+              checkPrevTime2:{
+                depends: is_past_time2,
+                param: $('input[name="date2"]').val(),
+              },
+            },
+            date3: {
+              required: true,
+            },
+            time3: {
+              required: true,
+              checkPastTime:{
+                depends: is_past_time3,
+                param: $('input[name="date3"]').val(),
+              },
+            },
+        },
+        messages: {
+            date: {
+            required: 'Please enter a valid date',
+            // remote: 'Please select diffrent date, that day is off.'
+            },
+            time: {
+            required: 'Please enter a valid time.',
+            },
+            date1: {
+            required: 'Please enter a valid date',
+            },
+            time1: {
+            required: 'Please enter a valid time.',
+            },
+            date2: {
+            required: 'Please enter a valid date',
+            },
+            time2: {
+            required: 'Please enter a valid time.',
+            },
+            date3: {
+            required: 'Please enter a valid date',
+            },
+            time3: {
+            required: 'Please enter a valid time.',
+            },
+        },
+        submitHandler: function (form) {
+          //return false;
+          $(":submit").attr("disabled", true);
+          form.submit();
+        }
+    });
+    $validator= $("form[name='myNotes']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+          myNotes: {
+              required: true,
+            },
+        },
+        messages: {
+          myNotes: {
+            required: 'Please enter some notes.',
+            },
+        },
+        submitHandler: function (form) {
+          $(":submit").attr("disabled", true);
+          form.submit();
+        }
+    });
+    $validator= $("form[name='applyCoupon']").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+          couponCode: {
+              required: false,
+              remote: {
+                url: "<%- baseUrl %>applyCoupon",
+                type: "POST",
+                data: {
+                    coupon: function () {
+                        return $("#couponCode").val();
+                    }
+                },
+                beforeSend: function () {
+                },
+                success: function(data) {
+                  console.log("data",data);
+                }
+              }
+            },
+        },
+        messages: {
+          couponCode: {
+            required: 'Please enter coupon code.',
+            remote: 'Please choose diffrent coupon code',
+            },
+        },
+        submitHandler: function (form) {
+          $(":submit").attr("disabled", true);
+          form.submit();
+        }
+    });
+    function getAvailableTime(check) {
+      // $(".loader-bg").fadeIn(0000);
+      var boId = $("#businessOwnerId").val();
+      var findtimezone = $("#findtimezone").val();
+      var serviceId = $("#get_service_id").val();
+      var dateValue = $('[name="date"]').val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      $(".datePicker").val(dateValue);
+      console.log("dateValue----------->",dateValue);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>findBusinessSlots`,
+        data: {
+          ispId: function () {
+            return $("#businessOwnerId").val();
+          },
+          serviceId: function () {
+            return $("#get_service_id").val();
+          },
+          date: function () {
+            return dateValue;
+          },
+          timezone: function () {
+            return $("#findtimezone").val();
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          $(".slots").empty();
+          if(data.length == 0){
+            Swal.fire('The Business Owner is not available. Please select another day')
+          } else {
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            console.log(currentTime)
+            var option = '';
+            $(".slots").append('<option value="">Please select</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots').append(option);
+          }
+          // $(".loader-bg").fadeOut(1750);
+        }
+      });
+    }
+    function getAvailableTime1(check) {
+      console.log("Hey")
+      var boId = $("#businessOwnerId").val();
+      var findtimezone = $("#findtimezone").val();
+      var serviceId = $("#get_service_id1").val();
+      var dateValue = $("#date1").val()// $('[name="date1"]').val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log($("#date1").val())
+      console.log($('[name="date1"]').val())
+      console.log("dateValue----------->",dateValue);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>findBusinessSlots`,
+        data: {
+          ispId: function () {
+            return $("#businessOwnerId").val();
+          },
+          serviceId: function () {
+            return $("#get_service_id1").val();
+          },
+          date: function () {
+            return dateValue;
+          },
+          timezone: function () {
+            return $("#findtimezone").val();
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          $(".slots1").empty();
+          if(data.length == 0){
+            Swal.fire('The Business Owner is not available. Please select another day')
+          } else {
+            var option = '';
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            $(".slots1").append('<option value="">Please select</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots1').append(option);
+          }
+        }
+      });
+    }
+    function getAvailableTime2(check) {
+      var boId = $("#businessOwnerId").val();
+      var findtimezone = $("#findtimezone").val();
+      var serviceId = $("#get_service_id2").val();
+      var dateValue = $('[name="date2"]').val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateValue----------->",dateValue);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>findBusinessSlots`,
+        data: {
+          ispId: function () {
+            return $("#businessOwnerId").val();
+          },
+          serviceId: function () {
+            return $("#get_service_id2").val();
+          },
+          date: function () {
+            return dateValue;
+          },
+          timezone: function () {
+            return $("#findtimezone").val();
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          $(".slots2").empty();
+          if(data.length == 0){
+            Swal.fire('The Business Owner is not available. Please select another day')
+          } else {
+            var option = '';
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            $(".slots2").append('<option value="">Please select</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots2').append(option);
+          }
+        }
+      });
+    }
+    function getAvailableTime3(check) {
+      var boId = $("#businessOwnerId").val();
+      var findtimezone = $("#findtimezone").val();
+      var serviceId = $("#get_service_id3").val();
+      var dateValue = $('[name="date3"]').val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateValue----------->",dateValue);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>findBusinessSlots`,
+        data: {
+          ispId: function () {
+            return $("#businessOwnerId").val();
+          },
+          serviceId: function () {
+            return $("#get_service_id3").val();
+          },
+          date: function () {
+            return dateValue;
+          },
+          timezone: function () {
+            return $("#findtimezone").val();
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          $(".slots3").empty();
+          if(data.length == 0){
+            Swal.fire('The Business Owner is not available. Please select another day')
+          } else {
+            var option = '';
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            $(".slots3").append('<option value="">Please select</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots3').append(option);
+          }
+        }
+      });
+    }
+    
+    function checkVal(form) {
+      
+      if ($("#appointmentForm").valid()) {
+        // var date = $("#date").val();
+        //   console.log("date",date);
+        //   alert(date);
+        $('.discountAmount').val('');
+
+        if($('#date1').val() == undefined){
+          var dateValue = $('[name="date"]').val();
+          dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+          console.log("dateValue   dateContainerDiv----------->",dateValue);
+          var timeValue = $('[name="time"]').val();
+          var titleValue = $('#get_service_title').val();
+          var priceValue = $('#get_service_price').val();
+          var tipValue = $('#tip').val() || 0;
+          var totalValueWithTip = parseFloat(priceValue) + parseFloat(tipValue);
+
+          $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="title[]" value="'+ titleValue +'">');
+          $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="price[]" value="'+ priceValue +'">');
+          $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="date[]" value="'+ dateValue +'">');
+          $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="time[]" value="'+ timeValue +'">');
+          if($("#service_advance_radio_val").is(":checked")){
+            var totalamount = $('#service_advance_radio').html();
+            totalamount = parseFloat(totalamount);
+            $(".totalAmount").html(totalamount);
+            $(".totalAmountBeforeCoupon").val(totalamount);
+          } else {
+            $(".totalAmount").html(totalValueWithTip);
+            $(".totalAmountBeforeCoupon").val(totalValueWithTip);
+          }
+        } else {
+          var allInputs = document.getElementsByTagName('input');
+          console.log("allInputs",allInputs);
+          var totalAmount = 0;
+          var tipValue = $('#tip').val() || 0;
+
+          for (var i = 0; i < 40; i++) {
+            if(allInputs[i].id == 'get_service_title'){
+              var title_value = allInputs[i].value;
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="title[]" value="'+ title_value +'">');
+            }
+            if(allInputs[i].id == 'get_service_price'){
+              var price_value = allInputs[i].value;
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="price[]" value="'+ price_value +'">');
+              totalAmount = parseFloat(totalAmount) + parseFloat(price_value);
+            }
+            if(allInputs[i].id == 'get_service_title1'){
+              var title_value = allInputs[i].value;
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="title[]" value="'+ title_value +'">');
+            }
+            if(allInputs[i].id == 'get_service_price1'){
+              var price_value = allInputs[i].value;
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="price[]" value="'+ price_value +'">');
+              totalAmount = parseFloat(totalAmount) + parseFloat(price_value);
+            }
+            if(allInputs[i].id == 'get_service_title2'){
+              var title_value = allInputs[i].value;
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="title[]" value="'+ title_value +'">');
+            }
+            if(allInputs[i].id == 'get_service_price2'){
+              var price_value = allInputs[i].value;
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="price[]" value="'+ price_value +'">');
+              totalAmount = parseFloat(totalAmount) + parseFloat(price_value);
+            }
+            if(allInputs[i].id == 'get_service_title3'){
+              var title_value = allInputs[i].value;
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="title[]" value="'+ title_value +'">');
+            }
+            if(allInputs[i].id == 'get_service_price3'){
+              var price_value = allInputs[i].value;
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="price[]" value="'+ price_value +'">');
+              totalAmount = parseFloat(totalAmount) + parseFloat(price_value);
+            }
+            if(allInputs[i].id == 'date'){
+              let date_value = allInputs[i].value;
+              date_value = moment.utc(date_value, 'MM-DD-YYYY').format('YYYY-MM-DD');
+              console.log("date_value   dateContainerDiv----------->",date_value);
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="date[]" value='+ date_value +'>');
+              let time_value = $('[name="time"]').val();
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="time[]" value="'+ time_value +'">');
+            }
+            if(allInputs[i].id == 'date1'){
+              let date_value = allInputs[i].value;
+              date_value = moment.utc(date_value, 'MM-DD-YYYY').format('YYYY-MM-DD');
+              console.log("date_value   dateContainerDiv----------->",date_value);
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="date[]" value='+ date_value +'>');
+              let time_value = $('[name="time1"]').val();
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="time[]" value="'+ time_value +'">');
+            }
+            if(allInputs[i].id == 'date2'){
+              let date_value = allInputs[i].value;
+              date_value = moment.utc(date_value, 'MM-DD-YYYY').format('YYYY-MM-DD');
+              console.log("date_value   dateContainerDiv----------->",date_value);
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="date[]" value='+ date_value +'>');
+              let time_value = $('[name="time2"]').val();
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="time[]" value="'+ time_value +'">');
+            }
+            if(allInputs[i].id == 'date3'){
+              let date_value = allInputs[i].value;
+              date_value = moment.utc(date_value, 'MM-DD-YYYY').format('YYYY-MM-DD');
+              console.log("date_value   dateContainerDiv----------->",date_value);
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="date[]" value='+ date_value +'>');
+              let time_value = $('[name="time3"]').val();
+              $('.dateContainerDiv, .dateContainerDiv1').append('<input type="hidden" name="time[]" value="'+ time_value +'">');
+            }
+          }
+          if($("#service_advance_radio_val").is(":checked")){
+            var totalAdvAmount = $('#service_advance_radio').html();
+            totalAdvAmount = parseFloat(totalAdvAmount);
+            $(".totalAmount").html(totalAdvAmount);
+            $(".totalAmountBeforeCoupon").val(totalAdvAmount);
+          } else {
+            totalAmount = parseFloat(totalAmount) + parseFloat(tipValue);
+            $(".totalAmount").html(totalAmount);
+            $(".totalAmountBeforeCoupon").val(totalAmount);
+          }
+        }
+        let checkAdvancePrice = $('#advancePriceValue').val();
+        let selected_radio = $('input[name="optradio"]:checked').attr('id');
+        if(checkAdvancePrice == 0 && selected_radio == 'service_advance_radio_val'){
+          let tip_val = $("#tip").val() || 0;
+          let discountAmount = $(".discountAmount").val() || 0;
+          let ispAccId = $("#ispAccId").val();
+          $('.dateContainerDiv').append('<input type="hidden" name="tip1" value="'+tip_val+'">');
+          $('.dateContainerDiv').append('<input type="hidden" name="userId" value="<%- userId %>">');
+          $('.dateContainerDiv').append('<input type="hidden" name="selectedRadio" value="'+selected_radio+'">');
+          $('.dateContainerDiv').append('<input type="hidden" name="discountAmount" value="'+discountAmount+'">');
+          $('.dateContainerDiv').append('<input type="hidden" name="ispAccId" value="'+ispAccId+'">');
+          document.getElementById("zeroAdvancePaymentForm").submit();
+        } else {
+          $('#paymentModal').modal('show');
+          $('#book_appointmentsModal').modal('hide');
+        }
+      } else {
+        $('#book_appointmentsModal').modal('show');
+      }
+    }
+  </script>
+  <script>
+    $(document).ready(function () {
+      $(".mobile_menu_btn").click(function () {
+        $(".mobile_menu").addClass("menu_open");
+      });
+
+      $(".menu_close").click(function () {
+        $(".mobile_menu").removeClass("menu_open");
+      });
+    });
+    function notify(){
+      $(".common-notification-hideShow").toggle();
+    }
+  </script>
+  <script>
+    $(document).ready(function(){  $(".hideShowBtn").click(function(){
+        $(".common-notification-hideShow").toggle();
+      });
+    });
+  </script>
+
+    <script>
+      $('.isp_work_list').slick({
+        dots: true,
+        infinite: true,
+        arrows:false,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        responsive: [
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 500,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+        ]
+      });
+    </script>
+    <script>
+    $("#shareModalDetaisPage").modal({
+			show: false,
+			backdrop: 'static'
+		});
+    $("#paymentModal").modal({
+			show: false,
+			backdrop: 'static'
+		});
+    $("#book_appointmentsModal").modal({
+			show: false,
+			backdrop: 'static'
+		});
+    $("#business_hoursModal").modal({
+			show: false,
+			backdrop: 'static'
+		});
+      $(document).ready(function(){
+        $('.service-link').addClass('nav-active'); 
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function(){
+        $("#empty_div").click(function(){
+          $(".dateContainerDiv, .dateContainerDiv1, #book_now_row, #newRow").empty();
+          $('#tip').val('');
+          $('.addedServices').val('1');
+        });
+        $("#empty_appointments").click(function(){
+          $('.addedServices').val('1');
+          $("#book_now_row, #newRow").empty();
+          $('#tip').val('');
+          $('#prevTip').val(0);
+          $(".removeAdd_off_ser").empty();
+        });
+        $(document).on('click', '.book_now', function(){
+          $("#hideButton").hide();
+          var ser_img = $(this).data('img');
+          var ser_name = $(this).data('name');
+          var ser_price = $(this).data('price');
+          var ser_advance = $(this).data('advance');
+          var ser_duration = $(this).data('duration');
+          var ser_id = $(this).data('id');
+         // console.log("ser_advance----------------->" , ser_advance);
+          $('#add_off_ser').html('');
+          $('#add_off_ser').append(`
+          <input type="hidden" name="service_offer_img" id="service_offer_img" value="${ser_img}">
+          <input type="hidden" name="service_offer_title" id="service_offer_title" value="${ser_name}">
+          <input type="hidden" name="service_offer_price" id="service_offer_price" value="${ser_price}">
+          <input type="hidden" name="service_offer_advance" id="service_offer_advance" value="${ser_advance}">
+          <input type="hidden" name="service_offer_duration" id="service_offer_duration" value="${ser_duration}">
+          <input type="hidden" name="service_offer_id" id="service_offer_id" value="${ser_id}">
+          `);          
+          // var img = $('#service_img1 img').attr('src');
+          // var title = $('#service_title1').text();
+          // var price = $('#service_price1').text();
+          // var advance = $('#service_advance1').text();
+          var img = $('#service_offer_img').val();
+          var title = $('#service_offer_title').val();
+          var price = $('#service_offer_price').val();
+          var advance = $('#service_offer_advance').val();
+          var duration = $('#service_offer_duration').val();
+          var service_id = $('#service_offer_id').val();
+          
+          advance = parseFloat(advance);
+          // console.log("advance-----------------> " , advance);
+          if(advance == 100){
+            // var advanceHide = document.getElementsByClassName("advanceHide");
+            var advanceHide = document.getElementById("advanceHide");
+            advanceHide.style.display = "none";
+          }else{
+            var advanceHide = document.getElementById("advanceHide");
+            advanceHide.style.display = "block";
+          }
+          price1 = parseFloat(price);
+          advance = (advance * price1)/100;
+          advance = advance.toFixed(2);
+          advance = advance.toString();
+
+          $('#service_img img').attr('src', img);
+          $("#service_title").html(title);
+          $("#service_price").html(price);
+          $("#get_service_title").val(title);
+          $("#get_service_price").val(price);
+          $("#service_price_radio").html(price);
+          $("#service_advance_radio").html(advance);
+          $("#service_price_radio_val").val(price);
+          $("#service_advance_radio_val").val(advance);
+          $("#totalPriceValue").val(price);
+          $("#advancePriceValue").val(advance);
+
+          let row = "";
+var buttonBookNow =  '<div class="col-md-10 removeService">' +
+                        '<div class="book_service_box">' +
+                          '<div class="book_service_pic">' +
+                            '<img src="'+ img +'" alt="">' +
+                          '</div>' +
+                          '<div class="book_service_info">' +
+                            '<h3 name="hair_cutting" id="service_title">'+ title +'</h3>' +
+                            '<h4>$<span id="service_price">'+ price +'</span></h4>' +
+                            '<input type="hidden" id="get_service_title'+ row +'" value="'+ title +'">' +
+                            '<input type="hidden" id="get_service_price'+ row +'" value="'+ price +'">' +
+                            '<input type="hidden" id="get_service_duration'+ row +'" value="'+ duration +'">' +
+                            '<input type="hidden" id="get_service_id'+ row +'" value="'+ service_id +'">' +
+                          '</div>' +
+                        '</div>' +
+                      '</div>' +
+                      '<div class="col-md-2 pt-2 removeService"><a href="#" onclick="removeDiv1()" class="remove_div" id="remove'+ row +'">Remove</a></div>' +
+                      '<div class="col-md-6 removeService">' +
+                        '<div class="form-group">' +
+                          '<label for="date'+ row +'">Date</label>' +
+                          '<div class="wrap_form_control_icon">' +
+                            '<input type="text" class="form-control datePicker1" data-row="'+ row +'" autocomplete="off" name="date'+ row +'" id="date'+ row +'" onkeydown="return false;" onchange="getAvailableTime(this);" readonly>' +
+                            '<label class="input_icon" for="date'+ row +'"><i class="icofont-ui-calendar"></i></label>' +
+                          '</div>' +
+                        '</div>' +
+                      '</div>' +
+                      '<div class="col-md-6 removeService">' +
+                        '<div class="form-group">' +
+                          '<label>Time</label>' +
+                          '<div class="wrap_form_control_icon">' +
+                            '<select class="form-control slots" name="time'+ row +'" id="time'+ row +'"></select>' +
+                          '</div>' +
+                        '</div>' +
+                      '</div> ' +
+                    '<div id="newRow"></div>';
+          $('#book_now_row').append(buttonBookNow);
+          var lastDate = new Date();
+          $(".datePicker1").datepicker({
+            dateFormat: "mm-dd-yy",
+            changeMonth: true,
+            changeYear: true,
+            minDate:lastDate,
+          });
+        $('#book_appointmentsModal').modal('show');
+        });
+      });
+    </script>
+    <script>
+      $(".Add_ser").on("click",function () {
+      // var img = $('#offer_ser_img img').attr('src');
+      // var title = $('#offer_ser_heading').text();
+      // var price = $('#offer_ser_price').text();
+      var ser_img = $(this).data('img');
+      var ser_name = $(this).data('name');
+      var ser_price = $(this).data('price');
+      var ser_advance = $(this).data('advance');
+      var ser_duration = $(this).data('duration');
+      var ser_id = $(this).data('id');
+      $('#add_ser').html('');
+      $('#add_ser').append(`
+        <input type="hidden" name="service_offer_img" id="service_add_img" value="${ser_img}">
+        <input type="hidden" name="service_offer_title" id="service_add_title" value="${ser_name}">
+        <input type="hidden" name="service_offer_price" id="service_add_price" value="${ser_price}">
+        <input type="hidden" name="service_offer_advance" id="service_add_advance" value="${ser_advance}">
+        <input type="hidden" name="service_offer_duration" id="service_add_duration" value="${ser_duration}">
+        <input type="hidden" name="service_offer_id" id="service_add_id" value="${ser_id}">
+      `);
+      var img = $('#service_add_img').val();
+      var title = $('#service_add_title').val();
+      var price = $('#service_add_price').val();
+      var advance = $('#service_add_advance').val();
+      console.log(" advance upper ------>" , advance);
+      var service_id = $('#service_add_id').val();
+
+      if($('#get_service_price1').val() != undefined && $('#get_service_price2').val() == undefined){
+        var row = "2";
+      } else {
+        if($('#get_service_price3').val() == undefined && $('#get_service_price2').val() != undefined){
+          var row = "3";
+        } else {
+          var row = "1";
+        }
+      }
+      var buttonRow ='<div class="row removeAppointment'+ row +'" style="margin: 0em;">' +  
+                      '<div class="col-md-10">' +
+                        '<div class="book_service_box">' +
+                          '<div class="book_service_pic">' +
+                            '<img src="'+ img +'" alt="">' +
+                          '</div>' +
+                          '<div class="book_service_info">' +
+                            '<h3 name="hair_cutting" id="service_title">'+ title +'</h3>' +
+                            '<h4>$<span id="service_price">'+ price +'</span></h4>' +
+                            '<input type="hidden" id="get_service_title'+ row +'" value="'+ title +'">' +
+                            '<input type="hidden" id="get_service_price'+ row +'" value="'+ price +'">' +
+                            '<input type="hidden" id="get_service_advance'+ row +'" value="'+ ser_advance +'">' +
+                            '<input type="hidden" id="get_service_duration'+ row +'" value="'+ ser_duration +'">' +
+                            '<input type="hidden" id="get_service_id'+ row +'" value="'+ service_id +'">' +
+                          '</div>' +
+                        '</div>' +
+                      '</div>' +
+                      '<div class="col-md-2 pt-2"><a href="#" onclick="removeDiv('+ row +')" class="remove_div" id="remove'+ row +'">Remove</a></div>' +
+                      '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                          '<label for="date'+ row +'">Date</label>' +
+                          '<div class="wrap_form_control_icon">' +
+                            '<input type="text" class="form-control datePicker" autocomplete="off" data-row="'+ row +'" name="date'+ row +'" id="date'+ row +'" onkeydown="return false;" onchange="getAvailableTime'+ row +'(this);" readonly>' +
+                            '<label class="input_icon" for="date'+ row +'"><i class="icofont-ui-calendar"></i></label>' +
+                          '</div>' +
+                        '</div>' +
+                      '</div>' +
+                      '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                          '<label>Time</label>' +
+                          '<div class="wrap_form_control_icon">' +
+                            '<select class="form-control slots'+ row +'" data-row="'+ row +'" name="time'+ row +'" id="time'+ row +'"></select>' +
+                          '</div>' +
+                        '</div>' +
+                      '</div> ' +
+                    '</div>' ;
+      $('#newRow').append(buttonRow).each(function() {
+        if($('#get_service_price2').val() != undefined && $('#get_service_price3').val() == undefined){
+          let Price = $('#service_price_radio').text();
+          let Advance = $('#service_advance_radio').text();
+          var secondAdvance =  $('#service_add_advance').val();
+          // var secondAdvance =  $(`#get_service_advance${buttonRow}`).val();
+          // console.log("row",row);
+          // console.log(`get_service_advance${buttonRow}`, secondAdvance);
+          Price = parseFloat(Price);
+          Advance = parseFloat(Advance);
+          let Price1 = $('#get_service_price2').val();
+          Price1 = parseFloat(Price1);
+          let Advance1 = (secondAdvance * Price1)/100;
+          let totalPrice = Price + Price1;
+          totalPrice = totalPrice.toFixed(2);
+          let totalAdvance = Advance + Advance1;
+          totalAdvance = totalAdvance.toFixed(2);
+          $("#service_price_radio").html(totalPrice);
+          $("#service_advance_radio").html(totalAdvance);
+          $("#totalPriceValue").val(totalPrice);
+          $("#advancePriceValue").val(totalAdvance);
+        } else {
+        // if($('#get_service_price1').val() != undefined || $('#get_service_price2').val() == undefined ){
+          let Price = $('#service_price_radio').text();
+          let Advance = $('#service_advance_radio').text();
+          var secondAdvance =  $('#service_add_advance').val();
+          Price = parseFloat(Price);
+          Advance = parseFloat(Advance);
+          secondAdvance = parseFloat(secondAdvance);
+          let Price1 = $('#get_service_price1').val();
+          Price1 = parseFloat(Price1);
+          let Advance1 = (secondAdvance * Price1)/100;
+          let totalPrice = Price + Price1;
+          let totalAdvance = Advance + Advance1;
+          totalAdvance = totalAdvance.toFixed(2);
+          totalAdvance = totalAdvance.toString();
+          $("#service_price_radio").html(totalPrice);
+          $("#service_advance_radio").html(totalAdvance);
+          $("#totalPriceValue").val(totalPrice);
+          $("#advancePriceValue").val(totalAdvance);
+        }
+      });
+      
+        var lastDate = new Date();
+        $(".datePicker").datepicker({
+          dateFormat: "mm-dd-yy",
+          changeMonth: true,
+          changeYear: true,
+          minDate:lastDate,
+        });
+        $('.timepicker').timepicker({
+          timeFormat: 'h:mm p',
+          // interval: 120,
+          'step': '30',
+          minTime: '12:00am',
+          maxTime: '11:00pm',
+          // defaultTime: '11',
+          startTime: '00:00',
+          dynamic: false,
+          dropdown: true,
+          scrollbar: true,
+        });
+      $('#service_popModal').modal('hide');
+      $('#book_appointmentsModal').modal('show');
+      });
+    </script>
+    <script>
+      function removeDiv(row){
+        $('.addedServices').val('1');
+        var totalPrice = $('#service_price_radio').text();
+        var totalAdvance = $('#service_advance_radio').text();
+        var advance = $('#service_add_advance').val();
+        totalPrice = parseFloat(totalPrice);
+        totalAdvance = parseFloat(totalAdvance);
+        console.log("removeDiv ---------->" , advance)
+        var Price = $("#get_service_price"+row).val();
+        Price = parseFloat(Price);
+
+        var Advance = (advance * Price)/100;
+        totalPrice = totalPrice-Price;
+        totalPrice = totalPrice.toFixed(2);
+        totalAdvance = totalAdvance-Advance;
+        totalAdvance = totalAdvance.toFixed(2);
+
+        $("#service_price_radio").html(totalPrice);
+        $("#service_advance_radio").html(totalAdvance);
+        $("#totalPriceValue").val(totalPrice);
+        $("#advancePriceValue").val(totalAdvance);
+        if($('#get_service_price').val() == undefined && $('#get_service_price2').val() == undefined){
+          $("#book_appointmentsModal").modal('hide');
+        }
+        
+        $(".removeAppointment" + row).remove();
+      }
+      function removeDiv1(){ 
+        $('.addedServices').val('1');
+        let Price = $('#get_service_price').val();
+        var advance = $('#service_offer_advance').val();
+        Price = parseFloat(Price);
+        let Advance = (advance * Price)/100;
+        Advance = Advance.toFixed(2);
+
+        let Price1 = $('#service_price_radio').text();
+        let Advance1 = $('#service_advance_radio').text();
+        console.log("advance -----  removeDiv1 -------------> " , advance);
+        Price1 = parseFloat(Price1);
+        Advance1 = parseFloat(Advance1);
+        
+        let totalPrice = Price1 - Price;
+        totalPrice = totalPrice.toFixed(2);
+        let totalAdvance = Advance1 - Advance;
+        totalAdvance = totalAdvance.toFixed(2);
+        $("#service_price_radio").html(totalPrice);
+        $("#service_advance_radio").html(totalAdvance);
+        $("#totalPriceValue").val(totalPrice);
+        $("#advancePriceValue").val(totalAdvance);
+        if($('#get_service_price1').val() == undefined){
+          $("#book_appointmentsModal").modal('hide');
+        }
+        $(".removeService").remove(); 
+      } 
+    </script>
+    <script>
+      $(".apply_coupon").on("click",function () {
+        var coupon_code = $("#couponCode").val();
+        $.ajax({
+          type: "GET",
+          url: `<%- baseUrl %>applyCoupon?coupon_code=${coupon_code}&cusType=Customer`,
+          success: function(res) {
+            if(res.status == 1){
+              var discount = res.data.discount;
+              discount = parseFloat(discount);
+              var coupon_based_on = res.data.coupon_based_on;
+              var coupon_type = res.data.coupon_type;
+              let discountPrice;
+              let inputCount = $('.dateContainerDiv1 input').length/4;
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              let newTotal;
+              if(coupon_based_on == 'Percentage'){
+                paymentPrice = parseFloat(paymentPrice);
+                discountPrice = (discount*paymentPrice)/100;
+                discountPrice = discountPrice.toFixed(2);
+                newTotal = (paymentPrice - discountPrice).toFixed(2);
+                $('.totalAmount').html(newTotal);
+                discountPrice = discountPrice/inputCount;
+                discountPrice = discountPrice.toFixed(2);
+              } else {
+                discountPrice = discount;
+                newTotal = (paymentPrice - discountPrice).toFixed(2)
+                $('.totalAmount').html(newTotal);
+                discountPrice = discountPrice/inputCount;
+                discountPrice = discountPrice.toFixed(2);
+              }
+              if(newTotal <= 0){
+                $('.totalAmount').html(paymentPrice);
+                $('.discountAmount').val('');
+                $('.coupon_based_on').val('');
+                $('.discount').val('');
+                $('.coupon_type').val('');
+                $('.applied_coupon_code').val('');
+                $('.coupon_code_error').html("This coupon code is not applicable. Please, use a different coupon code.");
+              } else {
+                $('.discountAmount').val(discountPrice);
+                $('.applied_coupon_code').val(coupon_code);
+                $('.coupon_based_on').val(coupon_based_on);
+                $('.discount').val(discount);
+                $('.coupon_type').val(coupon_type);
+                $('.coupon_code_error').html("");
+              }
+            }
+            if(res.status == 2){
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              $('.totalAmount').html(paymentPrice);
+              $('.discountAmount').val('');
+              $('.coupon_based_on').val('');
+              $('.discount').val('');
+              $('.coupon_type').val('');
+              $('.applied_coupon_code').val('');
+              let msg = res.msg;
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 3){
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              $('.totalAmount').html(paymentPrice);
+              $('.discountAmount').val('');
+              $('.coupon_based_on').val('');
+              $('.discount').val('');
+              $('.coupon_type').val('');
+              $('.applied_coupon_code').val('');
+              let msg = res.msg;
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 4){
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              $('.totalAmount').html(paymentPrice);
+              $('.discountAmount').val('');
+              $('.coupon_based_on').val('');
+              $('.discount').val('');
+              $('.coupon_type').val('');
+              $('.applied_coupon_code').val('');
+              let msg = res.msg;
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 5){
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              $('.totalAmount').html(paymentPrice);
+              $('.discountAmount').val('');
+              $('.coupon_based_on').val('');
+              $('.discount').val('');
+              $('.coupon_type').val('');
+              $('.applied_coupon_code').val('');
+              let msg = res.msg;
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 6){
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              $('.totalAmount').html(paymentPrice);
+              $('.discountAmount').val('');
+              $('.coupon_based_on').val('');
+              $('.discount').val('');
+              $('.coupon_type').val('');
+              $('.applied_coupon_code').val('');
+              let msg = res.msg;
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 7){
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              $('.totalAmount').html(paymentPrice);
+              $('.discountAmount').val('');
+              $('.coupon_based_on').val('');
+              $('.discount').val('');
+              $('.coupon_type').val('');
+              $('.applied_coupon_code').val('');
+              let msg = res.msg;
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 8){
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              $('.totalAmount').html(paymentPrice);
+              $('.discountAmount').val('');
+              $('.coupon_based_on').val('');
+              $('.discount').val('');
+              $('.coupon_type').val('');
+              $('.applied_coupon_code').val('');
+              let msg = res.msg;
+              $('.coupon_code_error').html(msg);
+            }
+            if(res.status == 0){
+              let paymentPrice = $('.totalAmountBeforeCoupon').val();
+              $('.totalAmount').html(paymentPrice);
+              $('.discountAmount').val('');
+              $('.coupon_based_on').val('');
+              $('.discount').val('');
+              $('.coupon_type').val('');
+              $('.applied_coupon_code').val('');
+              let msg = res.msg;
+              $('.coupon_code_error').html(msg);
+            }
+          },
+          error: function(res) { console.log("Error",res) }
+        });
+      });
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-messaging.js"></script>
+    <script>
+      $(document).ready(function () {
+        // $(".loader-bg").fadeOut(1750);
+        var firebaseConfig = {
+          apiKey: "AIzaSyBknM87YF_6scofTVWZMFwHFtSVCBh2Fus",
+          authDomain: "pro01-29e4b.firebaseapp.com",
+          projectId: "pro01-29e4b",
+          storageBucket: "pro01-29e4b.appspot.com",
+          messagingSenderId: "716669500088",
+          appId: "1:716669500088:web:496098fdb040e20581124d"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(
+          firebaseConfig
+        );
+        const messaging = firebase.messaging();
+        messaging.onMessage(function (payload) {
+          console.log("message recived ..", payload);
+          const notificationTitle = payload.notification.title;
+          const notificationOptions = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+          };
+          if (!("Notification" in window)) {
+            console.log("This browser does not support system notifications");
+          }
+          // Let's check whether notification permissions have already been granted
+          else if (Notification.permission === "granted") {
+            console.log(" Notification  permission  granted");
+            // If it's okay let's create a notification 
+            var notification = new Notification(notificationTitle, notificationOptions);
+            notification.onclick = function (event) {
+              event.preventDefault(); // prevent the browser from focusing the Notification's tab
+              window.open(payload.notification.click_action, '_blank');
+              notification.close();
+            }
+          }
+        });
+      });
+    </script>
+    <script>
+      window.onload = function() {
+        $('.addedServices').val('1');
+      }
+      $(document).on('click', '.add_more_service_book', function(){
+        var addedServices = $('.addedServices').val();
+        addedServices = parseInt(addedServices);
+        if(addedServices > 1){
+          $('#service_popModal').modal('hide');
+          Swal.fire('You can not add more than two appointments.')
+          $('#book_appointmentsModal').modal('show');
+        } else {
+          addedServices = addedServices + 1;
+          $('.addedServices').val(addedServices);
+        }
+      });
+      
+    </script>
+  </body>
+</html>

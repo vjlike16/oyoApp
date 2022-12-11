@@ -1,0 +1,1700 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+<!-- / end include -->	
+<style>
+  .ui-timepicker-container {
+    z-index: 9999999999999999999 !important;
+  }
+  .fc-popover {
+    z-index: 1 !important;
+  }
+</style>
+
+      <div class="main_content">
+        <div class="apt_top_bar">
+          <div class="container-fluid">
+            <div class="apt_top_left">
+              <div id="ispAppointmentsData" style="display: none;"><%- JSON.stringify(ispAppointments) %></div>
+              <input type="hidden" id="baseUrl" value="<%- baseUrl %>">
+              <span class="apt_tbar_title">Appointments</span>
+              <% if (outlook == 'True' || google == 'True') { %>
+                <a href="#" data-toggle="modal" data-target="#sync_calendarModal" class="sync_calender_link">Synced Calendar</a>
+              <% } else { %>
+                <a href="#" data-toggle="modal" data-target="#sync_calendarModal" class="sync_calender_link">Sync Calendar</a>
+              <% } %>
+              <ul>
+              <% if (google == 'True') { %>
+                <li>
+                  <a href="#" data-toggle="modal" data-target="#remove_google_calendarModal">
+                    <svg id="symbol" xmlns="http://www.w3.org/2000/svg" width="20.474" height="20.474" viewBox="0 0 20.474 20.474">
+                    <path id="Path_3627" data-name="Path 3627" d="M4.8,106.445a5.405,5.405,0,0,1,.765-2.778v-3.451H2.112a10.243,10.243,0,0,0,0,12.459H5.564v-3.451A5.405,5.405,0,0,1,4.8,106.445Z" transform="translate(0 -96.207)" fill="#fbbd00"/>
+                    <path id="Path_3628" data-name="Path 3628" d="M198.4,373.722l-2.4,2.4,2.4,2.4a10.16,10.16,0,0,0,6.23-2.112v-3.448h-3.448A5.438,5.438,0,0,1,198.4,373.722Z" transform="translate(-188.162 -358.047)" fill="#0f9d58"/>
+                    <path id="Path_3629" data-name="Path 3629" d="M56.274,325.477l-3.451,3.451a10.4,10.4,0,0,0,.886,1.009,10.17,10.17,0,0,0,7.239,3v-4.8A5.441,5.441,0,0,1,56.274,325.477Z" transform="translate(-50.711 -312.461)" fill="#31aa52"/>
+                    <path id="Path_3630" data-name="Path 3630" d="M266.237,199.67a10.325,10.325,0,0,0-.168-1.855l-.09-.492H256v4.8h4.857a5.414,5.414,0,0,1-2.075,2.225l3.448,3.448a10.4,10.4,0,0,0,1.009-.886A10.17,10.17,0,0,0,266.237,199.67Z" transform="translate(-245.763 -189.433)" fill="#3c79e6"/>
+                    <path id="Path_3631" data-name="Path 3631" d="M202.245,6.392l.424.424,3.393-3.393L205.638,3A10.17,10.17,0,0,0,198.4,0L196,2.4l2.4,2.4A5.4,5.4,0,0,1,202.245,6.392Z" transform="translate(-188.162 0)" fill="#cf2d48"/>
+                    <path id="Path_3632" data-name="Path 3632" d="M60.947,4.8V0a10.171,10.171,0,0,0-7.239,3,10.391,10.391,0,0,0-.886,1.009l3.451,3.451A5.441,5.441,0,0,1,60.947,4.8Z" transform="translate(-50.71 0)" fill="#eb4132"/>
+                   </svg>
+                  </a>
+                </li>
+              <% } %>
+              <% if (outlook == 'True') { %>
+                <li>
+                  <a href="#" data-toggle="modal" data-target="#remove_outlook_calendarModal">
+                    <svg id="logotype" xmlns="http://www.w3.org/2000/svg" width="19.206" height="19.206" viewBox="0 0 19.206 19.206">
+                      <path id="Path_3633" data-name="Path 3633" d="M272,9h9V.6a.6.6,0,0,0-.6-.6H272Z" transform="translate(-261.797)" fill="#4caf50"/>
+                      <path id="Path_3634" data-name="Path 3634" d="M9,9V0H.6A.6.6,0,0,0,0,.6V9Z" fill="#f44336"/>
+                      <path id="Path_3635" data-name="Path 3635" d="M9,272H0v8.4a.6.6,0,0,0,.6.6H9Z" transform="translate(0 -261.797)" fill="#2196f3"/>
+                      <path id="Path_3636" data-name="Path 3636" d="M272,272v9h8.4a.6.6,0,0,0,.6-.6V272Z" transform="translate(-261.797 -261.797)" fill="#ffc107"/>
+                    </svg>
+                  </a>
+                </li>
+              <% } %>
+              </ul>
+            </div>
+
+            <div class="apt_top_right">
+              <a href="/connectedIspList"><svg xmlns="http://www.w3.org/2000/svg" width="35.43" height="35.43" viewBox="0 0 35.43 35.43">
+                <g id="Add_Event" data-name="Add Event" transform="translate(-4 -4)">
+                  <path id="Path_4223" data-name="Path 4223" d="M33.525,6.953h-3.44v4.429a1.476,1.476,0,0,1-2.953,0V6.953H16.3v4.429a1.476,1.476,0,0,1-2.953,0V6.953H9.905A5.905,5.905,0,0,0,4,12.858V33.525A5.905,5.905,0,0,0,9.905,39.43h23.62a5.905,5.905,0,0,0,5.905-5.905V12.858A5.905,5.905,0,0,0,33.525,6.953Zm-7.691,18.66H23.191v2.643a1.476,1.476,0,0,1-2.953,0V25.612H17.6a1.476,1.476,0,1,1,0-2.953h2.642V20.017a1.476,1.476,0,1,1,2.953,0V22.66h2.643a1.476,1.476,0,0,1,0,2.953ZM16.3,6.953H13.345V5.476a1.476,1.476,0,0,1,2.953,0Zm13.788,0H27.133V5.476a1.476,1.476,0,1,1,2.953,0Z" fill="#181828"/>
+                </g>
+              </svg></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid">
+          <section class="appointment_page">
+            <div id='calendar'></div>
+            <!-- <a href="#" data-toggle="modal" data-target="#appointment_details_completeModal">Appointment Details Complete</a> <br>
+            <a href="#" data-toggle="modal" data-target="#appointment_details_ongoing_newly_addedModal">Appointment Detail Ongoing Newly Added </a> <br>
+            <a href="#" data-toggle="modal" data-target="#appointment_details_upcomingModal">Appointment Detail Upcoming</a> -->
+          </section>
+          <!-- end:appointment_page -->
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+
+    <!-- Sync Calendar start -->
+    <div class="modal" id="sync_calendarModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Sync Calendar</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <p>Please click on the below buttons and connect and sync your calendar</p>
+            <ul class="import_contact_list">
+              <li>
+                <a href="<%- baseUrl %>auth/access-token-called"> 
+                  <svg id="symbol" xmlns="http://www.w3.org/2000/svg" width="20.475" height="20.474" viewBox="0 0 20.475 20.474">
+                    <path id="Path_3627" data-name="Path 3627" d="M4.8,106.445a5.405,5.405,0,0,1,.765-2.778v-3.451H2.112a10.243,10.243,0,0,0,0,12.459H5.564v-3.451A5.405,5.405,0,0,1,4.8,106.445Z" transform="translate(0 -96.207)" fill="#fbbd00"/>
+                    <path id="Path_3628" data-name="Path 3628" d="M198.4,373.722l-2.4,2.4,2.4,2.4a10.16,10.16,0,0,0,6.23-2.112v-3.448h-3.448A5.438,5.438,0,0,1,198.4,373.722Z" transform="translate(-188.162 -358.047)" fill="#0f9d58"/>
+                    <path id="Path_3629" data-name="Path 3629" d="M56.274,325.477l-3.451,3.451a10.4,10.4,0,0,0,.886,1.009,10.17,10.17,0,0,0,7.239,3v-4.8A5.441,5.441,0,0,1,56.274,325.477Z" transform="translate(-50.711 -312.461)" fill="#31aa52"/>
+                    <path id="Path_3630" data-name="Path 3630" d="M266.237,199.67a10.325,10.325,0,0,0-.168-1.855l-.09-.492H256v4.8h4.857a5.414,5.414,0,0,1-2.075,2.225l3.448,3.448a10.4,10.4,0,0,0,1.009-.886A10.17,10.17,0,0,0,266.237,199.67Z" transform="translate(-245.763 -189.433)" fill="#3c79e6"/>
+                    <path id="Path_3631" data-name="Path 3631" d="M202.245,6.392l.424.424,3.393-3.393L205.638,3A10.17,10.17,0,0,0,198.4,0L196,2.4l2.4,2.4A5.4,5.4,0,0,1,202.245,6.392Z" transform="translate(-188.162 0)" fill="#cf2d48"/>
+                    <path id="Path_3632" data-name="Path 3632" d="M60.947,4.8V0a10.171,10.171,0,0,0-7.239,3,10.391,10.391,0,0,0-.886,1.009l3.451,3.451A5.441,5.441,0,0,1,60.947,4.8Z" transform="translate(-50.71 0)" fill="#eb4132"/>
+                  </svg>
+                  Google
+                </a>
+              </li>
+
+              <li>
+                <a href="<%- baseUrl %>outlook_Cal_Request">
+                  <svg id="logotype" xmlns="http://www.w3.org/2000/svg" width="19.206" height="19.206" viewBox="0 0 19.206 19.206">
+                    <path id="Path_3633" data-name="Path 3633" d="M272,9h9V.6a.6.6,0,0,0-.6-.6H272Z" transform="translate(-261.797)" fill="#4caf50"/>
+                    <path id="Path_3634" data-name="Path 3634" d="M9,9V0H.6A.6.6,0,0,0,0,.6V9Z" fill="#f44336"/>
+                    <path id="Path_3635" data-name="Path 3635" d="M9,272H0v8.4a.6.6,0,0,0,.6.6H9Z" transform="translate(0 -261.797)" fill="#2196f3"/>
+                    <path id="Path_3636" data-name="Path 3636" d="M272,272v9h8.4a.6.6,0,0,0,.6-.6V272Z" transform="translate(-261.797 -261.797)" fill="#ffc107"/>
+                  </svg>
+                  
+                  Microsoft
+                </a>
+              </li>
+
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sync Calendar end -->
+
+
+    <!-- remove calendar start -->
+    <div class="modal" id="remove_google_calendarModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Remove Calendar</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="remove/google_calendar" method="POST">
+              <p>Are you sure you want to unsync your google calendar?</p>
+              <div>
+                <Button type="submit" class="btn_sty_1 mr-2">Yes</Button>
+                <a href="#" class="btn_sty_2">No</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="remove_outlook_calendarModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Remove Calendar</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="remove/outlook_calendar" method="POST">
+              <p>Are you sure you want to unsync your outlook calendar?</p>
+              <div>
+                <Button type="submit" class="btn_sty_1 mr-2">Yes</Button>
+                <a href="#" class="btn_sty_2">No</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- remove calendar end -->
+
+
+    <!-- appointment details complete start -->
+    <div class="modal appointment_details_popup" id="appointment_details_completeModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Appointment Details</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form name="completedForm">
+              <div class="apt_details_top">
+                <div class="apt_details_pic" id="CompletecusProfile">
+                  <img src="" alt="">
+                </div>
+
+                <div class="apt_info_right">
+                  <p style="margin-bottom: -15px;">Customer</p>
+                  <h3 class="apt_info_title" id="CompleteCusName">John Morison</h3>
+                  <h5><span class="apt_status Completed"></span>Completed</h5>
+                  <h5>Service: <span name="CompleteAppointmentTitle" id="CompleteAppointmentTitle">Hair Colouring</span></h5>
+                  <h5>Date and Time: 
+                    <span name="CompleteAppointmentDate" id="CompleteAppointmentDate">13 April 2021</span>, 
+                    <span name="CompleteAppointmentTime" id="CompleteAppointmentTime">05:00 PM</span></h5>
+                  <h5>Phone: <span id="CompleteAppointmentPhone"></span></h5>
+                  <h5>Email: <span name="CompleteAppointmentEmail" id="CompleteAppointmentEmail">John5150@gmail.com</span></h5>
+                </div>
+              </div>
+            </form>
+            <!-- end:apt_details_top -->
+
+            <div class="apt_details_review">
+              <h4>Rating received and comments</h4>
+              <p class="apt_rating_ext_info">On a scale of 1 to 5 (with 5 being best)</p>
+              <div class="apt_detail_rating">
+                <div class="rating" style="margin: 0em; padding: 0em; margin-top: -10px;">
+                  <input type="radio" id="star5" name="rate" value="5" disabled/>
+                  <label for="star5" title="text">5 stars</label>
+                  <input type="radio" id="star4" name="rate" value="4" disabled/>
+                  <label for="star4" title="text">4 stars</label>
+                  <input type="radio" id="star3" name="rate" value="3" disabled/>
+                  <label for="star3" title="text">3 stars</label>
+                  <input type="radio" id="star2" name="rate" value="2" disabled/>
+                  <label for="star2" title="text">2 stars</label>
+                  <input type="radio" id="star1" name="rate" value="1" disabled/>
+                  <label for="star1" title="text">1 star</label>
+                </div>
+              </div>
+              <textarea class="form-control mt-3 mb-3 appointmentReview" cols="30" rows="5" readonly></textarea>
+            </div>
+            <!-- end:apt_details_review -->
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- appointment details complete end -->
+
+    <!-- Appointment Detail Ongoing Newly Added Start -->
+    <div class="modal appointment_details_popup" id="appointment_details_ongoing_newly_addedModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Appointment Details</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form name="cusOngoingForm" action="<%- baseUrl %>cusOngoingForm" method="POST" id="cusOngoingForm" onsubmit="confirmFormAlert(this,'Do you really want to complete the appointment?','submit'); return false">
+              <div class="apt_details_top">
+                <div class="apt_details_pic" id="OngoingcusProfile">
+                  <img src="" alt="">
+                </div>
+
+                <div class="apt_info_right">
+                  <p style="margin-bottom: -15px;">Customer</p>
+                  <h3 class="apt_info_title" id="OngoingCusName">John Morison</h3>
+                  <h5><span class="apt_status Ongoing"></span>Ongoing</h5>
+                  <h5>Service: <span name="OngoingAppointmentTitle" id="OngoingAppointmentTitle">Hair Colouring</span></h5>
+                  <h5>Date and Time: 
+                    <span name="OngoingAppointmentDate" id="OngoingAppointmentDate">13 April 2021</span>, 
+                    <span name="OngoingAppointmentTime" id="OngoingAppointmentTime">05:00 PM</span></h5>
+                  <h5>Phone: <span id="OngoingAppointmentPhone"></span></h5>
+                  <h5>Email: <span name="OngoingAppointmentEmail" id="OngoingAppointmentEmail">John5150@gmail.com</span></h5>
+                  <h5 id="hide_ongoing_remainig_payment">Amount Paid: $<span name="OngoingAppointmentAmountPaid" id="OngoingAppointmentAmountPaid">50</span></h5>
+                  <input type="hidden" name="OngoingAppointmentId" id="OngoingAppointmentId">
+                  <input type="hidden" name="OngoingAmountPaid" id="OngoingAmountPaid">
+                  <input type="hidden" name="OngoingRemainigPayment" id="OngoingRemainigPayment">
+                  <div class="row" style="display: none;">
+                    <div class="col-md-2">
+                      <div class="form-check" style="margin-top: 5px;">
+                      <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="payment_form" id="Card" value="Card"> Card
+                      </label>
+                      </div>
+                    </div>
+          
+                    <div class="col-md-2">
+                      <div class="form-check" style="margin-top: 5px;">
+                      <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="payment_form" id="Cash" value="Cash"> Cash 
+                      </label>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn_sty_1 mt-2">Mark Completed</button>
+                  <a href="#" class="btn_sty_2 edit_payment mt-2" id="noShow" onclick="confirmFormAlert(this,'Do you really want to No Show the appointment?','click'); return false">No Show</a> <br>
+                  <!-- <div class="noShow"></div> -->
+                </div>
+              </div>
+            </form>
+            <!-- end:apt_details_top -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Appointment Detail Ongoing Newly Added end -->
+    <!-- Appointment Detail No Show Newly Added Start -->
+    <div class="modal appointment_details_popup" id="appointment_details_noShowModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Appointment Details</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+              <div class="apt_details_top">
+                <div class="apt_details_pic" id="noShowcusProfile">
+                  <img src="" alt="">
+                </div>
+
+                <div class="apt_info_right">
+                  <p style="margin-bottom: -15px;">Customer</p>
+                  <h3 class="apt_info_title" id="noShowCusName">John Morison</h3>
+                  <h5><span class="apt_status"></span>No Show</h5>
+                  <h5>Service: <span name="noShowAppointmentTitle" id="noShowAppointmentTitle">Hair Colouring</span></h5>
+                  <h5>Date and Time: 
+                    <span name="noShowAppointmentDate" id="noShowAppointmentDate">13 April 2021</span>, 
+                    <span name="noShowAppointmentTime" id="noShowAppointmentTime">05:00 PM</span></h5>
+                  <h5>Phone: <span id="noShowAppointmentPhone"></span></h5>
+                  <h5>Email: <span name="noShowAppointmentEmail" id="noShowAppointmentEmail">John5150@gmail.com</span></h5>
+                  <h5 id="hide_noShow_remainig_payment">Amount Paid: $<span name="noShowAppointmentAmountPaid" id="noShowAppointmentAmountPaid">50</span></h5>
+                  <input type="hidden" name="noShowAppointmentId" id="noShowAppointmentId">
+                </div>
+              </div>
+            <!-- end:apt_details_top -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Appointment Detail No Show Newly Added end -->
+
+    <!-- Appointment Detail Upcoming start -->
+    <div class="modal appointment_details_popup" id="appointment_details_upcomingModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Appointment Details</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="apt_details_top">
+              <div class="apt_details_pic" id="cusProfile">
+                <img src="" alt="">
+              </div>
+              <div class="apt_info_right">
+                <p style="margin-bottom: -15px;">Customer</p>
+                <h3 class="apt_info_title" id="CusName">John Morison</h3>
+                <h5><span class="apt_status upcoming"></span>Upcoming</h5>
+                <h5>Service: <span name="appointmentTitle" id="appointmentTitle">Hair Colouring</span></h5>
+                <h5>Date and Time: 
+                  <span name="appointmentDate" id="appointmentDate">13 April 2021</span>, 
+                  <span name="appointmentTime" id="appointmentTime">05:00 PM</span></h5>
+                <h5>Phone: <span name="cusPhone" id="cusPhone"></h5>
+                <h5>Email: <span name="cusEmail" id="cusEmail"></span></h5>
+                <h5 id="hide_upcoming_remainig_payment">Remaining Payment: $<span name="appointmentRemainingAmount" id="appointmentRemainingAmount"></span></h5>
+                <input type="hidden" name="appointmentId" id="appointmentId">
+
+                <!-- <a href="#" class="btn_sty_1 mt-2 mr-1" id="hide_upcoming_complete_payment" data-toggle="modal" data-target="#paymentModal" data-dismiss="modal">Complete Payment</a> -->
+                <!-- <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#edit_appointmentsModal" class="btn_sty_2 edit_payment mt-2">Edit</a> <br> -->
+                <!-- <a href="#" class="apt_detail_cancel" data-toggle="modal" data-dismiss="modal" data-target="#cancellation_reasonModal">Cancel Appointment</a> -->
+              </div>
+            </div>
+            <!-- end:apt_details_top -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Appointment Detail Upcoming end -->
+
+    <!-- Cancellation Reason start -->
+    <div class="modal appointment_details_popup" id="cancellation_reasonModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <form name="ispCancelAppointment" action="<%- baseUrl %>cancelAppointment" method="POST" id="ispCancelAppointment">
+            <div class="modal-header">
+              <h4 class="modal-title">Cancellation Reason</h4>
+              <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-group">
+                  <label>Please provide the reason for the cancellation</label>
+                  <input type="hidden" name="appointmentId1" id="ispCancelAppointmentId">
+                  <textarea class="form-control" cols="30" rows="6" name="reason" id="reason"></textarea>
+                </div>
+                <button type="submit" class="btn_sty_1">Submit</button> <br>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Cancellation Reason end -->
+
+    <!-- Edit Appointments start -->
+    <!-- <div class="modal" id="edit_appointmentsModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Appointments</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <div class="modal-body">
+            <form name="editAppointment" action="editAppointment" method="POST" id="editAppointment">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="book_service_box">
+                    <div class="book_service_pic">
+                      <img src="img/hair-cutting.png" alt="">
+                    </div>
+                    <div class="book_service_info">
+                      <h3><span name="editAppointmentTitle" id="editAppointmentTitle"></span></h3>
+                      <h4>$<span name="editAppointmentAmount" id="editAppointmentAmount"></span> <a href="#" class="apt_cancel_link_popup" data-toggle="modal" data-dismiss="modal" data-target="#cancellation_reasonModal">Cancel</a></h4>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Date</label>
+                    <div class="wrap_form_control_icon">
+                      <input type="text" class="form-control datePicker editAppointmentDate" name="date" id="date" value="">
+                      <div class="input_icon"><i class="icofont-ui-calendar"></i></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Time</label>
+                    <div class="wrap_form_control_icon">
+                      <input type="text" class="form-control timepicker editAppointmentTime" name="time" id="time" value="" onkeydown="return false;">
+                      <div class="input_icon"><i class="icofont-clock-time"></i></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <input type="hidden" name="appointmentId" id="EditFormAppointmentId">
+                    <button type="submit" class="btn_sty_1" class="btn_sty_1">Submit</button>
+                  </div>
+                </div>
+              </div>
+              <script>
+                $("#editAppointment").click(function(){
+                  let date_val = $("#date").val();
+                  let time_val = $("#time").val();
+                  let appointmentId = $("#appointmentId").val();
+                  let title = $("#hair_cutting").html();
+                  
+                  let time = moment.utc(time_val, 'hh:mm A').format('HH:mm');
+                  let utc_date = date_val +"T"+time;
+
+                  $('#editAppointment [name="date1"]').remove();
+                  $('#editAppointment [name="time1"]').remove();
+                  $('#editAppointment [name="utc_date1"]').remove();
+                  $('#editAppointment [name="title1"]').remove();
+                   
+                  $('#editAppointment').append('<input type="hidden" name="date1" value="'+date_val+'">');
+                  $('#editAppointment').append('<input type="hidden" name="time1" value="'+time_val+'">');
+                  $('#editAppointment').append('<input type="hidden" name="title1" value="'+title+'">');
+                  $('#editAppointment').append('<input type="hidden" name="utc_date1" value="'+utc_date+'">');
+                });
+              </script>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- Edit Appointments end -->
+
+  <!-- make payment start -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Payment</h4>
+          <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <% if(typeof cardList != "undefined"){ %>
+          <form action="<%- baseUrl %>completePaymentSaveCard" method="POST" id="completePaymentSaveCard">
+            <h5 class="payment_select_card">Select Card</h5>
+            <div class="row">
+              <% for(var i=0; i<cardList.length; i++) { %>
+              <div class="col-xl-12" id="append_amount" style="display: flex; align-items: center;">
+                  <input name="existingCardRadio" type="radio" class="existingCardRadio" value="<%- cardList[i].id %>" style="margin-right: 10px;">
+                  <div class="payment_cart">
+                    <div class="card_logo">
+                        <img src="<%= baseUrl%>img/visa.png" alt="">
+                    </div>
+                    <div class="card_info">
+                        <h4 class="card_number">**** **** **** <span id="getCardNumber"></span>
+                          <span id="card_number">
+                            <%= cardList[i].last4 %>
+                          </span></h4>
+                        <h5 class="card_expire">Expires <%= cardList[i].exp_month %>/<%= cardList[i].exp_year %></h5>
+                    </div>
+                  </div>
+                  <script>
+                    $("#completePaymentSaveCard").click(function(){
+                      let tipValue = $("#tip").val();
+                      let appointmentId = $("#IspAppointmentId").val();
+                      let remainingAmount = $("#IspAppointmentRemainingAmount").html();
+      
+                      $('#completePaymentSaveCard [name="remainingAmount1"]').remove();
+                      $('#completePaymentSaveCard [name="tipValue1"]').remove();
+                      $('#completePaymentSaveCard [name="remainingAmountappointmentId"]').remove();
+                       
+                      $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');
+                      $('#completePaymentSaveCard').append('<input type="hidden" name="tipValue1" value="'+tipValue+'">');
+                      $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                    });
+                  </script>
+              </div>
+              <% } %>
+            </div>
+            <Button type="submit" class="btn_sty_1 pay_now_using_existing_btn">Pay Now</Button>
+          </form>
+            <div class="form_seprator">
+              <div class="sep_or">OR</div>
+            </div>
+          <% } %>
+          <div class="row">
+              <div class="form_container" style="width: 100%;margin-top: 37px;">
+                <div class="col-md-12">
+                  <h4>Payment with new card.</h4>
+                </div>
+    
+                <div class="col-md-12">
+                  <label for="card-element">
+                    Credit or debit card
+                  </label>
+                  <div id="card-element" style="width: 450px; max-width:100%;">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+                  </div>
+
+                <form action="<%- baseUrl %>completePayment" method="post" id="completePayment">
+                  <div class="col-md-12" style="padding-top: 10px;">
+                    <div class="form-group mb-0">
+                      <button type="submit" class="btn_sty_1 pay_now_btn">Pay Now</button>
+                    </div>
+                    <script>
+                      $("#completePayment").click(function(){
+                        let tipValue = $("#tip").val();
+                        let appointmentId = $("#IspAppointmentId").val();
+                        let remainingAmount = $("#IspAppointmentRemainingAmount").html();
+                        
+                        $('#completePayment [name="remainingAmountappointmentId"]').remove();
+                        $('#completePayment [name="tipValue1"]').remove();
+                        $('#completePayment [name="remainingAmount1"]').remove();
+                         
+                        $('#completePayment').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');  
+                        $('#completePayment').append('<input type="hidden" name="tipValue1" value="'+tipValue+'">');  
+                        $('#completePayment').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                      });
+                    </script>
+                  </div>
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- make payment end -->
+
+
+<!-- ISP Appointmnets Part Start -->
+<!-- appointment details complete start -->
+<div class="modal appointment_details_popup" id="IspAppointment_details_completeModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Appointment Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form name="sendReview" action="<%- baseUrl %>sendReview" method="POST" id="sendReview">
+          <div class="apt_details_top">
+            <div class="apt_details_pic" id="CompleteIspProfile">
+              <img src="" alt="">
+            </div>
+
+            <div class="apt_info_right">
+              <p style="margin-bottom: -15px;">Business Owner</p>
+              <h3 class="apt_info_title" id="CompleteIspName">John Morison</h3>
+              <h5><span class="apt_status Completed"></span>Completed</h5>
+              <h5>Service: <span name="IspCompleteAppointmentTitle" id="IspCompleteAppointmentTitle">Hair Colouring</span></h5>
+              <h5>Date and Time: 
+                <span name="IspCompleteAppointmentDate" id="IspCompleteAppointmentDate">13 April 2021</span>, 
+                <span name="IspCompleteAppointmentTime" id="IspCompleteAppointmentTime">05:00 PM</span></h5>
+              <h5>Phone: <span id="CompleteIspPhone"></span></h5>
+              <h5>Email: <span name="IspCompleteAppointmentEmail" id="IspCompleteAppointmentEmail">John5150@gmail.com</span></h5>
+              <input type="hidden" name="CompleteAppointmentId" id="CompleteAppointmentId">
+            </div>
+          </div>
+        <!-- end:apt_details_top -->
+
+        <div class="apt_details_review">
+          <h4>Rate and Review</h4>
+          <p class="apt_rating_ext_info">Please rate the Business Owner on a scale of 1 to 5 (with 5 being best)</p>
+          <div class="apt_detail_rating">
+            <div class="IspRate submitReviewTrue" style="margin: 0em; padding: 0em; margin-top: -10px;">
+              <input type="radio" id="IspStar5" name="rate" value="5" />
+              <label for="IspStar5" title="text">5 stars</label>
+              <input type="radio" id="IspStar4" name="rate" value="4" />
+              <label for="IspStar4" title="text">4 stars</label>
+              <input type="radio" id="IspStar3" name="rate" value="3" />
+              <label for="IspStar3" title="text">3 stars</label>
+              <input type="radio" id="IspStar2" name="rate" value="2" />
+              <label for="IspStar2" title="text">2 stars</label>
+              <input type="radio" id="IspStar1" name="rate" value="1" />
+              <label for="IspStar1" title="text">1 star</label>
+            </div>
+            <div class="submitReviewFalse submitStarts">
+              <input type="radio" id="submitReviewFalseStar5" name="rate" value="5" readonly/>
+              <label for="star5" title="text">5 stars</label>
+              <input type="radio" id="submitReviewFalseStar4" name="rate" value="4" readonly/>
+              <label for="star4" title="text">4 stars</label>
+              <input type="radio" id="submitReviewFalseStar3" name="rate" value="3" readonly/>
+              <label for="star3" title="text">3 stars</label>
+              <input type="radio" id="submitReviewFalseStar2" name="rate" value="2" readonly/>
+              <label for="star2" title="text">2 stars</label>
+              <input type="radio" id="submitReviewFalseStar1" name="rate" value="1" readonly/>
+              <label for="star1" title="text">1 star</label>
+            </div>
+          </div>
+
+          <textarea class="form-control mt-3 mb-3 IspAppointmentReview submitReviewTrue" cols="30" rows="5" name="cusReview" id="cusReview"></textarea>
+          <textarea class="form-control mt-3 mb-3 IspAppointmentReview submitReviewFalse" cols="30" rows="5" name="cusReview" id="cusReview" disabled></textarea>
+
+          <br/>
+          <button type="submit" class="btn_sty_1 submitReviewTrue">Submit Separately</button>
+        </div>
+        </form>
+        <form name="tipForm" id="tipForm">
+          <div class="form-group submitTipTrue" style="padding-top: 20px;">
+            <label>Tip (Optional)</label>
+              <input type="number" class="form-control" name="tip" id="tip" min="0">
+          </div>
+          <div class="form-group submitTipTrue">
+            <a href="#" class="btn_sty_1 mt-2" onclick="tipFunction()">Submit Separately</a>
+          </div>  
+        </form>
+          <!-- <button type="submit" class="btn_sty_1 submitReviewTrue">Submit</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- appointment details complete end -->
+
+<!-- Appointment Detail Ongoing Newly Added Start -->
+<div class="modal appointment_details_popup" id="IspAppointment_details_ongoing_newly_addedModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Appointment Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form name="ongoingForm">
+          <div class="apt_details_top">
+            <div class="apt_details_pic" id="OngoingIspProfile">
+              <img src="" alt="">
+            </div>
+
+            <div class="apt_info_right">
+              <p style="margin-bottom: -15px;">Business Owner</p>
+              <h3 class="apt_info_title" id="OngoingIspName">John Morison</h3>
+              <h5><span class="apt_status Ongoing"></span>Ongoing</h5>
+              <h5>Service: <span name="IspOngoingAppointmentTitle" id="IspOngoingAppointmentTitle">Hair Colouring</span></h5>
+              <h5>Date and Time: 
+                <span name="IspOngoingAppointmentDate" id="IspOngoingAppointmentDate">13 April 2021</span>, 
+                <span name="IspOngoingAppointmentTime" id="IspOngoingAppointmentTime">05:00 PM</span></h5>
+              <h5>Phone: <span id="OngoingIspPhone"></span></h5>
+              <h5>Email: <span name="IspOngoingAppointmentEmail" id="IspOngoingAppointmentEmail">John5150@gmail.com</span></h5>
+              <h5 id="hide_isp_ongoing_remainig_payment">Remaining Payment: $<span name="IspOngoingAppointmentRemainingAmount" id="IspOngoingAppointmentRemainingAmount">50</span></h5>
+              <input type="hidden" name="IspOngoingAppointmentId" id="IspOngoingAppointmentId">
+
+              <a href="#" class="btn_sty_1 mt-2" id="hide_isp_ongoing_complete_payment" data-toggle="modal" data-target="#paymentModal" data-dismiss="modal">Complete Payment</a>
+            </div>
+          </div>
+        </form>
+        <!-- end:apt_details_top -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Appointment Detail Ongoing Newly Added end -->
+
+<!-- Appointment Detail No Show Newly Added Start -->
+<div class="modal appointment_details_popup" id="IspAppointment_details_noShowModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Appointment Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+          <div class="apt_details_top">
+            <div class="apt_details_pic" id="IspNoShowIspProfile">
+              <img src="" alt="">
+            </div>
+
+            <div class="apt_info_right">
+              <p style="margin-bottom: -15px;">Customer</p>
+              <h3 class="apt_info_title" id="IspNoShowIspName">John Morison</h3>
+              <h5><span class="apt_status"></span>No Show</h5>
+              <h5>Service: <span name="IspNoShowAppointmentTitle" id="IspNoShowAppointmentTitle">Hair Colouring</span></h5>
+              <h5>Date and Time: 
+                <span name="IspNoShowAppointmentDate" id="IspNoShowAppointmentDate">13 April 2021</span>, 
+                <span name="IspNoShowAppointmentTime" id="IspNoShowAppointmentTime">05:00 PM</span></h5>
+              <h5>Phone: <span id="IspNoShowAppointmentPhone"></span></h5>
+              <h5>Email: <span name="IspNoShowAppointmentEmail" id="IspNoShowAppointmentEmail">John5150@gmail.com</span></h5>
+              <h5 id="hide_IspNoShow_remainig_payment">Remaining Payment: $<span name="IspNoShowAppointmentRemainingAmount" id="IspNoShowAppointmentRemainingAmount">50</span></h5>
+              <input type="hidden" name="IspNoShowAppointmentId" id="IspNoShowAppointmentId">
+            </div>
+          </div>
+        <!-- end:apt_details_top -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Appointment Detail No Show Newly Added end -->
+
+<!-- Appointment Detail Upcoming start -->
+<div class="modal appointment_details_popup" id="IspAppointment_details_upcomingModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg appointment_detail_popupsize">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Appointment Details</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="apt_details_top">
+          <div class="apt_details_pic" id="IspProfile">
+            <img src="" alt="">
+          </div>
+          <div class="apt_info_right">
+            <p style="margin-bottom: -15px;">Business Owner</p>
+            <h3 class="apt_info_title" id="IspName">John Morison</h3>
+            <h5><span class="apt_status upcoming"></span>Upcoming</h5>
+            <h5>Service: <span name="IspAppointmentTitle" id="IspAppointmentTitle">Hair Colouring</span></h5>
+            <h5>Date and Time: 
+              <span name="IspAppointmentDate" id="IspAppointmentDate">13 April 2021</span>, 
+              <span name="IspAppointmentTime" id="IspAppointmentTime">05:00 PM</span></h5>
+            <h5>Phone: <span name="IspPhone" id="IspPhone"></h5>
+            <h5>Email: <span name="IspEmail" id="IspEmail"></span></h5>
+            <h5 id="hide_isp_upcoming_remainig_payment">Remaining Payment: $<span name="IspAppointmentRemainingAmount" id="IspAppointmentRemainingAmount"></span></h5>
+            <input type="hidden" name="IspAppointmentId" id="IspAppointmentId">
+
+            <a href="#" class="btn_sty_1 mt-2 mr-1" id="hide_isp_upcoming_complete_payment" data-toggle="modal" data-target="#paymentModal" data-dismiss="modal">Complete Payment</a>
+            <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#IspEdit_appointmentsModal" class="btn_sty_2 edit_payment mt-2 apt_detail_edit">Edit</a>
+            <a href="#" onclick="Swal.fire('You cannot Edit this appointment since it is outside the allowed Edit timeframe specified by the Business Owner. Please, reach out to the Business Owner if you feel this is in error.')" class="btn_sty_2 edit_payment mt-2 apt_edit hidden">Edit</a> <br>
+            <a href="#" class="apt_detail_cancel" data-toggle="modal" data-dismiss="modal" data-target="#cancellation_reasonModal">Cancel Appointment</a>
+            <a href="#" class="apt_cancel hidden" onclick="Swal.fire('You cannot Cancel this appointment since it is outside the allowed Cancel timeframe specified by the Business Owner. Please, reach out to the Business Owner if you feel this is in error.')">Cancel Appointment</a>
+          </div>
+        </div>
+        <!-- end:apt_details_top -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Appointment Detail Upcoming end -->
+
+<!-- Edit Appointments start -->
+<div class="modal" id="IspEdit_appointmentsModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Appointments</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form name="IspEditAppointment" action="<%- baseUrl %>editAppointment" method="POST" id="IspEditAppointment">
+          <div class="row">
+            <div class="col-md-12 mb-2 text-right">
+              <a href="#" class="add_more_service_book" id="add_more_service_book">Add More Services</a>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="book_service_box">
+                <div class="book_service_pic" id="IspEditAppointmentProfile">
+                  <img src="img/hair-cutting.png" alt="">
+                </div>
+                <input type="hidden" id="findtimezone" name="timezone" value="">
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  document.getElementById("findtimezone").value = finalTimeZone;
+                </script>
+                <div class="book_service_info">
+                  <h3><span name="IspEditAppointmentTitle" id="IspEditAppointmentTitle"></span></h3>
+                  <h4>$<span name="IspEditAppointmentAmount" id="IspEditAppointmentAmount"></span> 
+                    <a href="#" class="apt_cancel_link_popup" data-toggle="modal" data-dismiss="modal" data-target="#cancellation_reasonModal">Cancel</a>
+                    <a href="#" class="apt_cancel_link hidden" onclick="Swal.fire('You cannot Cancel this appointment since it is outside the allowed Cancel timeframe specified by the Business Owner. Please, reach out to the Business Owner if you feel this is in error.')">Cancel</a>
+                  </h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Date</label>
+                <div class="wrap_form_control_icon">
+                  <input type="text" class="form-control datePicker IspEditAppointmentDate" autocomplete="off" name="date" id="date" value="" onkeydown="return false;" onchange="getAvailableTime(this);" readonly />
+                  <div class="input_icon"><i class="icofont-ui-calendar"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Time</label>
+                <div class="wrap_form_control_icon">
+                  <select class="form-control editAppointmentTime slots" name="time" id="time"></select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input type="hidden" name="appointmentId" id="IspEditFormAppointmentId">
+                <input type="hidden" name="IspBusinessOwnerId" id="IspBusinessOwnerId">
+                <input type="hidden" name="IspEditServiceId" id="IspEditServiceId">
+                <button type="submit" class="btn_sty_1">Submit</button>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            $("#IspEditAppointment").click(function(){
+              let date_val = $("#date").val();
+              date_val = moment(date_val).format('YYYY-MM-DD');
+              // date_val = date_val == 'Invalid date' ? moment(date_val,"YYYY-MM-DD").format('YYYY-MM-DD') : date_val
+              let time_val = $("#time").val();
+              let appointmentId = $("#IspEditFormAppointmentId").val();
+              let title = $("#hair_cutting").html();
+              
+              let time = moment.utc(time_val, 'hh:mm A').format('HH:mm');
+              let utc_date = date_val +"T"+time;
+              $('#IspEditAppointment [name="date1"]').remove();
+              $('#IspEditAppointment [name="time1"]').remove();
+              $('#IspEditAppointment [name="utc_date1"]').remove();
+              $('#IspEditAppointment [name="title1"]').remove();
+               
+              $('#IspEditAppointment').append('<input type="hidden" name="date1" value="'+date_val+'">');
+              $('#IspEditAppointment').append('<input type="hidden" name="time1" value="'+time_val+'">');
+              $('#IspEditAppointment').append('<input type="hidden" name="title1" value="'+title+'">');
+              $('#IspEditAppointment').append('<input type="hidden" name="utc_date1" value="'+utc_date+'">');
+            });
+          </script>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit Appointments end -->
+<!-- ISP Appointments Part End -->
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<style>
+  .StripeElement {
+    box-sizing: border-box;
+
+    height: 40px;
+
+    padding: 10px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+  .linkFor:hover {
+    text-decoration: none;
+    color: #333
+  }
+
+  .linkFor {
+    text-decoration: none;
+  }
+
+
+ .payment_card_sec .card_block {width: calc(100% - 30px); float: right;}
+
+ @media (max-width: 550px){
+ .card_block_left {margin:0 10px 0 0;}
+ .card_block_right {width:auto; text-align: left;}
+ .card_block_right h4 {font-size: 16px;}
+ }
+ @-moz-document url-prefix() {
+    .fc-timegrid-event-harness{
+      margin-left: 0px !important;
+    }
+  }
+
+</style>
+
+<script>
+  // Create a Stripe client.
+  var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+
+  // Create an instance of Elements.
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create('card', {hidePostalCode: true, style: style});
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  // Handle real-time validation errors from the card Element.
+  card.addEventListener('change', function (event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById('completePayment');
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function (result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('completePayment');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    $(".pay_now_btn").attr("disabled", true);
+    // Submit the form
+    form.submit();
+  }
+
+  $(function () {
+    $('.linkFor').one('click', function () {
+      window.location.replace($(this).data('href'));
+      $(this).removeAttr('data-href');
+    });
+  });
+  function tipFunction(){
+    let form = $("#tipForm").valid();
+    if(form == true){
+      let tipValue = $("#tip").val();
+      if(tipValue > 0){
+        $('#IspAppointment_details_completeModal').modal('hide'); 
+        $('#paymentModal').modal('show');
+      } else {
+        Swal.fire("Please enter valid amount.");
+        $('#IspAppointment_details_completeModal').modal('show'); 
+      }
+    }
+  }
+</script>
+
+  <!-- Datepicker -->
+  <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+  <link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
+   <link href='<%- baseUrl %>full-calendar/main.css' rel='stylesheet' />
+   <script src='<%- baseUrl %>full-calendar/main.js'></script>
+
+   <script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+   <script src="<%- baseUrl %>validation/custom.validate.js"></script>
+   <script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+   <script src="<%- baseUrl %>js/sweetalert2.js"></script>
+   <script>
+   function initPage(){
+    var finalTimeZone = moment.tz.guess();
+    var newAppointmentsArray = [];
+    var ispAppointments = $('#ispAppointmentsData').html();
+    ispAppointments= JSON.parse(ispAppointments);
+    <% for(var i=0; i < ispAppointments.length; i++) { %>
+      <% if(ispAppointments[i].status != "Cancelled") { %>
+        var startTime = moment("<%= ispAppointments[i].utc_start%>").format();
+        var dateTz = moment.tz(startTime, "GMT");
+        var startDateTime = dateTz.clone().tz(finalTimeZone).format();
+
+        var endTime = moment("<%= ispAppointments[i].utc_end%>").format();
+        var endDateTz = moment.tz(endTime, "GMT");
+        var endDateTime = endDateTz.clone().tz(finalTimeZone).format();
+
+        newAppointmentsArray.push({
+        title: '<%= ispAppointments[i].title %>',
+        start: moment(startDateTime).format(),
+        end: moment(endDateTime).format(),
+        id: '<%= ispAppointments[i]._id %>',
+        appointment_date: moment(startDateTime).format("MM-DD-YYYY"),
+        appointment_time: moment(startDateTime).format("h:mm A"),
+        Email: '<%= ispAppointments[i].ispEmail %>',
+        Name: '<%= ispAppointments[i].ispName %>',
+        Profile: '<%= ispAppointments[i].ispProfile %>',
+        Phone: '<%= ispAppointments[i].ispPhone %>',
+        ispId: '<%= ispAppointments[i].service_proviver %>',
+        serviceId: '<%= ispAppointments[i].serviceId %>',
+        remaining_payment: '<%= ispAppointments[i].remaining_payment %>',
+        full_payment: '<%= ispAppointments[i].full_payment %>',
+        amount: '<%= ispAppointments[i].amount %>',
+        tip: '<%= ispAppointments[i].tip %>',
+        appointment_status: '<%= ispAppointments[i].status %>',
+        cancellation: '<%= ispAppointments[i].cancellation %>',
+        rate: '<%= ispAppointments[i].rate %>',
+        review: '<%= ispAppointments[i].review %>',
+        cusName: '<%= ispAppointments[i].name %>',
+        cusProfile: '<%= ispAppointments[i].profile %>',
+        cusEmail: '<%= ispAppointments[i].mail %>',
+        cusPhone: '<%= ispAppointments[i].phone %>',
+        userEmail: '<%= userEmail %>',
+        });
+      <% } %>
+    <% } %>
+    var appointments = [...newAppointmentsArray];
+    $(".submitStarts").rateYo({ rating: 0, starWidth:"20px", ratedFill:"#fe724c",spacing :"5px" });
+    $(".submitStarts").rateYo('option', 'readOnly', true);
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'timeGridDay',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'timeGridDay,timeGridWeek,dayGridMonth,listWeek'
+      },
+      navLinks: true,
+      // selectable: true,
+      selectMirror: true,
+      // editable: true,
+      dayMaxEvents: true, // allow "more" link when too many events
+      eventMaxStack: 1,
+      eventClick: function(info) {
+        var status = info.event._def.extendedProps.appointment_status;
+        var cancellation = info.event._def.extendedProps.cancellation;
+        var rate = info.event._def.extendedProps.rate;
+        var review = info.event._def.extendedProps.review;
+        var tip = info.event._def.extendedProps.tip;
+        var date = info.event._def.extendedProps.appointment_date;
+        var time = info.event._def.extendedProps.appointment_time;
+        var ispId = info.event._def.extendedProps.ispId;
+        var serviceId = info.event._def.extendedProps.serviceId;
+        var remaining_payment = info.event._def.extendedProps.remaining_payment;
+        var full_payment = info.event._def.extendedProps.full_payment;
+        var amount = info.event._def.extendedProps.amount;
+        var title = info.event._def.title;
+        var appointmentId = info.event._def.publicId;
+        var name = info.event._def.extendedProps.Name;
+        var email = info.event._def.extendedProps.Email;
+        var profile = info.event._def.extendedProps.Profile;
+        var baseUrl = $("#baseUrl").val();
+        profile = `${baseUrl}uploads/profile/${profile}`;
+        var phone = info.event._def.extendedProps.Phone;
+        var cusName = info.event._def.extendedProps.cusName;
+        var cusProfile = info.event._def.extendedProps.cusProfile;
+        cusProfile = `${baseUrl}uploads/profile/${cusProfile}`;
+        var cusEmail = info.event._def.extendedProps.cusEmail;
+        var cusPhone = info.event._def.extendedProps.cusPhone;
+        var userEmail = info.event._def.extendedProps.userEmail;
+
+        $('input:radio[name="rate"]').filter(`#star${rate}`).attr('checked', true);
+
+        if(rate == '' || rate == null){
+          rate = 0;
+        }
+        $(".submitStarts").rateYo("option", "rating", rate);
+        if(cancellation == 'false'){
+          $('.apt_detail_cancel').hide();
+          $('.apt_cancel').show();
+          $('.apt_detail_edit').hide();
+          $('.apt_edit').show();
+          $('.apt_cancel_link_popup').hide();
+          $('.apt_cancel_link').show();
+        } else {
+          $('.apt_detail_cancel').show();
+          $('.apt_cancel').hide();
+          $('.apt_detail_edit').show();
+          $('.apt_edit').hide();
+          $('.apt_cancel_link_popup').show();
+          $('.apt_cancel_link').hide();
+        }
+        if(review != ''){
+          $('.submitReviewTrue').hide();
+          $('.submitReviewFalse').show();
+        } else {
+          $('.submitReviewTrue').show();
+          $('.submitReviewFalse').hide();
+        }
+        if(tip > 0){
+          $('.submitTipTrue').hide();
+        } else {
+          $('.submitTipTrue').show();
+        }
+
+        // Completed
+        $("#CompleteAppointmentTitle").html('');
+        $("#CompleteAppointmentEmail").html('');
+        $("#CompleteAppointmentPhone").html('');
+        $("#CompleteAppointmentTime").html('');
+        $("#CompleteAppointmentDate").html('');
+        $("#CompleteCusName").html('');
+
+        $('#CompletecusProfile img').attr('src', cusProfile);
+        $("#CompleteAppointmentTitle").html(title);
+        $("#CompleteAppointmentEmail").html(cusEmail);
+        $("#CompleteAppointmentPhone").html(cusPhone);
+        $("#CompleteAppointmentTime").html(time);
+        $("#CompleteAppointmentDate").html(date);
+        $("#CompleteCusName").html(cusName);
+        $(".appointmentReview").val(review);
+        
+        // Ongoing
+        $("#OngoingAppointmentId").val('');
+        $("#OngoingAppointmentTitle").html('');
+        $("#OngoingAppointmentEmail").html('');
+        $("#OngoingAppointmentTime").html('');
+        $("#OngoingAppointmentDate").html('');
+        $("#OngoingAppointmentAmountPaid").html('');
+        $("#OngoingAmountPaid").val('');
+        $("#OngoingRemainigPayment").val('');
+        $("#OngoingCusName").html('');
+        $("#OngoingAppointmentPhone").html(cusPhone);
+
+        $("#OngoingAppointmentId").val(appointmentId);
+        $('#OngoingcusProfile img').attr('src', cusProfile);
+        $("#OngoingCusName").html(cusName);
+        $("#OngoingAppointmentTitle").html(title);
+        $("#OngoingAppointmentEmail").html(cusEmail);
+        $("#OngoingAppointmentPhone").html(cusPhone);
+        $("#OngoingAppointmentTime").html(time);
+        $("#OngoingAppointmentDate").html(date);
+        $("#OngoingAppointmentAmountPaid").html(amount);
+        $("#OngoingAmountPaid").val(amount);
+        $("#OngoingRemainigPayment").val(remaining_payment);
+        //If remaiing payment is 0$
+        if(remaining_payment == 0){
+          $("#hide_upcoming_remainig_payment").hide();
+        }else{
+          $("#hide_upcoming_remainig_payment").show();
+        }
+        
+        // No Show
+        $("#noShowAppointmentId").val('');
+        $("#noShowAppointmentTitle").html('');
+        $("#noShowAppointmentEmail").html('');
+        $("#noShowAppointmentTime").html('');
+        $("#noShowAppointmentDate").html('');
+        $("#noShowAppointmentAmountPaid").html('');
+        $("#noShowCusName").html('');
+        $("#noShowAppointmentPhone").html(cusPhone);
+
+        $("#noShowAppointmentId").val(appointmentId);
+        $('#noShowcusProfile img').attr('src', cusProfile);
+        $("#noShowCusName").html(cusName);
+        $("#noShowAppointmentTitle").html(title);
+        $("#noShowAppointmentEmail").html(cusEmail);
+        $("#noShowAppointmentPhone").html(cusPhone);
+        $("#noShowAppointmentTime").html(time);
+        $("#noShowAppointmentDate").html(date);
+        $("#noShowAppointmentAmountPaid").html(amount);
+
+        // Upcoming
+        $("#EditFormAppointmentId").val('');
+        $("#ispCancelAppointmentId").val('');
+        $("#appointmentId").val('');
+        $("#appointmentTitle").html('');
+        $("#appointmentTime").html('');
+        $("#appointmentDate").html('');
+        $("#appointmentRemainingAmount").html('');
+        $("#CusName").html('');
+        
+        $("#EditFormAppointmentId").val(appointmentId);
+        $("#ispCancelAppointmentId").val(appointmentId);
+        $("#appointmentId").val(appointmentId);
+        $("#CusName").html(cusName);
+        $("#appointmentTitle").html(title);
+        $('#cusProfile img').attr('src', cusProfile);
+        $("#cusPhone").html(cusPhone);
+        $("#cusEmail").html(cusEmail);
+        $("#appointmentTime").html(time);
+        $("#appointmentDate").html(date);
+        $("#appointmentRemainingAmount").html(remaining_payment);
+        $("#editAppointmentTitle").html(title);
+        $("#editAppointmentAmount").html(amount);
+        $(".editAppointmentDate").val(date);
+        $(".editAppointmentTime").val(time);
+
+        if(status == "Upcoming" && userEmail == email){
+          $("#appointment_details_upcomingModal").modal("show");
+        }
+        if(status == "Ongoing" && userEmail == email){
+          $("#appointment_details_ongoing_newly_addedModal").modal("show");
+          $("#noShow").attr("href", `<%- baseUrl %>noShow/${appointmentId}`);
+          // $('.noShow').html("");
+          // $('.noShow').append(`
+          //   <a href="<%- baseUrl %>noShow/${appointmentId}" class="btn_sty_2 edit_payment mt-2">No Show</a> <br>
+          // `);
+        }
+        if(status == "Completed" && userEmail == email){
+          $("#appointment_details_completeModal").modal("show");
+          // $('input:radio[name=rate]:checked').prop('checked', false);
+        }
+        if(status == "No Show" && userEmail == email){
+          $("#appointment_details_noShowModal").modal("show");
+        }
+
+        // ISP Appointments
+
+        // Completed
+        $("#CompleteAppointmentId").val('');
+        $("#IspCompleteAppointmentTitle").html('');
+        $("#IspCompleteAppointmentEmail").html('');
+        $("#IspCompleteAppointmentTime").html('');
+        $("#IspCompleteAppointmentDate").html('');
+        $("#CompleteIspName").html('');
+        $("#CompleteIspPhone").html('');
+        $(".IspAppointmentReview").val('');
+
+        $("#CompleteAppointmentId").val(appointmentId);
+        $("#IspCompleteAppointmentTitle").html(title);
+        $("#IspCompleteAppointmentEmail").html(email);
+        $("#IspCompleteAppointmentTime").html(time);
+        $("#IspCompleteAppointmentDate").html(date);
+        $("#CompleteIspName").html(name);
+        $("#CompleteIspPhone").html(phone);
+        $('#CompleteIspProfile img').attr('src', profile);
+        $(".IspAppointmentReview").val(review);
+        
+        // Ongoing
+        $("#IspOngoingAppointmentId").val('');
+        $("#IspOngoingAppointmentTitle").html('');
+        $("#IspOngoingAppointmentEmail").html('');
+        $("#IspOngoingAppointmentTime").html('');
+        $("#IspOngoingAppointmentDate").html('');
+        $("#IspOngoingAppointmentRemainingAmount").html('');
+        $("#OngoingIspName").html('');
+        $("#OngoingIspPhone").html('');
+
+        $("#IspOngoingAppointmentId").val(appointmentId);
+        $("#IspOngoingAppointmentTitle").html(title);
+        $("#IspOngoingAppointmentEmail").html(email);
+        $("#IspOngoingAppointmentTime").html(time);
+        $("#IspOngoingAppointmentDate").html(date);
+        $("#IspOngoingAppointmentRemainingAmount").html(remaining_payment);
+        $("#OngoingIspName").html(name);
+        $("#OngoingIspPhone").html(phone);
+        $('#OngoingIspProfile img').attr('src', profile);
+
+        // No Show
+        $("#IspNoShowAppointmentId").val('');
+        $("#IspNoShowAppointmentTitle").html('');
+        $("#IspNoShowAppointmentEmail").html('');
+        $("#IspNoShowAppointmentPhone").html('');
+        $("#IspNoShowAppointmentTime").html('');
+        $("#IspNoShowAppointmentDate").html('');
+        $("#IspNoShowAppointmentRemainingAmount").html('');
+        $("#IspNoShowIspName").html('');
+
+        $("#IspNoShowAppointmentId").val(appointmentId);
+        $('#IspNoShowIspProfile img').attr('src', profile);
+        $("#IspNoShowIspName").html(name);
+        $("#IspNoShowAppointmentTitle").html(title);
+        $("#IspNoShowAppointmentEmail").html(email);
+        $("#IspNoShowAppointmentPhone").html(phone);
+        $("#IspNoShowAppointmentTime").html(time);
+        $("#IspNoShowAppointmentDate").html(date);
+        $("#IspNoShowAppointmentRemainingAmount").html(remaining_payment);
+
+        // Upcoming
+        $("#IspEditFormAppointmentId").val('');
+        $("#IspBusinessOwnerId").val('');
+        $("#IspEditServiceId").val('');
+        $("#IspAppointmentId").val('');
+        $("#IspAppointmentTitle").html('');
+        $("#IspAppointmentTime").html('');
+        $("#IspAppointmentDate").html('');
+        $("#IspAppointmentRemainingAmount").html('');
+
+        $("#IspEditFormAppointmentId").val(appointmentId);
+        $("#IspBusinessOwnerId").val(ispId);
+        $("#IspAppointmentId").val(appointmentId);
+        $("#IspEditServiceId").val(serviceId);
+        $("#IspName").html(name);
+        $("#IspAppointmentTitle").html(title);
+        $('#IspProfile img').attr('src', profile);
+        $("#IspPhone").html(phone);
+        $("#IspEmail").html(email);
+        $("#IspAppointmentTime").html(time);
+        $("#IspAppointmentDate").html(date);
+        $("#IspAppointmentRemainingAmount").html(remaining_payment);
+        $("#IspEditAppointmentTitle").html(title);
+        $('#IspEditAppointmentProfile img').attr('src', profile);
+        $("#IspEditAppointmentAmount").html(amount);
+        $(".IspEditAppointmentDate").val(moment(date,"MM-DD-YYYY").format("YYYY-MM-DD"));
+        $(".IspEditAppointmentTime").val(time);
+        $("#add_more_service_book").attr("href", 'connectedIspDetail/' + ispId);
+        $.ajax({
+          type: "POST",
+          url: `<%- baseUrl %>findBusinessSlots`,
+          data: {
+            ispId: function () {
+              return $("#IspBusinessOwnerId").val();
+            },
+            serviceId: function () {
+              return serviceId;
+            },
+            date: function () {
+              return date;
+            },
+            timezone: function () {
+              return $("#findtimezone").val();
+            },
+          },
+          success: function(data){
+            var data = data.data;
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            var dateValue = moment(date,"MM-DD-YYYY").format("YYYY-MM-DD");
+            var option = '';
+            $(".slots").empty()
+            $(".slots").append('<option value="'+time+'">'+time+'</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots').append(option);
+          }
+        });
+
+        if(status == "Upcoming" && userEmail == cusEmail){
+        $("#IspAppointment_details_upcomingModal").modal("show");
+          if(full_payment == 'true'){
+            document.getElementById("hide_isp_upcoming_complete_payment").style.display = "none";
+            document.getElementById("hide_isp_upcoming_remainig_payment").style.display = "none";
+          } else {
+            document.getElementById("hide_isp_upcoming_complete_payment").style.display = "";
+            document.getElementById("hide_isp_upcoming_remainig_payment").style.display = "";
+          }
+        }
+        if(status == "Ongoing" && userEmail == cusEmail){
+          $("#IspAppointment_details_ongoing_newly_addedModal").modal("show");
+          if(full_payment == 'true'){
+            document.getElementById("hide_isp_ongoing_complete_payment").style.display = "none";
+            document.getElementById("hide_isp_ongoing_remainig_payment").style.display = "none";
+          } else {
+            document.getElementById("hide_isp_ongoing_complete_payment").style.display = "";
+            document.getElementById("hide_isp_ongoing_remainig_payment").style.display = "";
+          }
+        }
+        if(status == "Completed" && userEmail == cusEmail){
+          $("#IspAppointment_details_completeModal").modal("show");
+        }
+        if(status == "No Show" && userEmail == cusEmail){
+          $("#IspAppointment_details_noShowModal").modal("show");
+          if(full_payment == 'true'){
+            document.getElementById("hide_IspNoShow_remainig_payment").style.display = "none";
+            document.getElementById("hide_IspNoShow_remainig_payment").style.display = "none";
+          } else {
+            document.getElementById("hide_IspNoShow_remainig_payment").style.display = "";
+            document.getElementById("hide_IspNoShow_remainig_payment").style.display = "";
+          }
+        }
+      },
+      events: appointments,
+      eventTimeFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        omitZeroMinute: true,
+        meridiem: 'narrow'
+      }
+    });
+      calendar.render();
+   }
+   window.addEventListener('load', initPage);
+</script>
+    
+    <script>
+      const confirmFormAlert = async function (events,msg,type) {
+        const sweetConfirm = await Swal.fire({
+          title: msg,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          confirmButtonColor: 'limegreen',
+          cancelButtonText: 'No',
+          cancelButtonColor:'red'
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            if(type == 'click'){
+              window.location=document.getElementById('noShow').href;
+            }else{
+              events.submit();
+            }
+          }else{
+            return false;
+          }
+        });
+        return sweetConfirm;
+      }
+      $(document).ready(function(){
+        setTimeout(() => {
+          location.reload()
+        }, 100000)
+		    $('input:radio[name="payment_form"]').filter('#Card').attr('checked', true);
+        $('.appointments-link').addClass('nav-active');
+
+        $('.timepicker').timepicker({
+            timeFormat: 'h:mm p',
+            interval: 30,
+            minTime: '9',
+            maxTime: '10:00pm',
+            // defaultTime: '11',
+            startTime: '09:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true,
+          });
+
+          var lastDate = new Date();
+          $(".datePicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            changeYear: true,
+            minDate:lastDate,
+          });
+
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+    </script>
+     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-messaging.js"></script>
+     <script>
+        $(document).ready(function () {
+        $('input:radio[name="existingCardRadio"]').filter('.existingCardRadio').attr('checked', true);
+          var firebaseConfig = {
+            apiKey: "AIzaSyBknM87YF_6scofTVWZMFwHFtSVCBh2Fus",
+            authDomain: "pro01-29e4b.firebaseapp.com",
+            projectId: "pro01-29e4b",
+            storageBucket: "pro01-29e4b.appspot.com",
+            messagingSenderId: "716669500088",
+            appId: "1:716669500088:web:496098fdb040e20581124d"
+          };
+
+          // Initialize Firebase
+          firebase.initializeApp(
+            firebaseConfig
+          );
+          const messaging = firebase.messaging();
+          messaging.onMessage(function (payload) {
+            const notificationTitle = payload.notification.title;
+            const notificationOptions = {
+              body: payload.notification.body,
+              icon: payload.notification.icon,
+            };
+            if (!("Notification" in window)) {
+            }
+            // Let's check whether notification permissions have already been granted
+            else if (Notification.permission === "granted") {
+              // If it's okay let's create a notification 
+              var notification = new Notification(notificationTitle, notificationOptions);
+              notification.onclick = function (event) {
+                event.preventDefault(); // prevent the browser from focusing the Notification's tab
+                window.open(payload.notification.click_action, '_blank');
+                notification.close();
+              }
+            }
+          })
+        })
+     </script>
+    <script>
+      function getAvailableTime(check) {
+        $.ajax({
+          type: "POST",
+          url: `<%- baseUrl %>findBusinessSlots`,
+          data: {
+            ispId: function () {
+              return $("#IspBusinessOwnerId").val();
+            },
+            serviceId: function () {
+              return $("#IspEditServiceId").val();
+            },
+            date: function () {
+              return $('[name="date"]').val();
+            },
+            timezone: function () {
+              return $("#findtimezone").val();
+            },
+          },
+          success: function(data){
+            var data = data.data;
+            $(".slots").empty();
+            if(data.length == 0){
+              Swal.fire("The Business Owner is not available. Please select another day");
+            } else {
+              var option = '';
+              var currentTime = moment().format("hh:mm A");
+              var currentDate = moment().format("YYYY-MM-DD");
+              var dateValue = $('[name="date"]').val();
+              $(".slots").empty()
+              $(".slots").append('<option value="">Please select</option>');
+              for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+              $('.slots').append(option);
+            }
+          }
+        });
+      }
+      $("form[name='IspEditAppointment']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        date: {
+          required: true,
+        },
+        time: {
+          required: true,
+        }
+      },
+      messages: {
+        date: {
+          required: 'Please enter a valid date',
+        },
+        time: {
+          required: 'Please enter a valid time.',
+        }
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    
+    $("form[name='ispCancelAppointment']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        reason: {
+          required: true,
+        },
+      },
+      messages: {
+        reason: {
+          required: 'Please enter reason for cancellation.',
+        },
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+
+    $("form[name='sendReview']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        cusReview: {
+          required: true,
+        },
+      },
+      messages: {
+        cusReview: {
+          required: 'Please enter your review.',
+        },
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    $("form[name='tipForm']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        tip: {
+          required: true,
+          decimal2: true
+        },
+      },
+      messages: {
+        tip: {
+          required: 'Please enter your amount.',
+        },
+      },
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    </script>
+    <script>
+      $(document).on('click', '.sync_calender_link', function(){
+        $.ajax({
+          type: "POST",
+          url: `<%- baseUrl %>getTimeZone`,
+          data: {
+            timezone: function () {
+              return $("#findtimezone").val();
+            },
+          },
+          success: function(data){
+            var data = data.data;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

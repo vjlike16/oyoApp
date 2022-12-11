@@ -1,0 +1,256 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+
+<div>
+
+
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Discount Coupons</h3>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Add Discount Coupons</h2>
+					<div class="clearfix"></div>
+				</div>
+				<form name="depositCouponForm"
+					action="/admin/manage_discount_coupons/save" role="form" method="post"
+					class="login-form form-horizontal form-label-left">
+					<fieldset>
+						<div class="col-sm-12">
+							<span class="section">Information</span>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name"> Discount For <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<div class="row">
+									<div class="col-md-2">
+									  <div class="form-check" style="margin-top: 5px;">
+										<!-- <label class="form-check-label">
+										  <input type="radio" class="form-check-input" name="content_for" id="customer" value="Customer"> Customer
+										</label> -->
+										<label class="closed_checkbox">
+											<input type="checkbox" name="Customer" class="Customer" checked>
+										Customer</label>
+									  </div>
+									</div>
+			  
+									<div class="col-md-2">
+									  <div class="form-check" style="margin-top: 5px;">
+										<!-- <label class="form-check-label">
+										  <input type="radio" class="form-check-input" name="content_for" id="businessOwner" value="Business Owner"> Business Owner 
+										</label> -->
+										<label class="closed_checkbox">
+											<input type="checkbox" name="BusinessOwner" class="BusinessOwner" checked>
+										Business Owner</label>
+									  </div>
+									</div>
+								  </div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Coupon Code <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<input type="text" name="code_name" id="code_name" class="form-control" required
+									placeholder="Enter coupon name" />
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Type<span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<select id="type" name="type" class="form-control" required>
+									<option value="">Select Type</option>
+									<option value="One time">One time</option>
+									<option value="Whole life">Whole life</option>
+								 </select>		
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name"> Coupon Based On <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<div class="row">
+									<div class="col-md-2">
+									  <div class="form-check" style="margin-top: 5px;">
+										<label class="form-check-label">
+										  <input type="radio" class="form-check-input" name="coupon_based_on" id="price" value="Price"> Price
+										</label>
+									  </div>
+									</div>
+			  
+									<div class="col-md-2">
+									  <div class="form-check" style="margin-top: 5px;">
+										<label class="form-check-label">
+										  <input type="radio" class="form-check-input" name="coupon_based_on" id="percentage" value="Percentage"> Percentage 
+										</label>
+									  </div>
+									</div>
+								  </div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Discount <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+									<input class="form-control" required type="text" name="discount" id="discount"
+										 placeholder="Enter discount price or percentage" />
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Max Allowed Customers <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+									<input class="form-control" required type="number" name="max_allowded_customers" id="max_allowded_customers" max="10000" min="1"
+										 placeholder="Enter Max Allowed Customers" />
+							</div>
+						</div>
+                        <div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Expiring On<span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+									<input class="form-control datePicker" type="text" name="expiring_on" id="expiring_on"
+										 placeholder="Please select expiring date" required readonly/>
+							</div>
+						</div>
+					</fieldset>
+ 
+
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<!-- Change this to a button or input when using this as a form -->
+							<button type="submit" class="btn btn-primary">Submit</button>
+							<a href="<%- baseUrl %>admin/manage_discount_coupons" class="btn btn-primary">Cancel</a>
+						</div>
+					</div>
+				</form>
+				<!-- /.table-responsive -->
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Datepicker -->
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+<script>
+	$(document).ready(function() {
+		$('input:radio[name="coupon_based_on"]').filter('#price').attr('checked', true);
+
+		var lastDate = new Date();
+		$(function() {
+			$(".datePicker").datepicker({
+				dateFormat: "mm-dd-yy",
+				changeMonth: true,
+				changeYear: true,
+				minDate:lastDate,
+				// showButtonPanel: true,
+			});
+		});
+	});	
+</script>
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script>
+	$(function () {
+
+		$("form[name='depositCouponForm']").validate({
+			ignore: [],
+			//debug: false,
+			rules: { 
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 25,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+				},
+				code_name: {
+					required: true,
+					noSpace:true,
+					maxlength: 50,
+					alphanumeric:true,
+					remote: {
+						url: "<%- baseUrl %>admin/manage_discount_coupons/checknameexist",
+						type: "post",
+						data: {
+							name: function () {
+								return $('input[name="code_name"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					},
+				},
+				discount: {
+					required: true,
+					positiveNumber:true,
+					decimal2: true,
+					max: function(element){
+						if($('input[name="coupon_based_on"]:checked').val()=="Price"){
+							return 10000;
+						}
+						else{
+							return 100;
+						}
+					}
+				}, 
+				max_allowded_customers: {
+					required:true,
+					number:true,
+					decimal0:true
+				},
+				expiring_on: {
+					required:true,
+				}
+
+			},
+
+			messages: {
+				code_name: {
+					required: "Please enter coupon name.",
+					noSpace:"space not allowed.",
+					maxlength: "Maximum length is 50.",
+					alphanumeric:"Only Alphabets and Numbers are allowed.",
+					remote: "This name already exist in our system, Please use another.",
+				},
+				discount: {
+					required: "Please enter price or percentage.",
+					positiveNumber:"Enter a positive number.",
+				}, 
+				max_allowded_customers: {
+					required: "Please enter max allowed customers.",
+					number:"Enter a positive number.",
+				},
+				type: {
+					required: "Please enter the type of discount.",
+				},
+				expiring_on: {
+					required: "Please enter the expiration date.",
+				},
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

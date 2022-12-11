@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="<%- baseUrl %>img/logo.png"/>
+    	<!-- jQuery -->
+    <!-- <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script> -->
+    <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+
+	<script>
+		$(":submit").attr("disabled", true);
+	</script>
+
+   
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="<%- baseUrl %>css/icofont.css">
+    <link rel="stylesheet" href="<%- baseUrl %>css/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    <!-- validation -->
+	<script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+	<script src="<%- baseUrl %>validation/custom.validate.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+	 <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163116171-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-163116171-1');
+    </script>
+	
+    <title>OYO</title>
+  </head> 
+  <body>
+    <header class="header">
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark top_nav">
+            <div class="container">
+                <a class="navbar-brand" href="<%- baseUrl %>"><img src="<%- baseUrl %>img/logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item search-link"><a class="nav-link" href="/">Search</a></li>
+                        <li class="nav-item faq-link"><a class="nav-link" href="<%- baseUrl %>faq">FAQ</a></li>
+                        <li class="nav-item support-link"><a class="nav-link" href="<%- baseUrl %>support">Support</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Log in</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#signupModal_isp">Create Account</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- end:nav -->
+    </header>
+    <% include ../createpassword %>
+    <% include ../forgotpassword %>
+    <% include ../login %>
+        <% if (error.length > 0) { %>
+            <% 
+                if (error[0].includes('$')) {
+                    var splitErro = error[0].split('$');
+                %>
+                    <script>
+                            $('#verifyModal').modal('show');
+                            $('#otp_user_id').val('<%- splitErro[1] %>');
+                    </script>
+                       <div class="alert alert-danger common-notification-alert text-center"
+                       style="margin-bottom: 0px;padding: 10px 0;">Your account is not verified. Please verify your account first.</div>
+            <% }else{ %>
+                <div class="alert alert-danger common-notification-alert text-center"
+                    style="margin-bottom: 0px;padding: 10px 0;"><%- error %></div>
+            <% } %>
+        <% } %>
+
+        <% if (success.length > 0) { %>
+        <div class="alert alert-success common-notification-alert text-center"
+            style="margin-bottom: 0px;padding: 10px 0;"><%- success %></div>
+        <% } %>
+
+        <script>
+            setTimeout(function () { $(".common-notification-alert").slideUp(); }, 5000);	
+        </script>
+        <script>
+            $('.navbar-nav .nav-item a').click(function(){
+            $('.nav-item').removeClass('nav-active');   // it remove all the active links
+            $(this).closest('.nav-item').addClass('nav-active');    // it adds active class to the current link you have opened
+        });
+        </script>
+
+    <!-- <script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script> -->
+    <!-- end:header -->
+  

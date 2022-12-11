@@ -1,0 +1,2175 @@
+<!-- include header -->
+<% include customer/common/loggedIn-header %>
+<!-- / end include -->	
+<style>
+  .more {
+      display: none;
+      padding-top: 10px;
+  }
+  @media (max-width: 767px){
+    #checkStrp{
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 767px) and (max-width: 1000px){
+    #checkStrp{
+      font-size: 13px;
+    }
+  }
+  @media (min-width: 1000px){
+    #checkStrp{
+      font-size: 15px;
+    }
+  }
+  #checkStrp{
+    margin-left:50px;
+    margin-top:0px;
+    color:#fff !important;
+  }
+  a.showLink, a.hideLink {
+      text-decoration: none;
+      -webkit-transition: 0.5s ease-out;
+      background: transparent url('down.gif') no-repeat left; }
+
+  a.hideLink {
+      background: transparent url('up.gif') no-repeat left; 
+  }
+</style>
+
+      <div class="main_content">
+        <div class="container-fluid">
+          <div class="alert alert-danger common-notification-hideShow text-center" style="margin-bottom: 0px; padding: 10px 0px; display: none;">
+            Please, update your business hours first in account settings.
+          </div>
+          <% if (!welcomeMsg) {%>
+            <div class="alert alert-info fade in alert-dismissible show welcome_message">
+              <button type="button" class="close hideWelcomeMsg" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" style="font-size:20px">×</span>
+              </button>
+              <input type="hidden" id="userID" value="<%- userCustomerSession._id %>">
+              <% if (userCustomerSession.role_id == 2) {%>
+              Welcome <%- userCustomerSession.name.replace(/\w/, c => c.toUpperCase()) %>, your account setup has been completed. You may book services now.
+              <% } %> 
+              <% if (userCustomerSession.role_id == 3 && businessHours.length > 0 && bankDetails) {%>
+              Welcome <%- userCustomerSession.name.replace(/\w/, c => c.toUpperCase()) %>, your account setup has been completed. You may provide services now.
+              <% } %> 
+              <% if (userCustomerSession.role_id == 3 && (businessHours.length <= 0 || bankDetails == false)) {%>
+                <b>Welcome <%- userCustomerSession.name.replace(/\w/, c => c.toUpperCase()) %>, Please fill your bank details and operational hours in account settings to provide your services.</b>
+                <% } %> 
+            </div>
+          <% } %>
+          <!-- end:welcome_message -->
+          <% if (!userClosedPopup) { %>
+            <div class="modal show" id="popupModal" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="pop-upClose">
+                  <button type="button" class="hidePopup" data-dismiss="modal" style="border: 0;"><i class="icofont-close"></i></button>
+                </div>
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <div class="white_block_img">
+                      <img src="<%= baseUrl%>uploads/profile/<%- managePopup.content_image %>" alt="">
+                    </div>
+                    <h4 class="modal-title" style="margin-left: auto;  margin-right: 200px"><%- managePopup.content_title %></h4>
+                    
+                  </div>
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    <input type="hidden" id="managePopupId" value="<%- managePopup._id %>">
+                    <%- managePopup.content %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <script>
+              $('#popupModal').modal('show');
+            </script>
+          <% } %> 
+          <div class="addProgressBar" style="margin-top: 20px; margin-bottom: 20px;"></div>
+          <!-- end:progress_section -->
+        <% if (userCustomerSession.role_id == 2) { %>
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>New Services</h3>
+              <a class="white_block_more_link" href="/main/newServices">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<ispServices.length; i++) { %>
+                <div class="white_block_box">
+                    <div class="white_block_img">
+                      <img src="<%= baseUrl%>uploads/profile/<%= ispServices[i].icon %>" alt="">
+                    </div>
+                    <div class="white_info_box">
+                      <p><%= ispServices[i].service_proviver_name %> has launched a new "<%= ispServices[i].name %>" service. Click the below button if you are interested in booking that service.</p>
+                      <!-- <div class="white_box_time"><i class="icofont-clock-time"></i> 3 mins ago</div> -->
+                      <div class="white_box_btn_group">
+                        <a href="<%= baseUrl%>connectedIspDetail/<%= ispServices[i].service_proviver %>" class="btn_sty_1">Book Appointment</a>
+                      </div>
+                    </div>
+                </div>
+              <% } %>
+              <% if (ispServices.length == 0) {%>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>New Connections</h3>
+              <a class="white_block_more_link" href="/main/customerNewConnections">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<connectedList.length; i++) { %>
+                <% if (connectedList[i].status == "success") { %>
+                  <div class="white_block_box">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p class="white_info_box_p">A new Business Owner <%= connectedList[i].ispName %> has been successfully connected.</p>
+                      </div>
+                  </div>
+                <% } else if (connectedList[i].status == "pending" && connectedList[i].ispInvite) { %>
+                  <div class="white_block_box">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p>Hi <%= connectedList[i].cusName %>, <%= connectedList[i].ispName %> has sent you a connection request.</p>
+                        <div class="white_box_btn_group">
+                          <a href="/accept/connection/<%= connectedList[i]._id %>" class="btn_sty_1">Accept</a>
+                          <a href="/deny/connection/<%= connectedList[i]._id %>" class="btn_red" style="width: 90px; text-align: center;">Deny</a>
+                        </div>
+                      </div>
+                  </div>
+                  <% } else if (connectedList[i].status == "pending" && connectedList[i].ispInvite == undefined) { %>
+                    <div class="white_block_box">
+                        <div class="white_block_img">
+                          <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                        </div>
+                        <div class="white_info_box">
+                          <p>Hi <%= connectedList[i].cusName %>, connection request sent successfully to Business Owner <%= connectedList[i].ispName %>.</p>
+                          <!-- <div class="white_box_btn_group">
+                            <a href="/accept/connection/<%= connectedList[i]._id %>" class="btn_sty_1">Accept</a>
+                            <a href="/deny/connection/<%= connectedList[i]._id %>" class="btn_red" style="width: 90px; text-align: center;">Deny</a>
+                          </div> -->
+                        </div>
+                    </div>
+                <% }else{ %>
+                  <div class="white_block_box">
+                    <div class="white_info_box">
+                      <p>No data available <%= connectedList[i] %></p>
+                    </div>
+                  </div>
+              <% }
+              } %>
+              <% if (connectedList.length == 0) { %>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>Payments</h3>
+              <a class="white_block_more_link" href="/main/customerPayment">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<paymentAppointments.length; i++) { %>
+                <div class="white_block_box">
+                  <div class="white_block_img">
+                    <img src="<%= baseUrl%>uploads/profile/<%= paymentAppointments[i].ispProfile %>" alt="">
+                  </div>
+                  <div class="white_info_box">
+                    <% if (!paymentAppointments[i].full_payment) { %>
+                      <p>You need to pay $<%= paymentAppointments[i].full_payment == true ? paymentAppointments[i].amount : paymentAppointments[i].remaining_payment %> as service amount For <%= paymentAppointments[i].title %>.</p>
+                    <% }else{ %>
+                    <p>Thank you, your payment of $<%= paymentAppointments[i].full_payment == true ? paymentAppointments[i].amount : paymentAppointments[i].remaining_payment %> has been processed.</p>
+                    <% } %>
+                    <% if (!paymentAppointments[i].full_payment) { %>
+                      <div class="white_box_btn_group">
+                        <a href="#" class="btn_sty_1 make_payment" 
+                        data-id="<%= paymentAppointments[i]._id %>"
+                        data-price="<%= paymentAppointments[i].remaining_payment %>"
+                        id="Book_add_off_ser" >Make Payment</a>
+                      </div>
+                    <% } %>
+                  </div>
+                </div>
+              <% } %>
+              <% if (paymentAppointments.length == 0) {%>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+              <div id="add_payment"></div>
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>Appointments</h3>
+              <a class="white_block_more_link" href="/main/appointments">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<customerAppointments.length; i++) { %>
+                <div class="white_block_box">
+                    <div class="white_block_img">
+                      <img src="<%= baseUrl%>uploads/profile/<%= customerAppointments[i].ispProfile %>" alt="">
+                    </div>
+                    <div class="white_info_box">
+                      <p><%= customerAppointments[i].ispName %> has an upcoming appointment with you for the <%= customerAppointments[i].title %> on the <span class="cusDate<%= customerAppointments[i]._id %>"></span> at <span class="cusTime<%= customerAppointments[i]._id %>"></span>.</p>
+                      <!-- <div class="white_box_time"><i class="icofont-clock-time"></i> 5 mins ago</div> -->
+                      <div class="white_box_btn_group">
+                        <a data-toggle="tooltip" title="<%= customerAppointments[i].ispPhone %>" href="tel:<%= customerAppointments[i].ispPhone %>" class="btn_sty_1"><i class="icofont-phone"></i> Call</a>
+                        <a href="mailto:<%= customerAppointments[i].ispEmail %>" class="btn_sty_1"><i class="icofont-email"></i> Email</a>
+                      </div>
+                    </div>
+                </div>
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  var appointmentStartTime = moment("<%= customerAppointments[i].utc_start%>").format();
+                  var dateTz = moment.tz(appointmentStartTime, "GMT");
+                  var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                  var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                  $(".cusDate<%= customerAppointments[i]._id %>").html(newDate);
+                  $(".cusTime<%= customerAppointments[i]._id %>").html(newTime);
+                </script>
+              <% } %>
+              <% if (customerAppointments.length == 0) {%>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+              <!-- end:white_block_box -->
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+        <% } else { %>
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>Payment & Tips Received</h3>
+              <a class="white_block_more_link" href="/main/newPaymentsTips">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<tipAppointments.length; i++) { %>
+              <div class="white_block_box">
+                <div class="white_block_img">
+                  <img src="<%= baseUrl%>uploads/profile/<%= tipAppointments[i].profile %>" alt="">
+                </div>
+                <div class="white_info_box">
+                  <p class="white_info_box_p"><%= tipAppointments[i].ispName %> you have received the tip of $<%= tipAppointments[i].tip %> from your customer "<%= tipAppointments[i].name %>".</p>
+                </div>
+              </div>
+              <% } %>
+              <% for(var i=0; i<paymentAppointments.length; i++) { %>
+                <div class="white_block_box">
+                  <div class="white_block_img">
+                    <img src="<%= baseUrl%>uploads/profile/<%= paymentAppointments[i].profile %>" alt="">
+                  </div>
+                  <div class="white_info_box">
+                    <p class="white_info_box_p">You have received the Payment of $<%= paymentAppointments[i].amount %> from your customer "<%= paymentAppointments[i].name %>".</p>
+                  </div>
+                </div>
+              <% } %>
+              <% if (paymentAppointments.length == 0 && tipAppointments.length == 0) {%>
+                <div class="white_block_box">
+                  <div class="white_block_box">
+                    <div class="white_info_box">
+                      <p>No data available</p>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>Payments</h3>
+              <a class="white_block_more_link" href="/main/customerPayment">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<sendPaymentAppointments.length; i++) { %>
+                <div class="white_block_box">
+                  <div class="white_block_img">
+                    <img src="<%= baseUrl%>uploads/profile/<%= sendPaymentAppointments[i].ispProfile %>" alt="">
+                  </div>
+                  <div class="white_info_box">
+                    <% if (!sendPaymentAppointments[i].full_payment) { %>
+                      <p>You need to pay $<%= sendPaymentAppointments[i].full_payment == true ? sendPaymentAppointments[i].amount : sendPaymentAppointments[i].remaining_payment %> as service amount For <%= sendPaymentAppointments[i].title %>.</p>
+                    <% }else{ %>
+                    <p>Thank you, your payment of $<%= sendPaymentAppointments[i].full_payment == true ? sendPaymentAppointments[i].amount : sendPaymentAppointments[i].remaining_payment %> has been processed.</p>
+                    <% } %>
+                    <% if (!sendPaymentAppointments[i].full_payment) { %>
+                      <div class="white_box_btn_group">
+                        <a href="#" class="btn_sty_1 make_payment" 
+                        data-id="<%= sendPaymentAppointments[i]._id %>"
+                        data-price="<%= sendPaymentAppointments[i].remaining_payment %>"
+                        id="Book_add_off_ser" >Make Payment</a>
+                      </div>
+                    <% } %>
+                  </div>
+                </div>
+              <% } %>
+              <% if (sendPaymentAppointments.length == 0) {%>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+              <div id="add_payment"></div>
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>Ratings & Reviews Received</h3>
+              <a class="white_block_more_link" href="/main/ratings">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<ratingReview.length; i++) { %>
+                <div class="white_block_box">
+                  <div class="white_block_img">
+                    <img src="<%= baseUrl%>uploads/profile/<%= ratingReview[i].profile %>" alt="">
+                  </div>
+                  <div class="white_info_box">
+                    <h3 class="rating_user_name"><%= ratingReview[i].name %></h3>
+                    <div class="rate_review_ext_info">
+                      <div class="white_box_rating">
+                        <div class="rating rating_review" data-rateyo-rating="<%= ratingReview[i].rate %>"></div>
+                        <div class="white_box_time">&nbsp;&nbsp;<%= dateFormat(ratingReview[i].start_date, "mmm dd yyyy"); %></div>
+                      </div>
+                    </div>
+                    <p><%= ratingReview[i].review %></p>
+                  </div>
+                </div>
+              <% } %>
+              <% if (ratingReview.length == 0) { %>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </section>
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>Booked & Cancelled Appointments</h3>
+              <a class="white_block_more_link" href="/main/newBookedAppointments">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<bookedAppointments.length; i++) { %>
+                <div class="white_block_box">
+                  <div class="white_block_img">
+                    <img src="<%= baseUrl%>uploads/profile/<%= bookedAppointments[i].profile %>" alt="">
+                  </div>
+                  <div class="white_info_box">
+                    <p class="white_info_box_p"><%= bookedAppointments[i].name %> has booked an appointment with you for the <%= bookedAppointments[i].title %> on <span class="ispDate<%= bookedAppointments[i]._id %>"></span> at <span class="ispTime<%= bookedAppointments[i]._id %>"></span></p>
+                  </div>
+                </div>
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  var appointmentStartTime = moment("<%= bookedAppointments[i].utc_start%>").format();
+                  var dateTz = moment.tz(appointmentStartTime, "GMT");
+                  var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                  var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                  $(".ispDate<%= bookedAppointments[i]._id %>").html(newDate);
+                  $(".ispTime<%= bookedAppointments[i]._id %>").html(newTime);
+                </script>
+              <% } %>
+              <% for(var i=0; i<cancelledAppointments.length; i++) { %>
+                <div class="white_block_box">
+                  <div class="white_block_img">
+                    <img src="<%= baseUrl%>uploads/profile/<%= cancelledAppointments[i].profile %>" alt="">
+                  </div>
+                  <div class="white_info_box">
+                    <p><%= cancelledAppointments[i].name %> has cancelled an appointment with you for the <%= cancelledAppointments[i].title %> on <span class="ispDate<%= cancelledAppointments[i]._id %>"></span> at <span class="ispTime<%= cancelledAppointments[i]._id %>"></span>.</p>
+                    <div class="white_box_btn_group">
+                      <p>Reason: <%= cancelledAppointments[i].cancel_reason %></p>
+                    </div>
+                  </div>
+                </div>
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  var appointmentStartTime = moment("<%= cancelledAppointments[i].utc_start%>").format();
+                  var dateTz = moment.tz(appointmentStartTime, "GMT");
+                  var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                  var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                  $(".ispDate<%= cancelledAppointments[i]._id %>").html(newDate);
+                  $(".ispTime<%= cancelledAppointments[i]._id %>").html(newTime);
+                </script>
+              <% } %>
+              <% if (bookedAppointments.length == 0 && cancelledAppointments.length == 0) {%>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>Upcoming Appointments</h3>
+              <a class="white_block_more_link" href="/main/upcomingAppointments">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<upcomingAppointments.length; i++) { %>
+                <div class="white_block_box">
+                    <div class="white_block_img">
+                      <img src="<%= baseUrl%>uploads/profile/<%= upcomingAppointments[i].profile %>" alt="">
+                    </div>
+                    <div class="white_info_box">
+                      <% if(upcomingAppointments[i].ispEmail == details.mail){ %>
+                        <p class="white_info_box_p"><%= upcomingAppointments[i].name %> has an upcoming appointment with you for the <%= upcomingAppointments[i].title %> on the <span class="ispDate<%= upcomingAppointments[i]._id %>"></span> at <span class="ispTime<%= upcomingAppointments[i]._id %>"></span>.</p>
+                      <% }else{ %>
+                        <p class="white_info_box_p">You have upcoming appointment with <%= upcomingAppointments[i].ispName %> for the <%= upcomingAppointments[i].title %> on <span class="ispDate<%= upcomingAppointments[i]._id %>"></span> at <span class="ispTime<%= upcomingAppointments[i]._id %>"></span>.</p>
+                      <% } %>
+                    </div>
+                </div>
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  var appointmentStartTime = moment("<%= upcomingAppointments[i].utc_start%>").format();
+                  var dateTz = moment.tz(appointmentStartTime, "GMT");
+                  var newDate = dateTz.clone().tz(finalTimeZone).format("MM-DD-YYYY");
+                  var newTime = dateTz.clone().tz(finalTimeZone).format("h:mm A");
+                  $(".ispDate<%= upcomingAppointments[i]._id %>").html(newDate);
+                  $(".ispTime<%= upcomingAppointments[i]._id %>").html(newTime);
+                </script>
+              <% } %>
+              <% if (upcomingAppointments.length == 0) {%>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+
+          <section class="home_white_blocks">
+            <div class="white_block_head">
+              <h3>New Connections</h3>
+              <a class="white_block_more_link" href="/main/newConnections">See More</a>
+            </div>
+            <div class="white_block_body">
+              <% for(var i=0; i<connectedList.length; i++) { %>
+                <% if (connectedList[i].status == "pending" && connectedList[i].ispId == userCustomerSession._id) { %>
+                  <div class="white_block_box">
+                    <div class="white_block_img">
+                      <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].cusProfile %>" alt="">
+                    </div>
+                    <div class="white_info_box">
+                      <p>Hi  <%= connectedList[i].ispName %>, <%= connectedList[i].cusName %> has sent you a connection request.</p>
+                      <div class="white_box_btn_group">
+                        <a href="/accept/connection/<%= connectedList[i]._id %>" class="btn_sty_1">Accept</a>
+                        <a href="/deny/connection/<%= connectedList[i]._id %>" class="btn_red" style="width: 90px; text-align: center;">Deny</a>
+                      </div>
+                    </div>
+                  </div>
+                <% } else if (connectedList[i].status == "pending" && connectedList[i].ispInvite == true && connectedList[i].cusId == userCustomerSession._id) { %>
+                  <div class="white_block_box">
+                    <div class="white_block_img">
+                      <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].cusProfile %>" alt="">
+                    </div>
+                    <div class="white_info_box">
+                      <p>Hi <%= connectedList[i].cusName %>, <%= connectedList[i].ispName %> has sent you a connection request.</p>
+                      <div class="white_box_btn_group">
+                        <a href="/accept/connection/<%= connectedList[i]._id %>" class="btn_sty_1">Accept</a>
+                        <a href="/deny/connection/<%= connectedList[i]._id %>" class="btn_red" style="width: 90px; text-align: center;">Deny</a>
+                      </div>
+                    </div>
+                  </div>
+                <% } else if (connectedList[i].status == "pending" && connectedList[i].ispInvite == false && connectedList[i].cusId == userCustomerSession._id) { %>
+                  <div class="white_block_box">
+                    <div class="white_block_box">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p class="white_info_box_p">Hi <%= connectedList[i].cusName %>, connection request sent successfully to Business Owner "<%= connectedList[i].ispName %>".</p>
+                      </div>
+                    </div>
+                  </div>
+                <% } else if (connectedList[i].status == "pending" && connectedList[i].ispInvite == undefined && connectedList[i].cusId == userCustomerSession._id) { %>
+                  <div class="white_block_box">
+                    <div class="white_block_box">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p class="white_info_box_p">Hi <%= connectedList[i].cusName %>, connection request sent successfully to Business Owner "<%= connectedList[i].ispName %>".</p>
+                      </div>
+                    </div>
+                  </div>
+                <% } else if (connectedList[i].status == "success" && connectedList[i].ispId == userCustomerSession._id) { %>
+                  <div class="white_block_box">
+                    <div class="white_block_img">
+                      <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].cusProfile %>" alt="">
+                    </div>
+                    <div class="white_info_box">
+                      <p class="white_info_box_p"><%= connectedList[i].cusName %> has joined your network.</p>
+                    </div>
+                  </div>
+                <% } else if (connectedList[i].status == "success" && connectedList[i].cusId == userCustomerSession._id) { %>
+                  <div class="white_block_box">
+                    <div class="white_block_box">
+                      <div class="white_block_img">
+                        <img src="<%= baseUrl%>uploads/profile/<%= connectedList[i].IspProfileImage %>" alt="">
+                      </div>
+                      <div class="white_info_box">
+                        <p class="white_info_box_p">A new Business Owner <%= connectedList[i].ispName %> has been successfully connected.</p>
+                      </div>
+                    </div>
+                  </div>
+                <% } else { %>
+                  <div class="white_block_box">
+                    <div class="white_info_box">
+                      <p>No data available</p>
+                    </div>
+                  </div>
+                <% } %>
+              <% } %>
+              <% if (connectedList.length == 0) {%>
+                <div class="white_block_box">
+                  <div class="white_info_box">
+                    <p>No data available</p>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </section>
+          <!-- end:home_white_blocks -->
+          
+        <% } %>
+
+          
+        </div>
+      </div>
+      <!-- end:main_content -->
+    </div>
+    <!-- end:middle_block -->
+
+    <!-- Import contact modal -->
+    <div class="modal" id="import_contactModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Import Contacts</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <p style="font-size: 15px;">Please click on the below buttons and import your contacts.</p>
+            <ul class="import_contact_list mb-0">
+              <li>
+                <a href="/import_google_profile"><svg id="symbol" xmlns="http://www.w3.org/2000/svg" width="20.475" height="20.474" viewBox="0 0 20.475 20.474">
+                  <path id="Path_3627" data-name="Path 3627" d="M4.8,106.445a5.405,5.405,0,0,1,.765-2.778v-3.451H2.112a10.243,10.243,0,0,0,0,12.459H5.564v-3.451A5.405,5.405,0,0,1,4.8,106.445Z" transform="translate(0 -96.207)" fill="#fbbd00"/>
+                  <path id="Path_3628" data-name="Path 3628" d="M198.4,373.722l-2.4,2.4,2.4,2.4a10.16,10.16,0,0,0,6.23-2.112v-3.448h-3.448A5.438,5.438,0,0,1,198.4,373.722Z" transform="translate(-188.162 -358.047)" fill="#0f9d58"/>
+                  <path id="Path_3629" data-name="Path 3629" d="M56.274,325.477l-3.451,3.451a10.4,10.4,0,0,0,.886,1.009,10.17,10.17,0,0,0,7.239,3v-4.8A5.441,5.441,0,0,1,56.274,325.477Z" transform="translate(-50.711 -312.461)" fill="#31aa52"/>
+                  <path id="Path_3630" data-name="Path 3630" d="M266.237,199.67a10.325,10.325,0,0,0-.168-1.855l-.09-.492H256v4.8h4.857a5.414,5.414,0,0,1-2.075,2.225l3.448,3.448a10.4,10.4,0,0,0,1.009-.886A10.17,10.17,0,0,0,266.237,199.67Z" transform="translate(-245.763 -189.433)" fill="#3c79e6"/>
+                  <path id="Path_3631" data-name="Path 3631" d="M202.245,6.392l.424.424,3.393-3.393L205.638,3A10.17,10.17,0,0,0,198.4,0L196,2.4l2.4,2.4A5.4,5.4,0,0,1,202.245,6.392Z" transform="translate(-188.162 0)" fill="#cf2d48"/>
+                  <path id="Path_3632" data-name="Path 3632" d="M60.947,4.8V0a10.171,10.171,0,0,0-7.239,3,10.391,10.391,0,0,0-.886,1.009l3.451,3.451A5.441,5.441,0,0,1,60.947,4.8Z" transform="translate(-50.71 0)" fill="#eb4132"/>
+                </svg>
+                Google</a>
+              </li>
+  
+              <li>
+                <a href="/import_outlook_profile"><svg id="logotype" xmlns="http://www.w3.org/2000/svg" width="19.206" height="19.206" viewBox="0 0 19.206 19.206">
+                  <path id="Path_3633" data-name="Path 3633" d="M272,9h9V.6a.6.6,0,0,0-.6-.6H272Z" transform="translate(-261.797)" fill="#4caf50"/>
+                  <path id="Path_3634" data-name="Path 3634" d="M9,9V0H.6A.6.6,0,0,0,0,.6V9Z" fill="#f44336"/>
+                  <path id="Path_3635" data-name="Path 3635" d="M9,272H0v8.4a.6.6,0,0,0,.6.6H9Z" transform="translate(0 -261.797)" fill="#2196f3"/>
+                  <path id="Path_3636" data-name="Path 3636" d="M272,272v9h8.4a.6.6,0,0,0,.6-.6V272Z" transform="translate(-261.797 -261.797)" fill="#ffc107"/>
+                </svg>
+                Outlook</a>
+              </li>
+  
+              <!-- <li>
+                <a href="#"><svg id="facebook" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+                  <path id="Path_3651" data-name="Path 3651" d="M18.375,0H2.625A2.628,2.628,0,0,0,0,2.625v15.75A2.628,2.628,0,0,0,2.625,21h15.75A2.628,2.628,0,0,0,21,18.375V2.625A2.628,2.628,0,0,0,18.375,0Z" fill="#1976d2"/>
+                  <path id="Path_3652" data-name="Path 3652" d="M201.844,102.563h-3.281V99.938c0-.725.588-.656,1.313-.656h1.313V96h-2.625a3.937,3.937,0,0,0-3.937,3.938v2.625H192v3.281h2.625v7.219h3.938v-7.219h1.969Z" transform="translate(-184.125 -92.063)" fill="#fafafa"/>
+                </svg>
+                Facebook</a>
+              </li> -->
+  
+              <!-- <li>
+                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+                  <text id="linkedin" data-name="" transform="translate(10 18)" fill="#0077b5" font-size="20" font-family="icofont, IcoFont"><tspan x="-10" y="0"></tspan></text>
+                </svg>
+                Linkedin</a>
+              </li> -->
+  
+              <!-- <li>
+                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+                  <text id="apple" data-name="" transform="translate(10 18)" fill="#666" font-size="20" font-family="icofont, IcoFont"><tspan x="-10" y="0"></tspan></text>
+                </svg>
+                Apple</a>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Import Contact modal -->
+
+    <!-- add card start -->
+    <div class="modal" id="addcardModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Add Card</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="/card/home/save" name="card" method="POST">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" onkeydown="return /[a-zåäö ]/i.test(event.key)" name="name" id="name" maxlength="25">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" class="form-control cardNumber" name="cardNumber" id="cardNumber" placeholder="0000-0000-0000-0000">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Expires</label>
+                    <input type="text" class="form-control expires" name="expires" id="expires">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>CVV</label>
+                    <input type="password" class="form-control" name="cvv" id="cvv">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <button type="submit" class="btn_sty_1">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- add card end -->
+
+    <!-- connect with isp start -->  
+    <div class="modal" id="connectwith_ispModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Connect With Business Owner</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <p>Hi <%- userCustomerSession.name %> you have not connected with any service providers yet please use the below search box to find service providers and send connection request.</p>
+            <form action="/customer/inviteCode" name="customSearch" method="POST">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group popup_search">
+                    <input type="text" class="form-control" placeholder="Search Business Owners/Invite Code" value="<%-name_category%>" name="name_category" id="name_category">
+                    <i class="popup_search_icon icofont-search-1"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- connect with isp end -->
+
+    <!-- book_appointment home start -->
+    <div class="modal" id="homebook_appointmentModal" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Book Appointments</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <p>Hi <%- userCustomerSession.name %> you have not booked any appointment with any service providers yet please use the below search box to find service providers and book appointment.</p>
+            <form action="/customer/inviteCode" name="customSearch" method="POST">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group popup_search">
+                    <input type="text" class="form-control" placeholder="Search Business Owners/Invite Code" value="<%-name_category%>" name="name_category" id="name_category">
+                    <i class="popup_search_icon icofont-search-1"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- book_appointment home end -->
+
+        <!-- payment_infoModal start -->
+        <div class="modal" id="payment_infoModal" data-backdrop="static">
+          <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Payment Information</h4>
+                <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+              </div>
+              <!-- Modal body -->
+              <div class="modal-body">
+                <div class="col-md-12">
+                  <label class="payment_info_popup_title">Add Payment Card</label>
+                  <div id="card-element" style="width: 450px; max-width:100%;">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert" style="color:#eb1c26"></div>
+                  </div>
+                </div>
+                <br>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <button type="submit" id="save_card_btn" class="btn_sty_1">Save</button>
+                  </div>
+                </div>
+                <form action="/card/home/save" name="save_card_form" id="save_card_form" method="POST">
+                </form>
+                <!-- <form action="/card/home/save" name="card1" method="POST">
+                  <div class="row">
+                    <div class="col-md-12 mt-1">
+                      <label class="payment_info_popup_title">Add Payment Card</label>
+                    </div>
+    
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="name" id="name">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" class="form-control cardNumber" name="cardNumber" id="cardNumber" placeholder="0000-0000-0000-0000">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Expires</label>
+                        <input type="text" class="form-control expires" name="expires" id="expires" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>CVV</label>
+                        <input type="password" class="form-control" name="cvv" id="cvv">
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <button type="submit" class="btn_sty_1" style="min-width: 135px;">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </form> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- payment_infoModal end -->
+
+    <!-- Add Service start -->
+    <div class="modal" id="add_serviceModal" data-backdrop="static">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Add Service</h4>
+            <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="/add-service/save" enctype="multipart/form-data" name="add-service" method="POST">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Service Name</label>
+                    <input type="text" class="form-control" name="name">
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Service Image</label>
+                    <div class="custom-file">
+                      <input type="file" accept="image/*" class="custom-file-input" id="customFile" name="profileImage" > 
+                      <label class="custom-file-label" for="customFile">Choose Image</label>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Service Duration</label>
+                    <div class="row">
+                      <!-- <div class="col-md-6">
+                        <select class="form-control" name="duration_hours">
+                          <option value="">Set Hours</option>
+                          <option value="0">0 hr</option>
+                          <option value="1">1 hr</option>
+                          <option value="2">2 hr</option>
+                          <option value="3">3 hr</option>
+                          <option value="4">4 hr</option>
+                          <option value="5">5 hr</option>
+                          <option value="6">6 hr</option>
+                          <option value="7">7 hr</option>
+                          <option value="8">8 hr</option>
+                          <option value="9">9 hr</option>
+                          <option value="10">10 hr</option>
+                          <option value="11">11 hr</option>
+                          <option value="12">12 hr</option>
+                          <option value="13">13 hr</option>
+                          <option value="14">14 hr</option>
+                          <option value="15">15 hr</option>
+                          <option value="16">16 hr</option>
+                          <option value="17">17 hr</option>
+                          <option value="18">18 hr</option>
+                          <option value="19">19 hr</option>
+                          <option value="20">20 hr</option>
+                          <option value="21">21 hr</option>
+                          <option value="22">22 hr</option>
+                          <option value="23">23 hr</option>
+                          <option value="24">1 day</option>
+                        </select>
+                      </div> -->
+  
+                      <div class="col-md-12">
+                        <select class="form-control" name="duration_minutes">
+                          <option value="">Set Minutes</option>
+                          <option value="15">15 min</option>
+                          <option value="30">30 min</option>
+                          <option value="45">45 min</option>
+                          <option value="60">60 min</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Advance Needed (%)</label>
+                    <select class="form-control" name="advance">
+                      <option value="0">0%</option>
+                      <option value="25">25%</option>
+                      <option value="50">50%</option>
+                      <option value="75">75%</option>
+                      <option value="100">100%</option>
+                    </select>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Cancellation allowed till (Minutes/Hours)</label>
+                    <select class="form-control" name="cancellation">
+                      <option value="">Set Cancellation Time</option>
+                      <option value="30">30 Minutes</option>
+                      <option value="60">1 Hour</option>
+                      <option value="120">2 Hours</option>
+                      <option value="180">3 Hours</option>
+                      <option value="240">4 Hours</option>
+                      <option value="300">5 Hours</option>
+                      <option value="360">6 Hours</option>
+                      <option value="420">7 Hours</option>
+                      <option value="480">8 Hours</option>
+                      <option value="540">9 Hours</option>
+                      <option value="600">10 Hours</option>
+                      <option value="660">11 Hours</option>
+                      <option value="720">12 Hours</option>
+                      <option value="780">13 Hours</option>
+                      <option value="840">14 Hours</option>
+                      <option value="900">15 Hours</option>
+                      <option value="960">16 Hours</option>
+                      <option value="1020">17 Hours</option>
+                      <option value="1080">18 Hours</option>
+                      <option value="1140">19 Hours</option>
+                      <option value="1200">20 Hours</option>
+                      <option value="1260">21 Hours</option>
+                      <option value="1320">22 Hours</option>
+                      <option value="1380">23 Hours</option>
+                      <option value="1440">1 Day</option>
+                    </select>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Price (Dollar)</label>
+                    <input type="text" class="form-control" name="price" id="price" min="1" pattern="^\d*(\.\d{0,2})?$" title="Only 2 digits allowed after decimal" maxlength="6">
+                  </div>
+                </div>
+  
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" id="description" rows="4"></textarea>
+                  </div>
+                </div>
+  
+                <!-- <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                      <label class="custom-control-label" for="customCheck">Allow multiple customers per session</label>
+                    </div>
+                  </div>
+                </div> -->
+  
+                <!-- <div class="col-md-6" id="customers">
+                  <div class="form-group">
+                    <label>No. of Customers Per Session</label>
+                    <select class="form-control" name="allowded_customers" id="allowded_customers">
+                       <option value="1">1</option>
+                      <option value="2">2</option> 
+                      <option value="3">3</option>
+                      <option value="4">4</option> 
+                    </select>
+                  </div>
+                </div> -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>No. of Customers Per Session</label>
+                    <input type="number" max="1000" class="form-control inputAllowded_customers" name="allowded_customers" id="allowded_customers_edit" min="1">
+                  </div>
+                </div>
+  
+                
+                
+                <div class="col-md-12">
+                  <div class="form-group mb-0">
+                    <button type="submit" class="btn_sty_1" style="min-width: 135px;">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add Service end -->
+<div id="userD" style="display:none;"><%- JSON.stringify(userCustomerSession) %></div>
+<!-- make payment start -->
+<div class="modal" id="paymentModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Payment</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <% if(typeof cardList != "undefined"){ %>
+        <form action="<%- baseUrl %>completePaymentSaveCard" method="POST" id="completePaymentSaveCard">
+          <h5 class="payment_select_card">Select Card</h5>
+          <div class="row">
+            <% for(var i=0; i<cardList.length; i++) { %>
+            <div class="col-xl-12" id="append_amount" style="display: flex; align-items: center;">
+                <input name="existingCardRadio" type="radio" class="existingCardRadio" value="<%- cardList[i].id %>" style="margin-right: 10px;" checked>
+                <div class="payment_cart">
+                  <div class="card_logo">
+                      <img src="<%= baseUrl%>img/visa.png" alt="">
+                  </div>
+                  <div class="card_info">
+                      <h4 class="card_number">**** **** **** <span id="getCardNumber"></span>
+                        <span id="card_number">
+                          <%= cardList[i].last4 %>
+                        </span></h4>
+                      <h5 class="card_expire">Expires <%= cardList[i].exp_month %>/<%= cardList[i].exp_year %></h5>
+                  </div>
+                </div>
+                <script>
+                  $("#completePaymentSaveCard").click(function(){
+                    let appointmentId = $("#add_payment_id").val();
+                    let remainingAmount = $("#add_payment_amount").val();
+    
+                    $('#completePaymentSaveCard [name="remainingAmount1"]').remove();
+                    $('#completePaymentSaveCard [name="remainingAmountappointmentId"]').remove();
+                      
+                    $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');
+                    $('#completePaymentSaveCard').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                  });
+                </script>
+            </div>
+            <% } %>
+          </div>
+          <Button type="submit" class="btn_sty_1 pay_now_using_existing_btn">Pay Now</Button>
+        </form>
+          <!-- <div class="form_seprator">
+            <div class="sep_or">OR</div>
+          </div> -->
+        <% } %>
+        <div class="row">
+            <div class="form_container" style="width: 100%;margin-top: 37px;">
+              <!-- <div class="col-md-12">
+                <h4>Payment with new card.</h4>
+              </div> -->
+  
+              <div class="col-md-12">
+                <!-- <label for="card-element">
+                  Credit or debit card
+                </label> -->
+                <!-- <div id="card-element" style="width: 450px; max-width:100%;"> -->
+                  <!-- A Stripe Element will be inserted here. -->
+                </div>
+                <!-- Used to display form errors. -->
+                <!-- <div id="card-errors" role="alert" style="color:#eb1c26"></div> -->
+                </div>
+
+              <!-- <form action="<%- baseUrl %>completePayment" method="post" id="completePayment">
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group mb-0">
+                    <button type="submit" class="btn_sty_1 pay_now_btn">Pay Now</button>
+                  </div>
+                  <script>
+                    $("#completePayment").click(function(){
+                      let appointmentId = $("#add_payment_id").val();
+                      let remainingAmount = $("#add_payment_amount").val();
+                      
+                      $('#completePayment [name="remainingAmountappointmentId"]').remove();
+                      $('#completePayment [name="remainingAmount1"]').remove();
+                        
+                      $('#completePayment').append('<input type="hidden" name="remainingAmount1" value="'+remainingAmount+'">');    
+                      $('#completePayment').append('<input type="hidden" name="remainingAmountappointmentId" value="'+appointmentId+'">');
+                    });
+                  </script>
+                </div>
+              </form> -->
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- make payment end -->
+
+<script>
+  $(document).ready(function(){
+    $("#customFile").change(function(){
+      var img = $('#customFile')[0].files[0]
+      console.log(img.name)
+      $('.custom-file-label').text(img.name);
+    });
+});
+</script>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<style>
+  .StripeElement {
+    box-sizing: border-box;
+
+    height: 40px;
+
+    padding: 10px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+  .linkFor:hover {
+    text-decoration: none;
+    color: #333
+  }
+
+  .linkFor {
+    text-decoration: none;
+  }
+
+
+ .payment_card_sec .card_block {width: calc(100% - 30px); float: right;}
+
+ @media (max-width: 550px){
+ .card_block_left {margin:0 10px 0 0;}
+ .card_block_right {width:auto; text-align: left;}
+ .card_block_right h4 {font-size: 16px;}
+ }
+
+</style>
+
+<script>
+  // Create a Stripe client.
+  var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+
+  // Create an instance of Elements.
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create('card', {hidePostalCode: true, style: style});
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  // Handle real-time validation errors from the card Element.
+  card.addEventListener('change', function (event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById('completePayment');
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function (result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('completePayment');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    $(".pay_now_btn").attr("disabled", true);
+    // Submit the form
+    form.submit();
+  }
+
+  $(function () {
+    $('.linkFor').one('click', function () {
+      window.location.replace($(this).data('href'));
+      $(this).removeAttr('data-href');
+    });
+  });
+</script>
+<script>
+  $(document).on('click', '.make_payment', function(){
+    var appointmentId = $(this).data('id');
+    var remainingAmount = $(this).data('price');
+
+    $('#add_payment').html('');
+    $('#add_payment').append(`
+      <input type="hidden" name="add_payment_id" id="add_payment_id" value="${appointmentId}">
+      <input type="hidden" name="add_payment_amount" id="add_payment_amount" value="${remainingAmount}">
+    `);
+    $('#paymentModal').modal('show');
+  });
+</script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <!--
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> -->
+    
+    <script src="<%- baseUrl %>admin/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+    <script src="<%- baseUrl %>js/circle-progress.js"></script>
+   <!-- validation -->
+    <script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+    <script src="<%- baseUrl %>validation/custom.validate.js"></script>
+    <script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+    <!-- Datepicker -->
+<script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+<link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<script>
+  $(function () {
+    $(".rating").rateYo({
+        // rating: "4",
+        readOnly: true,
+        starWidth: "15px",
+        ratedFill: "#fe724c"
+    });
+    $(".rating").rateYo();
+  });
+</script>
+
+    <script>
+        $("#allowded_customers").append('<option value="1">1</option>');
+      $('#customCheck').change(function () {
+        if ($('#customCheck').is(":checked")) {
+          $("#allowded_customers").append('<option value="2">2</option>');
+          $("#allowded_customers").append('<option value="3">3</option>');
+          $("#allowded_customers").append('<option value="4">4</option>');
+        } else {
+          $('#allowded_customers')
+          .find('option')
+          .remove()
+          .end()
+          .append('<option value="1">1</option>')
+        }
+      });
+    </script> 
+
+    <script>
+      $(document).ready(function(){
+        $('.home-link').addClass('nav-active');
+
+        $(".expires").keyup(function(){
+          if($(this).val().length == 2){
+            console.log($(this).val())
+            if(parseInt($(this).val()) > 12){
+              $(this).val($(this).val().slice(0,-1))
+            }else{
+              $(this).val($(this).val()+'/')
+            }    
+          }
+        });
+
+
+        $(function() {
+      var lastDate = new Date();    
+			$(".datePicker").datepicker({
+			  changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        minDate:lastDate,
+        dateFormat: 'mm-yy',
+        onClose: function(dateText, inst) { 
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+        },
+      })  
+		});
+    $("#payment_infoModal").modal({
+        show: false,
+        backdrop: 'static'
+    });
+    $("#import_contactModal").modal({
+        show: false,
+        backdrop: 'static'
+    });
+    $("form[name='card']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+          maxlength: 50,
+          normalizer: function (value) {
+						return $.trim(value);
+					}
+				},
+        cardNumber: {
+          required: true,
+         // number: true,
+          // minlength: 16,
+					// maxlength: 16,
+          creditNum:true
+        },
+        expires: {
+					required: true,
+				},
+        cvv: {
+          required: true,
+          number: true,
+          minlength: 3,
+          maxlength: 4,
+        }
+			},
+			messages:{
+				name:{
+				    required: 'Please enter card holder  name.',
+            maxlength: 'Maximum length is 50.',
+				},
+        cardNumber:{
+				    required: 'Please enter card number.',
+            minlength: "Minimum length is 14.",
+						maxlength: "Maximum length is 16.",
+				},
+        expires:{
+				    required: 'Please enter the expiration date.'
+				},
+        cvv:{
+				    required: 'Please enter cvv.',
+            minlength: 'Minimum length is 3.',
+            maxlength: 'Maximum length is 4.',
+            number: 'Please enter numbers.'
+				},
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+		 	}
+		 });
+     $("form[name='card1']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+          maxlength: 50,
+          normalizer: function (value) {
+						return $.trim(value);
+					}
+				},
+        cardNumber: {
+          required: true,
+         // number: true,
+          // minlength: 16,
+					// maxlength: 16,
+          creditNum:true
+        },
+        expires: {
+					required: true,
+				},
+        cvv: {
+          required: true,
+          number: true,
+          minlength: 3,
+          maxlength: 4,
+        }
+			},
+			messages:{
+				name:{
+				    required: 'Please enter card holder  name.',
+            maxlength: 'Maximum length is 50.',
+				},
+        cardNumber:{
+				    required: 'Please enter card number.',
+            minlength: "Minimum length is 14.",
+						maxlength: "Maximum length is 16.",
+				},
+        expires:{
+				    required: 'Please enter the expiration date.'
+				},
+        cvv:{
+				    required: 'Please enter cvv.',
+            minlength: 'Minimum length is 3.',
+            maxlength: 'Maximum length is 4.',
+            number: 'Please enter numbers.'
+				},
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+		 	}
+		 });
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+
+    <script>
+      $(document).ready(function(){
+        var user = $("#userD").html();
+        user = JSON.parse(user);
+        if(user.role_id == 3){
+        var $container = $('#complete_profile').addClass("preloader");
+        $.ajax({
+                 type: "GET",
+                 url: "<%- baseUrl %>isp-home-screen-circle",
+                 success: function(data)
+                 {
+                  if(data != null){
+                  console.log(data);
+                  if(data.count == 5){
+                    $('.addProgressBar').append(``)
+                  } else {
+                    $('.addProgressBar').append(`
+                    <section class="progress_section alert alert-info fade in alert-dismissible show welcome_message">
+                      <div class="progress_top">
+                        <div class="progress"></div>
+                        <div class="progress_info">
+                          <%- userCustomerSession.name.replace(/\w/, c => c.toUpperCase()) %> your profile setup is not completed yet. Please take a moment to complete setting up your profile.
+                          <div class="expandProgressBar" style="float: right;">
+                            <a href="#" id="example-show" class="showLink" 
+                              onclick="showHide('example');return false;">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                <g id="Group_7515" data-name="Group 7515" transform="translate(1663.206 -248.794)">
+                                  <g id="Ellipse_294" data-name="Ellipse 294" transform="translate(-1663.206 248.794)" fill="#fff" stroke="#707070" stroke-width="1">
+                                    <circle cx="18" cy="18" r="18" stroke="none"/>
+                                    <circle cx="18" cy="18" r="17.5" fill="none"/>
+                                  </g>
+                                  <g id="Group_7514" data-name="Group 7514" transform="translate(-1652.169 257.897)">
+                                    <path id="Path_4220" data-name="Path 4220" d="M1.512,17.369l5.346-5.346L12.2,17.369l1.512-1.512L6.857,9,0,15.857Z" transform="translate(0 1.622)" fill-rule="evenodd"/>
+                                    <path id="Path_4221" data-name="Path 4221" d="M1.512,0,6.857,5.346,12.2,0l1.512,1.512L6.857,8.369,0,1.512Z" transform="translate(0 -1)" fill-rule="evenodd"/>
+                                  </g>
+                                </g>
+                              </svg>                    
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="progress_bottom">
+                        <div id="example" class="more">
+                          <div class="collapseProgressBar" style="float: right;">
+                            <a href="#" id="example-hide" class="hideLink" 
+                              onclick="showHide('example');return false;">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                <g id="Group_7515" data-name="Group 7515" transform="translate(1663.206 -248.794)">
+                                  <g id="Ellipse_294" data-name="Ellipse 294" transform="translate(-1663.206 248.794)" fill="#fff" stroke="#707070" stroke-width="1">
+                                    <circle cx="18" cy="18" r="18" stroke="none"/>
+                                    <circle cx="18" cy="18" r="17.5" fill="none"/>
+                                  </g>
+                                  <g id="Group_7514" data-name="Group 7514" transform="translate(-1652.169 257.897)">
+                                    <path id="Path_4220" data-name="Path 4220" d="M1.512,17.369l5.346-5.346L12.2,17.369l1.512-1.512L6.857,9,0,15.857Z" transform="translate(13.715 27.991) rotate(180)" fill-rule="evenodd"/>
+                                    <path id="Path_4221" data-name="Path 4221" d="M1.512,0,6.857,5.346,12.2,0l1.512,1.512L6.857,8.369,0,1.512Z" transform="translate(13.715 7.369) rotate(180)" fill-rule="evenodd"/>
+                                  </g>
+                                </g>
+                              </svg>
+                            </a>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form_step" id="complete_profile">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="/my-profile/<%- userCustomerSession._id %>">1. Setup Profile</a>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form_step" id="setup_payment">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="#" data-toggle="modal" data-target="#payment_infoModal">2. Payment Information</a>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form_step" id="import_contacts">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="#" data-toggle="modal" data-target="#import_contactModal">3. Import Contacts</a>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <% if (businessHours.length != 0) { %>
+                                <div class="form_step" id="add_service">
+                                    <div class="check_indicator"><i class="icofont-check"></i></div>
+                                    <a href="#" data-toggle="modal" data-target="#add_serviceModal">4. Add Services</a>
+                                </div>
+                              <% } else { %>
+                                <div class="form_step hideShowBtn" id="add_service">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="#">4. Add Services</a>
+                                </div>
+                              <% } %>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form_step" id="stripe_connect">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="/stripe">5. Bank Details</a>
+                                  <span id="checkStrp"></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                    `)
+                    $(".hideShowBtn").click(function(){
+                    $(".common-notification-hideShow").toggle();
+                    });
+                  }
+                  new CircleProgress('.progress', {
+                  max: 5,
+                  value: data.count,
+                    });
+                  }
+                  else{
+                    new CircleProgress('.progress', {
+                  max: 5,
+                  value: 0,
+                    });
+                  }
+                  if(data.obj !=null){
+                    if (data.obj.complete_profile !=null|| undefined){
+                      $("#complete_profile").addClass("completed"); 
+                    }
+                    if (data.obj.payments !=null|| undefined){
+                      $("#setup_payment").addClass("completed");
+                    }
+                    if (data.obj.import_contacts !=null|| undefined){
+                      $("#import_contacts").addClass("completed");
+                    }
+                    if (data.obj.add_service !=null|| undefined){
+                      $("#add_service").addClass("completed");
+                    }
+                    // console.log("user--Data" , user.bankDetails , "data.obj.stripe_connect---" , data.obj.stripe_connect);
+                    if (data.obj.stripe_connect !=null|| undefined){
+                      $("#stripe_connect").addClass("completed");
+                    }else if(data.obj.stripe_connect == undefined && data.obj.bankDetails != undefined){
+                      $("#checkStrp").append("(Check Stripe Hourly)");
+                    }
+                  }
+                  //  if(data.success == true){
+                     
+                  //  }
+                  //  else{
+                  //   //  alert(data.msg);
+                  //  }
+                 }
+               });
+              }else{
+                var $container = $('#complete_profile').addClass("preloader");
+        $.ajax({
+                 type: "GET",
+                 url: "<%- baseUrl %>customer-home-screen-circle",
+                 success: function(data)
+                 {
+                  if(data != null){
+                  console.log(data);
+                  if(data.count == 4){
+                    $('.addProgressBar').append(``)
+                  } else {
+                    $('.addProgressBar').append(`
+                    <section class="progress_section alert alert-info fade in alert-dismissible show welcome_message">
+                      <div class="progress_top">
+                        <div class="progress"></div>
+                        <div class="progress_info">
+                          <%- userCustomerSession.name.replace(/\w/, c => c.toUpperCase()) %> your profile setup is not completed yet. Please take a moment to complete setting up your profile.
+                          <div class="expandProgressBar" style="float: right;">
+                            <a href="#" id="example-show" class="showLink" 
+                              onclick="showHide('example');return false;">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                <g id="Group_7515" data-name="Group 7515" transform="translate(1663.206 -248.794)">
+                                  <g id="Ellipse_294" data-name="Ellipse 294" transform="translate(-1663.206 248.794)" fill="#fff" stroke="#707070" stroke-width="1">
+                                    <circle cx="18" cy="18" r="18" stroke="none"/>
+                                    <circle cx="18" cy="18" r="17.5" fill="none"/>
+                                  </g>
+                                  <g id="Group_7514" data-name="Group 7514" transform="translate(-1652.169 257.897)">
+                                    <path id="Path_4220" data-name="Path 4220" d="M1.512,17.369l5.346-5.346L12.2,17.369l1.512-1.512L6.857,9,0,15.857Z" transform="translate(0 1.622)" fill-rule="evenodd"/>
+                                    <path id="Path_4221" data-name="Path 4221" d="M1.512,0,6.857,5.346,12.2,0l1.512,1.512L6.857,8.369,0,1.512Z" transform="translate(0 -1)" fill-rule="evenodd"/>
+                                  </g>
+                                </g>
+                              </svg>                    
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="progress_bottom">
+                        <div id="example" class="more">
+                          <div class="collapseProgressBar" style="float: right;">
+                            <a href="#" id="example-hide" class="hideLink" 
+                              onclick="showHide('example');return false;">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                <g id="Group_7515" data-name="Group 7515" transform="translate(1663.206 -248.794)">
+                                  <g id="Ellipse_294" data-name="Ellipse 294" transform="translate(-1663.206 248.794)" fill="#fff" stroke="#707070" stroke-width="1">
+                                    <circle cx="18" cy="18" r="18" stroke="none"/>
+                                    <circle cx="18" cy="18" r="17.5" fill="none"/>
+                                  </g>
+                                  <g id="Group_7514" data-name="Group 7514" transform="translate(-1652.169 257.897)">
+                                    <path id="Path_4220" data-name="Path 4220" d="M1.512,17.369l5.346-5.346L12.2,17.369l1.512-1.512L6.857,9,0,15.857Z" transform="translate(13.715 27.991) rotate(180)" fill-rule="evenodd"/>
+                                    <path id="Path_4221" data-name="Path 4221" d="M1.512,0,6.857,5.346,12.2,0l1.512,1.512L6.857,8.369,0,1.512Z" transform="translate(13.715 7.369) rotate(180)" fill-rule="evenodd"/>
+                                  </g>
+                                </g>
+                              </svg>
+                            </a>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form_step" id="complete_profile">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="/my-profile/<%- userCustomerSession._id %>">1. Setup Profile</a>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="form_step" id="setup_payment">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="#" data-toggle="modal" data-target="#payment_infoModal">2. Setup Payment Details</a>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="form_step" id="add_service">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="#" data-toggle="modal" data-target="#connectwith_ispModal">3. Connect With a Business Owner</a>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="form_step" id="book_appointment">
+                                  <div class="check_indicator"><i class="icofont-check"></i></div>
+                                  <a href="#" data-toggle="modal" data-target="#homebook_appointmentModal">4. Book an Appointment</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                    `)
+                  }
+                  new CircleProgress('.progress', {
+                  max: 4,
+                  value: data.count,
+                    });
+                  }
+                  else{
+                    new CircleProgress('.progress', {
+                  max: 4,
+                  value: 0,
+                    });
+                  }
+                  if(data.obj !=null){
+                    if (data.obj.complete_profile == "done"){
+                      $("#complete_profile").addClass("completed"); 
+                    }
+                    if (data.obj.payments == "done"){
+                      $("#setup_payment").addClass("completed");
+                    }
+                    if (data.obj.appointments == "done"){
+                      $("#book_appointment").addClass("completed");
+                    }
+                    if (data.obj.add_service == "done"){
+                      $("#add_service").addClass("completed");
+                    }
+                  }
+                 }
+               });
+              }
+
+
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+      $("form[name='card']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+          maxlength: 50,
+          normalizer: function (value) {
+						return $.trim(value);
+					}
+				},
+        cardNumber: {
+          required: true,
+         // number: true,
+          // minlength: 16,
+					// maxlength: 16,
+          creditNum:true
+        },
+        expires: {
+					required: true,
+				},
+        cvv: {
+          required: true,
+          number: true,
+          minlength: 3,
+          maxlength: 4,
+        }
+			},
+			messages:{
+				name:{
+				    required: 'Please enter card holder  name.',
+            maxlength: 'Maximum length is 50.',
+				},
+        cardNumber:{
+				    required: 'Please enter card number.',
+            minlength: "Minimum length is 14.",
+						maxlength: "Maximum length is 16.",
+				},
+        expires:{
+				    required: 'Please enter the expiration date.'
+				},
+        cvv:{
+				    required: 'Please enter cvv.',
+            minlength: 'Minimum length is 3.',
+            maxlength: 'Maximum length is 4.',
+            number: 'Please enter numbers.'
+				},
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+		 	}
+		 });
+    </script>
+    <script>
+      $("#price").keypress(function(e) {
+        if (String.fromCharCode(e.which).match(/[^0-9.]/)) {
+          e.preventDefault();
+        }
+      });
+    </script>
+     <p id="token" hidden></p> 
+     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-messaging.js"></script>
+     <script>
+      var firebaseConfig = {
+         apiKey: "AIzaSyBknM87YF_6scofTVWZMFwHFtSVCBh2Fus",
+         authDomain: "pro01-29e4b.firebaseapp.com",
+         projectId: "pro01-29e4b",
+         storageBucket: "pro01-29e4b.appspot.com",
+         messagingSenderId: "716669500088",
+         appId: "1:716669500088:web:496098fdb040e20581124d" 
+         };
+     
+         // Initialize Firebase
+         firebase.initializeApp(
+           firebaseConfig
+         );
+     
+         const messaging = firebase.messaging();
+         function intionlzeFirebaseMessaging(){
+           messaging.requestPermission().then(function(){
+             console.log("Notification Permission");
+             return messaging.getToken();
+           }).then(function(token){ 
+            console.log("token  :"+token);
+             $.ajax({  
+                type: "POST",
+                url: "<%- baseUrl %>firebase-token",
+                data: {"token":token},
+              });
+            console.log("token  :"+token);
+          //  document.getElementById("token").innerHTML() = token;
+           }).catch(function(err){
+             console.log(err);
+           })
+         }
+         messaging.onMessage(function(payload){
+           console.log(payload);
+         })
+         messaging.onTokenRefresh(function(){
+           messaging.getToken(function(newToken){
+            console.log("new token :"+newToken);
+           }).catch(function(err){
+             console.log(err);
+           })
+         })
+        intionlzeFirebaseMessaging();
+        messaging.onMessage(function (payload) {
+     console.log("message recived ..", payload);
+   //  self.addEventListener('push', function (e) {
+   //    // Skip if event is our own custom event
+   //     if (e.custom) return;
+
+   //    // Create a new event to dispatch
+   //     var newEvent = new Event('push');
+   //     newEvent.waitUntil = e.waitUntil.bind(e);
+   //     newEvent.data = {
+   //       json: function () {
+   //         var newData = e.data.json();   
+   //         newData._notification = newData.notification; 
+   //         delete newData.notification; 
+   //         return newData;
+   //       },
+   //     };
+   //     newEvent.custom = true;
+
+   //     // Stop event propagation
+   //     e.stopImmediatePropagation();  
+
+   //     // Dispatch the new wrapped event
+   //     dispatchEvent(newEvent);
+   //   });
+     const notificationTitle = payload.notification.title;
+     const notificationOptions = {
+       body: payload.notification.body, 
+       icon: payload.notification.icon,
+     };
+
+     if (!("Notification" in window)) {
+       console.log("This browser does not support system notifications");
+     }
+     // Let's check whether notification permissions have already been granted
+     else if (Notification.permission === "granted") {
+       console.log(" Notification  permission  granted");
+       // If it's okay let's create a notification
+       var notification = new Notification(notificationTitle, notificationOptions);
+       notification.onclick = function (event) {
+         event.preventDefault(); // prevent the browser from focusing the Notification's tab
+         window.open(payload.notification.click_action, '_blank');
+         notification.close();
+       } 
+     }
+  })  
+     </script>
+
+<script>
+  $(document).ready(function () {
+    $("form[name='add-service']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        name: {
+              required: true,
+              lettersonly: true,
+              maxlength: 50,
+              normalizer: function (value) {
+              return $.trim(value);
+              }
+        },
+        profileImage: {
+            required: true,
+            extension: "png|jpeg|jpg",
+            filesize: 5242880,  // in megabytes
+        },
+        duration_hours: {
+          required: true
+        },
+        duration_minutes: {
+          required: true
+        }, 
+        advance: {
+          required: true 
+        },
+        cancellation: {
+          required: true 
+        },
+        price: {
+          required: true,
+          number: true,
+          min:1
+        }, 
+        description: {
+          required: true 
+        },
+        allowded_customers: {
+          required: true,
+          decimal1: true  
+        }
+      },
+      messages: {
+        name_category: {
+          required: 'Please enter name.',
+          maxlength: "Please enter a maximum of 50 characters."
+        },
+        profileImage: {
+          required: 'Please select image.',
+          extension: 'Please upload a jpg or png file.',
+          filesize: 'Please upload a picture less than 5MB.',
+        },
+        duration_hours: {
+          required: "Please select hours"
+        },
+        duration_minutes: {
+          required: "Please select minutes"
+        },
+        advance: {
+          required: "Please select advance"
+        },
+        cancellation: {
+          required: "Please enter cancellation time" 
+        },
+        price: {
+          required: "Please enter price",  
+          number: "Please enter a valid number.",
+          min:'Please add minimum amount'
+        },
+        description: {
+          required: "Please enter description"  
+        },
+        allowded_customers: {
+          required: "Please enter allowded customers"  
+        }
+      },
+
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+    $("form[name='account']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        account_holder_name: {
+          required: true,
+          maxlength: 50,
+          //noSpace: true,
+          normalizer: function (value) {
+            return $.trim(value);
+          }
+        },
+        account_number: {
+          required: true,
+          number: true,
+          noSpace: true,
+        },
+        re_account_number: {
+          required: true,
+          number: true,
+          noSpace: true,
+          equalTo: "#account_number"
+        },
+        routing_number: {
+          required: true,
+          number: true,
+					noSpace: true,
+					minlength: 9,
+					maxlength: 9,
+        }
+      },
+      messages: {
+        account_holder_name: {
+          required: 'Please enter account holder  name.',
+        },
+        account_number: {
+          required: 'Please enter account number.',
+        },
+        re_account_number: {
+          required: 'Please enter account number again.',
+        },
+        routing_number: {
+          required: 'Please enter routing number.',
+        },
+      },
+
+      submitHandler: function (form) {
+        $(":submit").attr("disabled", true);
+        form.submit();
+      }
+    });
+  });
+</script>
+<script>
+  function showHide(shID) {
+    if (document.getElementById(shID)) {
+        if (document.getElementById(shID+'-show').style.display != 'none') {
+            document.getElementById(shID+'-show').style.display = 'none';
+            document.getElementById(shID).style.display = 'block';
+        }
+        else {
+            document.getElementById(shID+'-show').style.display = 'inline';
+            document.getElementById(shID).style.display = 'none';
+        }
+    }
+  }
+</script>
+<script>
+  $('.cardNumber').on('keypress change', function () {
+    $(this).val(function (index, value) {
+      return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+    });
+  });
+</script>
+<script>
+  $('.hidePopup').on('click', function () {
+    let managePopupId = $("#managePopupId").val();
+    $.ajax({
+      type: "POST",
+      url: `<%- baseUrl %>userClosedPopup`,
+      data: {
+        managePopupId: function () {
+          return managePopupId;
+        },
+      }
+    });
+  });
+</script>
+<script>
+  $('.hideWelcomeMsg').on('click', function () {
+    let userID = $("#userID").val();
+    $.ajax({
+      type: "POST",
+      url: `<%- baseUrl %>userClosedWelcomeMsg`,
+      data: {
+        userID: function () {
+          return userID;
+        },
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    let finalTimeZone = moment.tz.guess();
+    console.log("finalTimeZone",finalTimeZone);
+    console.log("Done");
+    $.ajax({
+      type: "POST",
+      url: `<%- baseUrl %>getTimeZone`,
+      data: {
+        timezone: function () {
+          return finalTimeZone;
+        },
+      },
+      success: function(data){
+        var data = data.data;
+        console.log("data",data);
+      }
+    });
+  });
+</script>
+<script type="text/javascript">
+
+      //Stripe card views
+    // Create a Stripe client.
+    var stripe = Stripe('pk_test_51JVSy4CzX7kFjfHZXLy3xhQI9PWrWq3UqAX4x8R4gdemNqMMm97wketwWDtTXjbT2oORsbz4q9Jxlt8v58MKHN4W00xsqmcYKX');
+    
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+  
+    // Custom styling can be passed to options when creating an Element.
+    // (Note that this demo uses a wider set of styles than the guide below.)
+    var style = {
+      base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4'
+        }
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    };
+  
+    // Create an instance of the card Element.
+    var card = elements.create('card', {hidePostalCode: true, style: style});
+  
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+  
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function (event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    $("#save_card_btn").click(function(){
+      stripe.createToken(card).then(function (result) {
+          if (result.error) {
+            // Inform the user if there was an error.
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+          } else {
+            // Send the token to your server.
+            stripeTokenHandler(result.token);
+          }
+        });
+    });
+    
+      // Submit the form with the token ID.
+      function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('save_card_form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+        $(".pay_now_btn").attr("disabled", true);
+        // Submit the form
+        form.submit();
+      }
+
+
+
+  // function preventBack() {
+  //     window.history.forward(); 
+  // }
+  // setTimeout("preventBack()", 0);
+  // window.onunload = function () { null };
+</script>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+<!-- include header -->
+<% include ../common/header %>
+<!-- / end include -->
+
+
+<div>
+
+
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Manage Tutorial's</h3>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Add Tutorial's</h2>
+					<div class="clearfix"></div>
+				</div>
+				<form name="faqForm"
+					action="/admin/tutorial/save" role="form" method="post"
+					class="login-form form-horizontal form-label-left">
+					<fieldset>
+						<div class="col-sm-12">
+							<span class="section">Information</span>
+						</div>
+						<div class="col-sm-12 col-xs-12 item form-group">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Enter Your Tutorial Name <span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12">
+								<input type="text" name="question" id="question" class="form-control" required
+									placeholder="Enter Your Tutorial Name" />
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 item">
+							<label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">Enter Your Description<span
+									class="text-error">*</span></label>
+							<div class="col-md-10 col-sm-10 col-xs-12 errorPlacement">
+									<textarea class="form-control" required type="textarea" name="answer" id="answer"
+										 placeholder="Enter Your Description" ></textarea>
+							</div>
+						</div>
+					</fieldset>
+ 
+					<div class="ln_solid"></div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<!-- Change this to a button or input when using this as a form -->
+							<button type="submit" class="btn btn-primary">Submit</button>
+							<a href="<%- baseUrl %>admin/tutorial" class="btn btn-primary">Cancel</a>
+						</div>
+					</div>
+				</form>
+				<!-- /.table-responsive -->
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Datepicker -->
+
+
+<script src="<%- baseUrl %>validation/additional-methods-file-uploads.js"></script>
+<script src="<%- baseUrl %>ckeditor/ckeditor.js"></script>   	  
+<script>
+		$(document).ready(function() {
+			var CK = CKEDITOR.replace('answer');
+			CK.config.autoParagraph = false;
+			CK.config.tabSpaces = 4;
+			CK.config.removeButtons = 'Select,Button,Form,Print,HiddenField,Templates,Save,Textarea,Radio,Checkbox,TextField,Table,ImageButton,Image,UploadImage,Iframe,SpecialChar,Smiley,Flash,Language';
+			CK.config.font_defaultLabel = 'Verdana';
+			CK.config.fontSize_defaultLabel = '16px';
+	  });
+	jQuery.validator.setDefaults({
+		errorPlacement: function(error, element) {
+			if (element.attr("name") == "answer") {
+				error.appendTo('.errorPlacement');
+			}else{
+				error.insertAfter(element);
+			}	
+		}
+	});
+	$(function () {
+		$("form[name='faqForm']").validate({
+			ignore: [],
+			debug: false,
+			rules: {
+				name: {
+					required: true,
+					lettersonly: true,
+					maxlength: 40,
+					normalizer: function (value) {
+						return $.trim(value);
+					},
+					remote: {
+						url: "<%- baseUrl %>admin/faq/checknameexist",
+						type: "post",
+						data: {
+							name: function () {
+								return $('input[name="name"]').val();
+							}
+						},
+						beforeSend: function () {
+						},
+						complete: function (data) {
+
+						}
+					},
+				},
+				question:{
+					required:true
+				},
+				answer:{
+					ckrequired:true
+				}
+			},
+			messages:{
+				question:{
+				    required:"Please enter your tutorial name."
+				},
+				answer:{
+					ckrequired:"Please enter your description."
+				}
+			},
+
+			submitHandler: function (form) {
+				$(":submit").attr("disabled", true);
+				form.submit();
+			}
+		});
+	});
+</script>
+
+
+<!-- include footer -->
+<% include ../common/footer %>
+<!-- / end footer -->

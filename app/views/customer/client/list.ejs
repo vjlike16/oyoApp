@@ -1,0 +1,1453 @@
+<!-- include header -->
+<% include ../common/loggedIn-header %>
+  <!-- / end include -->
+<style>
+  .select2-container{
+    width: 100% !important;
+  }
+  .select2-container .select2-selection--single{
+    height: 37px !important;
+    padding: 5px !important;
+  }
+
+ .ui-timepicker-standard{
+    z-index : 9999999 !important;
+  }
+  .pac-container{
+		z-index: 9999999999999999999999999999999 !important;
+	}
+  .deleteAddMoreContainer{
+    position: absolute;
+    right: 23px;
+    background: red;
+    color: white !important;
+    padding: 4px;
+  }
+  </style>
+  <div style="display: none;" class="loader-bg"><div id="spinner"></div></div>
+  <div class="main_content">
+    <div class="alert alert-danger common-notification-hideShow text-center" style="margin-bottom: 0px; padding: 10px 0px; display: none;">
+      Please, update your business hours first in account settings
+    </div>
+    <div class="inner_fixed_tbar">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="sib_left">
+              <h3 class="sib_left_title">Clients</h3>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="sib_right sib_right_flex_end pb-2">
+              <style>
+                .link:hover { color: white; } /* CSS link color */
+              </style>
+              <div class="search_wrap">
+                <button type="button" class="btn btn-outline-dark btn_import_contacts"  data-toggle="modal" data-target="#import_contactModal">Import Contacts</button>
+                <button type="button" class="btn btn-outline-dark btn_import_contacts" data-toggle="modal" data-target="#import_csv_file">File Import</button>
+                <input type="text" class="form-control"  id="Search" onkeyup="myFunction()" placeholder="Search Customers">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="white_block_head2"></div>
+          </div>
+          <div class="col-md-12" id="myTabs">
+            <ul class="nav nav-tabs pt-2 " id="main_Tab" role="tablist">
+              <li class="nav-item">  <a class="nav-link active first_tab_link" data-toggle="tab"  href="#Connected">Connected</a> </li>
+              <li class="nav-item"> <a class="nav-link second_tab_link" data-toggle="tab"  href="#Imported">Imported</a> </li>
+            </ul>
+            <% if (businessHours.length != 0) { %>
+              <div class="plus_mng"><a href="" data-toggle="modal" data-target="#newContact"><img src="<%- baseUrl %>img/add-icon.svg" width="32" height="32" alt=""/></a></div>
+            <% } else { %>
+              <div class="plus_mng hideShowBtn"><a href=""><img src="<%- baseUrl %>img/add-icon.svg" width="32" height="32" alt=""/></a></div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid"> 
+      
+      <!-- end:welcome_message -->
+      
+      <section class="import_contacts"> 
+        
+        <!-- import contact -->
+        <div class="container-fluid">
+          <div class="tab-content page_tab_content">
+            <div id="Connected" class="tab-pane active">
+                <% for(var i=0; i<connectedList.length; i++) { %>
+              <div class="isp_list_block target">
+                <div class="isp_list_box"> <a href="<%- baseUrl %>client/<%= connectedList[i]._id %>" class="isp_list_anchor">
+                  <div class="isp_list_pic"> <img src="<%-baseUrl%>uploads/profile/<%= connectedList[i].cusProfile %>" alt=""  id="img_<%= connectedList[i]._id %>"> </div>   
+                  <script>
+                    var currentDate = new Date();
+                    var trsnsactionDate =  '<%- connectedList[i].lastTrasaction %>';
+                    trsnsactionDate = new Date(trsnsactionDate);
+                    trsnsactionDate.setDate(trsnsactionDate.getDate()-5);
+                    var transactionClass = 'red-bor';
+                    var Difference_In_Time = currentDate.getTime() - trsnsactionDate.getTime();
+                  
+// To calculate the no. of days between two dates
+var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+//alert(Difference_In_Days);
+                    var transcoId = '<%= connectedList[i]._id %>';
+                    if(Difference_In_Days >= 30){
+                    $('#img_'+transcoId).addClass('red-bor');
+                    }
+                    console.log("trsnsactionDate-----" , trsnsactionDate);
+                    console.log("currentDate-----" , currentDate);
+                  </script>
+                  <div class="isp_list_info">
+                    <div class="row">
+                      <div class="col-md-4 pt-2">
+                        <h3 class="isp_list_name"> <%= connectedList[i].cusName %></h3>
+                        <% if(connectedList[i].lastTrasaction != undefined) { %>
+                        <h5><span style="font-weight: 500;">Last Transacted: </span><%= dateFormat(connectedList[i].lastTrasaction, "mmm dd yyyy"); %></h5>
+                        <% } else {%>
+                        <h5><span style="font-weight: 500;">Last Transacted: </span>Not yet</h5>
+                        <% } %>
+                        </div>
+                      <div class="col-md-4">
+                        <% if(connectedList[i].cusBirthday != undefined) { %>
+                          <h5 class="isp_listinfo_al_right pt-4"><span style="font-weight: 500;">Birthday: </span><%= dateFormat(connectedList[i].cusBirthday, "mmm dd yyyy"); %></h5>
+                        <% } else {%>
+                          <h5 class="isp_listinfo_al_right pt-4"><span style="font-weight: 500;">Birthday: </span>Not found</h5>
+                        <% } %>
+                      </div>
+                      <div class="col-md-4">
+                        <% if(connectedList[i].social_provider != undefined) { %>
+                          <h5 class="isp_listinfo_al_right pt-4"><%= connectedList[i].social_provider %></h5>
+                        <% } else {%>
+                          <h5 class="isp_listinfo_al_right pt-4">Other</h5>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                  </a> </div>
+              </div>
+              <% } %>
+            </div>
+            <div id="Imported" class="tab-pane">
+              <div class="mt-4">
+                <div class="imt_contact_top_info mb-0 jus_con_right">
+                  <div class="mr-3">
+                    <div class="form-group">
+                      <select class="form-control" id="importContactsDropdown">
+                        <option value="all">All Contacts</option>
+                        <option value="google">Google</option>
+                        <option value="outlook">Outlook</option>
+                        <option value="other">File</option>
+                        <!-- <option>Facebook</option>
+                        <option>Linkedin</option>
+                        <option>Apple</option> -->
+                      </select>
+                    </div>
+                  </div>
+                  <div class="custom-control custom-checkbox mt-2">
+                    <input type="checkbox" class="custom-control-input select_all" id="customCheck" name="example1">
+                    <label class="custom-control-label" for="customCheck">Select All</label>
+                  </div>
+                </div>
+                <div class="imt_contact_list">
+                  <form action="<%- baseUrl %>clients/save" role="form" name="import-contacts" method="post">
+                  <div class="row">
+                    <% for(var i=0; i<importContact.length; i++) { %>
+                    <div class="col-md-4 target" >
+                      <div class="imt_contact_box imt_contact_box_bg" data-user-name='<%- importContact[i].name%>' data-user-mail='<%- importContact[i].mail%>' data-user-id='<%- importContact[i]._id%>' data-user-all='All' >
+                        <div style="display: none;"><%= importContact[i].mail%></div>
+                        <div class="contact_pic"><img src="<%= importContact[i].coverPhotos %>" alt=""></div>
+                        <div class="contact_name">
+                          <%= importContact[i].name %><br/>
+                          <% if(importContact[i].provider != undefined) { %>
+                            <p><%= importContact[i].provider == 'Other' ? 'File' : importContact[i].provider %></p>
+                          <% } else {%>
+                            <p>File</p>
+                          <% } %>
+                        </div>
+                        <div class="contact_check">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23">
+                            <g id="Group_7204" data-name="Group 7204" transform="translate(-522 -351)">
+                              <circle id="Ellipse_267" data-name="Ellipse 267" cx="11.5" cy="11.5" r="11.5" transform="translate(522 351)" fill="#27ae60"/>
+                              <path id="checked" d="M0,68.746l3.621,3.628,6.953-6.946-1-.984L3.621,70.391.984,67.754Z" transform="translate(528 294.557)" fill="#fff"/>
+                            </g>
+                          </svg>
+                        </div>
+                        <!-- end:contact_check --> 
+                      </div>
+                      <div class="selectedId" id="selectedId"></div>
+                    </div>
+                    <% } %>
+                    <% if(importContact.length >= 1) { %>
+                      <div class="col-md-12 pb-5">
+                        <div class="form-group mb-0">
+                          <button type="submit" class="btn_sty_1" style="min-width: 320px;">Send Connection Request</button>
+                        </div>
+                      </div>
+                    <% } %>
+                  </div>
+                </form>
+                </div>
+                <!-- end:imt_contact_list --> 
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- end:import contact --> 
+      </section>
+      <!-- <div class="alphabet_bar list-page-alpha" > -->
+        <div class="alphabet_bar_new">
+        <a class="<%-urlQuery == 'all' ? 'active_alphabet_bar' : '' %>" href="/clients">All</a>
+        <a class="<%-urlQuery == 'a' ? 'active_alphabet_bar' : '' %>" href="?filterby=a">A</a>
+        <a class="<%-urlQuery == 'b' ? 'active_alphabet_bar' : '' %>" href="?filterby=b">B</a>
+        <a class="<%-urlQuery == 'c' ? 'active_alphabet_bar' : '' %>" href="?filterby=c">C</a>
+        <a class="<%-urlQuery == 'd' ? 'active_alphabet_bar' : '' %>" href="?filterby=d">D</a>
+        <a class="<%-urlQuery == 'e' ? 'active_alphabet_bar' : '' %>" href="?filterby=e">E</a>
+        <a class="<%-urlQuery == 'f' ? 'active_alphabet_bar' : '' %>" href="?filterby=f">F</a>
+        <a class="<%-urlQuery == 'g' ? 'active_alphabet_bar' : '' %>" href="?filterby=g">G</a>
+        <a class="<%-urlQuery == 'h' ? 'active_alphabet_bar' : '' %>" href="?filterby=c">H</a>
+        <a class="<%-urlQuery == 'i' ? 'active_alphabet_bar' : '' %>" href="?filterby=i">I</a>
+        <a class="<%-urlQuery == 'j' ? 'active_alphabet_bar' : '' %>" href="?filterby=j">J</a>
+        <a class="<%-urlQuery == 'k' ? 'active_alphabet_bar' : '' %>" href="?filterby=k">K</a>
+        <a class="<%-urlQuery == 'l' ? 'active_alphabet_bar' : '' %>" href="?filterby=l">L</a>
+        <a class="<%-urlQuery == 'm' ? 'active_alphabet_bar' : '' %>" href="?filterby=m">M</a>
+        <a class="<%-urlQuery == 'n' ? 'active_alphabet_bar' : '' %>" href="?filterby=n">N</a>
+        <a class="<%-urlQuery == 'o' ? 'active_alphabet_bar' : '' %>" href="?filterby=o">O</a>
+        <a class="<%-urlQuery == 'p' ? 'active_alphabet_bar' : '' %>" href="?filterby=p">P</a>
+        <a class="<%-urlQuery == 'q' ? 'active_alphabet_bar' : '' %>" href="?filterby=q">Q</a>
+        <a class="<%-urlQuery == 'r' ? 'active_alphabet_bar' : '' %>" href="?filterby=r">R</a>
+        <a class="<%-urlQuery == 's' ? 'active_alphabet_bar' : '' %>" href="?filterby=s">S</a>
+        <a class="<%-urlQuery == 't' ? 'active_alphabet_bar' : '' %>" href="?filterby=t">T</a>
+        <a class="<%-urlQuery == 'u' ? 'active_alphabet_bar' : '' %>" href="?filterby=u">U</a>
+        <a class="<%-urlQuery == 'v' ? 'active_alphabet_bar' : '' %>" href="?filterby=v">V</a>
+        <a class="<%-urlQuery == 'w' ? 'active_alphabet_bar' : '' %>" href="?filterby=w">W</a>
+        <a class="<%-urlQuery == 'x' ? 'active_alphabet_bar' : '' %>" href="?filterby=x">X</a>
+        <a class="<%-urlQuery == 'y' ? 'active_alphabet_bar' : '' %>" href="?filterby=y">Y</a>
+        <a class="<%-urlQuery == 'z' ? 'active_alphabet_bar' : '' %>" href="?filterby=z">Z</a>
+      </div>
+      <!-- end:alphabet_bar -->
+    </div>
+  </div>
+  <!-- end:main_content --> 
+</div>
+<!-- end:middle_block -->
+
+ <!-- Import contact modal -->
+ <div class="modal" id="import_contactModal" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Import Contacts</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p style="font-size: 15px;">Please click on the below buttons and import your contacts.</p>
+        <ul class="import_contact_list mb-0">
+          <li>
+            <a href="/import_google_profile"><svg id="symbol" xmlns="http://www.w3.org/2000/svg" width="20.475" height="20.474" viewBox="0 0 20.475 20.474">
+              <path id="Path_3627" data-name="Path 3627" d="M4.8,106.445a5.405,5.405,0,0,1,.765-2.778v-3.451H2.112a10.243,10.243,0,0,0,0,12.459H5.564v-3.451A5.405,5.405,0,0,1,4.8,106.445Z" transform="translate(0 -96.207)" fill="#fbbd00"/>
+              <path id="Path_3628" data-name="Path 3628" d="M198.4,373.722l-2.4,2.4,2.4,2.4a10.16,10.16,0,0,0,6.23-2.112v-3.448h-3.448A5.438,5.438,0,0,1,198.4,373.722Z" transform="translate(-188.162 -358.047)" fill="#0f9d58"/>
+              <path id="Path_3629" data-name="Path 3629" d="M56.274,325.477l-3.451,3.451a10.4,10.4,0,0,0,.886,1.009,10.17,10.17,0,0,0,7.239,3v-4.8A5.441,5.441,0,0,1,56.274,325.477Z" transform="translate(-50.711 -312.461)" fill="#31aa52"/>
+              <path id="Path_3630" data-name="Path 3630" d="M266.237,199.67a10.325,10.325,0,0,0-.168-1.855l-.09-.492H256v4.8h4.857a5.414,5.414,0,0,1-2.075,2.225l3.448,3.448a10.4,10.4,0,0,0,1.009-.886A10.17,10.17,0,0,0,266.237,199.67Z" transform="translate(-245.763 -189.433)" fill="#3c79e6"/>
+              <path id="Path_3631" data-name="Path 3631" d="M202.245,6.392l.424.424,3.393-3.393L205.638,3A10.17,10.17,0,0,0,198.4,0L196,2.4l2.4,2.4A5.4,5.4,0,0,1,202.245,6.392Z" transform="translate(-188.162 0)" fill="#cf2d48"/>
+              <path id="Path_3632" data-name="Path 3632" d="M60.947,4.8V0a10.171,10.171,0,0,0-7.239,3,10.391,10.391,0,0,0-.886,1.009l3.451,3.451A5.441,5.441,0,0,1,60.947,4.8Z" transform="translate(-50.71 0)" fill="#eb4132"/>
+            </svg>
+            Google</a>
+          </li>
+
+          <li>
+            <a href="/import_outlook_profile"><svg id="logotype" xmlns="http://www.w3.org/2000/svg" width="19.206" height="19.206" viewBox="0 0 19.206 19.206">
+              <path id="Path_3633" data-name="Path 3633" d="M272,9h9V.6a.6.6,0,0,0-.6-.6H272Z" transform="translate(-261.797)" fill="#4caf50"/>
+              <path id="Path_3634" data-name="Path 3634" d="M9,9V0H.6A.6.6,0,0,0,0,.6V9Z" fill="#f44336"/>
+              <path id="Path_3635" data-name="Path 3635" d="M9,272H0v8.4a.6.6,0,0,0,.6.6H9Z" transform="translate(0 -261.797)" fill="#2196f3"/>
+              <path id="Path_3636" data-name="Path 3636" d="M272,272v9h8.4a.6.6,0,0,0,.6-.6V272Z" transform="translate(-261.797 -261.797)" fill="#ffc107"/>
+            </svg>
+            Outlook</a>
+          </li>
+
+          <!-- <li>
+            <a href="#"><svg id="facebook" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+              <path id="Path_3651" data-name="Path 3651" d="M18.375,0H2.625A2.628,2.628,0,0,0,0,2.625v15.75A2.628,2.628,0,0,0,2.625,21h15.75A2.628,2.628,0,0,0,21,18.375V2.625A2.628,2.628,0,0,0,18.375,0Z" fill="#1976d2"/>
+              <path id="Path_3652" data-name="Path 3652" d="M201.844,102.563h-3.281V99.938c0-.725.588-.656,1.313-.656h1.313V96h-2.625a3.937,3.937,0,0,0-3.937,3.938v2.625H192v3.281h2.625v7.219h3.938v-7.219h1.969Z" transform="translate(-184.125 -92.063)" fill="#fafafa"/>
+            </svg>
+            Facebook</a>
+          </li>
+
+          <li>
+            <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+              <text id="linkedin" data-name="" transform="translate(10 18)" fill="#0077b5" font-size="20" font-family="icofont, IcoFont"><tspan x="-10" y="0"></tspan></text>
+            </svg>
+            Linkedin</a>
+          </li> -->
+
+          <!-- <li>
+            <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+              <text id="apple" data-name="" transform="translate(10 18)" fill="#666" font-size="20" font-family="icofont, IcoFont"><tspan x="-10" y="0"></tspan></text>
+            </svg>
+            Apple</a>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Import Contact modal -->
+<!--  Add New Contact Popup  -->
+
+<div class="modal" id="newContact"  data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content"> 
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">New Client</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form action="<%- baseUrl %>newContact/save" name="newContact" method="post">
+          <div class="row" id="add_">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Client Name</label>
+                <div class="select_wrap">
+                  <select class="form-control service_cat" name="contact_name" id="contact_name">
+                  </select>
+                  <input type="hidden" name="name" id="contactDynamicName">
+                  <div id="contact_details_json" style="display:none;"></div>
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <label>Client Name</label>
+                <input type="text" class="form-control cus" name="name" id="contact_name">
+                <input type="hidden" class="form-control" name="customerId" id="customerId">
+              </div> -->
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" class="form-control" name="mail" id="mail">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="number" class="form-control" name="mobile" id="mobile">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Address</label>
+                <input type="text" class="form-control address" name="address" id="autocomplete"  onFocus="geolocate()"
+									onkeypress="return event.keyCode != 13;">
+              </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none">
+              <label class="control-label">Latitude <span class="text-danger">*</span></label>
+              <input name="lat" id="latitude" class="form-control" type="text" placeholder="Latitude">
+            </div>
+            <div class="form-group col-sm-6" style="display:none">
+              <label class="control-label">Longitude <span class="text-danger">*</span></label>
+              <input name="lng" id="longitude" class="form-control" type="text" placeholder="Longitude">
+            </div>
+            <div class="form-group col-sm-6" style="display:none">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">City </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <input name="city" id="locality" class="form-control" type="text" placeholder="City">
+              </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="locality">State/Province
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <input name="state" id="administrative_area_level_1" class="form-control"
+                  type="text" placeholder="State">
+
+                <input type="hidden" class="field" id="street_number" disabled="true"></input>
+                <input type="hidden" class="field" id="route" disabled="true"></input>
+              </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="postal_code">Zip/Postal
+                Code
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <input name="postal_code" id="postal_code" type="text" class="form-control"
+                  placeholder="Zip/Postal">
+              </div>
+            </div>
+            <div class="form-group col-sm-6" style="display:none">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Country
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <input name="country" id="country" type="text" class="form-control"
+                  placeholder="Country">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>My Notes</label>
+                <textarea class="form-control mb-3" cols="30" rows="5" name="notes" id="notes"></textarea>
+                <input type="hidden" id="businessOwnerId" value="<%- userCustomerSession._id %>">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div>
+                  <div id="serviceData" style="display:none;"><%- JSON.stringify(service) %></div>
+                    <input type="checkbox" id="bookAppointment" name="appointment">
+                    <label for="customCheck">Book a New Appointment</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="bookAppointmentFields"></div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input type="hidden" name="rowCount" id="rowCount" value="1">
+                <input type="hidden" id="findtimezone" name="timezone" value="">
+                <script>
+                  var finalTimeZone = moment.tz.guess();
+                  document.getElementById("findtimezone").value = finalTimeZone;
+                </script>
+                <button type="submit" class="btn_sty_1">Submit</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  End Add New contact  --> 
+ <!-- Import contact modal -->
+ <div class="modal" id="import_csv_file" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Import Csv File</h4>
+        <button type="button" class="close" data-dismiss="modal"><i class="icofont-close"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p style="font-size: 15px;">Click to Download Sample CSV File and Import CSV file.</p>
+        <div class="row">
+        <div class="col-md-6"><button type="submit" class="btn_sty_2 mb-xs-15"><a href="<%- baseUrl %>download/xlsx" >Download</a></button></div>
+        <div class="col-md-6"><form enctype="multipart/form-data">
+          <input id="upload" class="form-control" type=file  name="files[]" placeholder="Please select file here">
+      </form></div>
+      </div>
+
+
+<!-- Popup modal for csv notification  -->
+<div class="modal" id="csvPopupModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h6 id="csvAddedCount"></h6>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" onclick="window.location.href ='<%- baseUrl %>clients?all=true'" class="btn btn-success" data-dismiss="modal">Ok</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+<script>
+    var ExcelToJSON = function() {
+
+      this.parseExcel = function(file) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          var data = e.target.result;
+          var workbook = XLSX.read(data, {
+            type: 'binary'
+          });
+          var arr = []
+          workbook.SheetNames.forEach(function(sheetName) {
+            // Here is your object
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+            if(XL_row_object){
+          //  console.log("kh----" , arr[0]);
+              if( XL_row_object[0].Email == undefined){
+                Swal.fire("Please Enter correct the file");
+              }  else{
+              //  alert("OOk");
+
+                $.ajax({
+                 type: "POST",
+                 url: "<%- baseUrl %>save-csv-file-contacts",
+                 data: {"data":XL_row_object},
+                 success: function(data)
+                 {
+                  
+                   if(data != null){
+                   console.log(data);
+                   if(data.alreadyAdded > 0 && data.count ==0){
+                    $("#csvAddedCount").text(`One or more Customers already exist.`);
+                   }else{
+                    $("#csvAddedCount").text(`${data.count} ${data.count > 1 ? 'users' : 'user'} have been added.`);
+                   }
+                   $('#csvPopupModal').show();
+                  // alert(`${data.count} user have been added.`)
+                  // window.location.href = "<%- baseUrl %>clients";
+                   }
+                }
+                })
+              }
+            }
+            console.log("data--- ", XL_row_object);
+            var json_object = JSON.stringify(XL_row_object);
+          //  console.log(JSON.parse(json_object));
+          var a = JSON.parse(json_object)
+           arr = XL_row_object;
+          })
+          console.log("kadjf----" , arr);
+        };
+
+        reader.onerror = function(ex) {
+          // alert(ex);
+          // console.log("sfhkr--------kdjbsj",ex);
+        };
+
+        reader.readAsBinaryString(file);
+      };
+  };
+
+  function handleFileSelect(evt) {
+    
+    var files = evt.target.files; // FileList object
+    var a = files[0].type;
+    console.log(files)
+     if(a.includes("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+      var xl2json = new ExcelToJSON();
+      xl2json.parseExcel(files[0]);
+      }
+     else{
+      Swal.fire("Please use the correct 'CSV' file type");
+     }
+  }
+</script>
+<script>
+  document.getElementById('upload').addEventListener('change', handleFileSelect, false);
+</script>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Import Contact modal -->
+
+
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS --> 
+	<!-- validation -->
+  <script src="<%- baseUrl %>validation/jquery.validate.min.js"></script>
+  <script src="<%- baseUrl %>validation/custom.validate.js"></script>
+    <!-- Datepicker -->
+    <script src="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.js"></script>
+    <link rel="stylesheet" href="<%- baseUrl %>admin/vendors/datepicker/jquery-ui.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <script src="<%- baseUrl %>js/sweetalert2.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="<%- baseUrl %>js/sweetalert2.js"></script>
+<script>
+  //$('a[data-toggle="tab"]').val("Imported");
+ // $('.nav-tabs a[href="#Imported"]').tab('show');
+		$.ajax({
+			type: "GET",
+			url: "<%- baseUrl %>all-clients",
+			success: function (data) {
+				var numbers = data;
+				var option = '';
+        var contact_details_json = [];
+				$("#contact_name").append('<option value="">Please select</option>');
+				// $("#contact_name").append('<option value="other">Other</option>');
+				for (var i = 0; i < numbers.length; i++) {
+					  if(numbers[i].fullName != 'undefined' && numbers[i].fullName != undefined){
+                contact_details_json.push(numbers[i]);
+                option += '<option value="' + numbers[i]._id + '">' + numbers[i].fullName +' ('+ numbers[i].mail + ')</option>';
+            } 
+				}
+				$('#contact_name').append(option);
+
+        contact_details_json = JSON.stringify(contact_details_json);
+        $('#contact_details_json').html(contact_details_json);
+
+        $('#contact_name').select2({
+          placeholder: "Search", 
+          tags: true
+         // maximumSelectionLength: 1
+        });
+			}
+		});
+
+    $(document).on('change', 'select#contact_name', function(e) {
+        console.log('this.value', this.value);
+        let getCustomerId = this.value;
+        var contact_details_json = $('#contact_details_json').html();
+        contact_details_json = JSON.parse(contact_details_json);
+        let foundElementData = contact_details_json.filter((element)=>{
+                                  return element._id == getCustomerId;
+                              });
+        console.log('=========foundElementData[0]',foundElementData[0]);                     
+        if(foundElementData.length > 0){
+                $("#customerId").val(foundElementData[0]._id);
+                $("#contactDynamicName").val(foundElementData[0].fullName);
+                $("#mail").val(foundElementData[0].mail);  
+                $("#notes").val(foundElementData[0].notes);
+                $("#mobile").val(foundElementData[0].businessPhones);
+                $(".address").val(foundElementData[0].address);
+         }else{
+                $("#customerId").val('');
+                $("#contactDynamicName").val(this.value);
+                $("#mail").val('');
+                $("#notes").val('');
+                $("#mobile").val('');
+                $(".address").val('');
+         }   
+    });
+
+  var type = '<%- type%>';
+  if(type !== "no-filter"){
+$("#importContactsDropdown").val(type);
+$('.first_tab_link').removeClass('active');
+$('.first_tab_link').removeClass('show');
+$('#Connected').removeClass('active');
+$('.second_tab_link').addClass('active');
+$('.second_tab_link').addClass('show');
+$('#Imported').addClass('active');
+
+  }
+  
+  if(type == "no-filter"){
+  $("#importContactsDropdown").val("all");
+  }else{
+  $("#importContactsDropdown").val(type);
+  }
+   $("#importContactsDropdown").change(function () {
+      $(".loader-bg").fadeIn(0000);
+        var selectedValue = this.value;
+        if(selectedValue == "all"){
+          window.location.href = "<%- baseUrl %>clients?all=true";
+        }else if(selectedValue == "google"){
+          window.location.href = "<%- baseUrl %>google-imported"; 
+      
+        }else if(selectedValue == "outlook"){
+          window.location.href = "<%- baseUrl %>outlook-imported"; 
+      
+        }else if(selectedValue == "other"){
+          window.location.href = "<%- baseUrl %>other-imported"; 
+      
+        }
+      
+    });
+    $(document).on("click", ".deleteAddMoreContainer", function(){ 
+
+    Swal.fire({
+      title: 'Do you really want to remove this?',
+      showDenyButton: false,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      confirmButtonColor: 'limegreen',
+      cancelButtonText: 'No',
+      cancelButtonColor:'red'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var rowCount = $('#rowCount').val();
+        rowCount = parseInt(rowCount) - 1;
+        $('#rowCount').val(rowCount);
+        var rowId = $(this).attr('data-row');
+        $('.addMoreContainer'+rowId).remove();
+      } else if (result.isDenied) {
+        return false;
+      }
+    })
+
+
+  });
+ function myFunction() {
+  var input = document.getElementById("Search");
+  var filter = input.value.toLowerCase();
+  var nodes = document.getElementsByClassName('target');
+
+  for (i = 0; i < nodes.length; i++) {
+    if (nodes[i].innerText.toLowerCase().includes(filter)) {
+      nodes[i].style.display = "block";
+    } else {
+      nodes[i].style.display = "none";
+     // alert(nodes[i]);
+    }
+  }
+}
+      $(document).ready(function(){  
+        $('.client-link').addClass('nav-active'); 
+        $(".mobile_menu_btn").click(function(){
+          $(".mobile_menu").addClass("menu_open");
+        });
+
+        $(".menu_close").click(function(){
+          $(".mobile_menu").removeClass("menu_open");
+        });
+      });
+
+      $(document).ready(function(){
+        $(".select_all").click(function () {
+          if($(this).prop("checked") == true){
+            $('#selectedId').html("");
+            $(".imt_contact_box").each(function() {
+            $(this).addClass("selected");
+              var userId = $(this).data('user-id');
+              var usermail = $(this).data('user-mail');
+              var username = $(this).data('user-name');
+              $('#selectedId').append(`
+              <div class="${userId}" id="${userId}">
+                <input type="hidden" name="contactMail[]" id="contactMail" value="${usermail}">
+                <input type="hidden" name="contactName[]" id="contactName" value="${username}">
+              </div>
+              `);
+            });
+          } else {
+            $('#selectedId').html("");
+            $(".imt_contact_box").each(function() {
+            $(this).removeClass("selected");
+            });
+          }
+        });
+
+       
+
+        $(".imt_contact_box").click(function(){
+          $(this).toggleClass("selected");
+          var userId = $(this).data('user-id');
+          var usermail = $(this).data('user-mail');
+          var username = $(this).data('user-name');
+          var isSelected = $(this).attr('class');
+          if(isSelected.includes('selected')){
+          $('#selectedId').append(`
+          <div class="${userId}" id="${userId}">
+            <input type="hidden" name="contactMail[]" id="contactMail" value="${usermail}">
+            <input type="hidden" name="contactName[]" id="contactName" value="${username}">
+          </div>
+          `);
+          } else {
+            $("." + userId).remove();
+            $('.select_all').prop('checked', false);
+          }
+        
+        });
+      });
+      $("form[name='import-contacts']").validate({
+		rules: {
+      contactId:{
+				// 		required: true,
+				// 		email:true
+				// }		 
+	            
+		},
+		
+	//	messages: {
+					// email : {
+					// 		  required: "Please Enter Your Email Address",
+					// 		  email : "Invalid Email Address."
+					// }
+					
+               },
+	         submitHandler: function(form) {
+		     form.submit();
+		}
+	  });
+   function my_function(){
+   // var num = Math.floor((Math.random() * 10) + 1);
+    //alert(num);
+    
+    var row = 1;
+    var rowCount = $('#rowCount').val();
+    rowCount = parseInt(rowCount) + 1;
+    if(rowCount>2){
+      Swal.fire("You can not add more than two appointments");
+    } else {
+      $('#rowCount').val(rowCount);
+      $('#bookAppointmentFields').append(`
+        <div class="row addMoreContainer${rowCount}">
+          <div class="col-md-12" id="service">
+            <div class="select_wrap">
+              <label>Service Name</label>
+              <select class="form-control service_cat category${rowCount}" name='category${rowCount}' id="category${rowCount}" required>
+              </select>
+            </div>        
+          </div>
+          <a class="text-danger deleteAddMoreContainer" data-row="${rowCount}" href="javascript:void(0);" title"Do you really want to remove this ?">Delete</a>  
+          <div class="col-md-6" id="date">
+            <div class="form-group">
+              <label>Date</label>
+              <div class="wrap_form_control_icon">
+                <input type="text" class="form-control datePicker1" data-row="${rowCount}" name="date${rowCount}" id="date${rowCount}" onchange="getAvailableTime${rowCount}(this);" placeholder="Please enter date" readonly>
+                <label class="input_icon" for="date${rowCount}"><i class="icofont-ui-calendar"></i></label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" id="time">
+            <div class="form-group">
+              <label>Time</label>
+              <div class="wrap_form_control_icon">
+                <select class="form-control slots${rowCount}" data-row="${rowCount}" name='time${rowCount}' id='time${rowCount}'></select>
+              </div>
+            </div>
+          </div> 
+        </div>
+      `);
+  $(`.category${rowCount}`).change(function(){
+   var boId = $("#businessOwnerId").val();
+      var serviceId = $(`#category${rowCount}`).find(":selected").data('id');
+      var dateValue = $(`[name="date${rowCount}"]`).val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateValue----------->",dateValue);
+      $.ajax({
+        type: "GET",
+        url: `<%- baseUrl %>findBusinessSlots/${boId}/${serviceId}/${dateValue}`,
+        success: function(data){
+          var data = data.data;
+          $(`.slots${rowCount}`).empty();
+          if(data.length == 0){
+           // alert("The Business Owner is not available. Please select another day.");
+          } else {
+            var option = '';
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $(`.slots${rowCount}`).append(option);
+          }
+        }
+      });
+    //  getAvailableTime1();
+    //  getAvailableTime2();
+    //  getAvailableTime3();
+    })
+    }
+        var numbers = $("#serviceData").html();
+        numbers = JSON.parse(numbers);
+        var option = '';
+        $(`.category${rowCount}`).append('<option value="">Please select</option>');
+				for (var i = 0; i < numbers.length; i++) {
+					option += '<option data-id="'+ numbers[i]._id +'" value="' + numbers[i].name + '">' + numbers[i].name + '</option>';
+				}
+				$(`.category${rowCount}`).append(option);
+
+      var lastDate = new Date();
+      $(".datePicker1").datepicker({
+        dateFormat: "mm-dd-yy",
+        changeMonth: true,
+        changeYear: true,
+        minDate:lastDate,
+      });
+      
+      $('.timepicker').timepicker({
+        timeFormat: 'h:mm p',
+        // interval: 120,
+        'step': '30',
+        minTime: '09',
+        maxTime: '10:00pm',
+        // defaultTime: '11',
+        startTime: '09:00',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true,
+      }); 
+    }
+
+
+    $("#bookAppointment").on("change", function(){
+      let row = 1;
+      if ($("#bookAppointment").is(":checked")) {
+         $('#add_').append(`
+         <div class="col-md-6" id="add">
+              <div class="form-group">
+                <a  href="javascript:my_function();" class="add_more">Add more service</a>
+              </div>
+            </div>`
+            )
+        $('#bookAppointmentFields').append(`
+          <div class="row">
+            <div class="col-md-12" id="service">
+              <div class="select_wrap">
+                <label>Service Name</label>
+                <select class="form-control service_cat category" name='category1' id="category" required>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6" id="date">
+              <div class="form-group">
+                <label>Date</label>
+                <div class="wrap_form_control_icon">
+                  <input type="text" class="form-control datePicker1" data-row="${row}" name="date1" id="date1" onchange="getAvailableTime1(this);" placeholder="Please enter date" readonly>
+                  <label class="input_icon" for="date1"><i class="icofont-ui-calendar"></i></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" id="time">
+              <div class="form-group">
+                <label>Time</label>
+                <div class="wrap_form_control_icon">
+                  <select class="form-control slots1" data-row="${row}" name='time1' id='time1'></select>
+                </div>
+              </div>
+            </div>
+          </div>
+          `);
+          var lastDate = new Date();
+            $(".datePicker1").datepicker({
+              dateFormat: "mm-dd-yy",
+              changeMonth: true,
+              changeYear: true,
+              minDate:lastDate,
+              showButtonPanel: true,
+            });
+          
+          $('.timepicker').timepicker({
+            timeFormat: 'h:mm p',
+            // interval: 120,
+            'step': '30',
+            minTime: '09',
+            maxTime: '10:00pm',
+            // defaultTime: '11',
+            startTime: '09:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true,
+          });
+
+        var numbers = $("#serviceData").html();
+        numbers = JSON.parse(numbers);
+        // console.log("numbers",numbers);
+        var option = '';
+        $(".category").append('<option value="">Please select</option>');
+				for (var i = 0; i < numbers.length; i++) {
+					option += '<option data-id="'+ numbers[i]._id +'" value="' + numbers[i].name + '">' + numbers[i].name + '</option>';
+				}
+				$('.category').append(option);
+        // do something if the checkbox is NOT checked
+      }else{
+        $("#bookAppointmentFields").empty();
+        // $('#service').remove();
+        // $('#time').remove();
+        // $('#date').remove();
+         $('#add').remove();
+      }
+
+    $(`.category`).change(function(){
+      var boId = $("#businessOwnerId").val();
+      var serviceId = $('.category').find(":selected").data('id');
+      var dateValue = $('[name="date1"]').val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateValue----------->",dateValue);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>findBusinessSlots`,
+        data: {
+          ispId: function () {
+            return boId;
+          },
+          serviceId: function () {
+            return serviceId;
+          },
+          date: function () {
+            return dateValue;
+          },
+          timezone: function () {
+            return $("#findtimezone").val();
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          $(".slots1").empty();
+          if(data.length == 0){
+           // alert("The Business Owner is not available. Please select another day.");
+          } else {
+            var option = '';
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            $(".slots1").append('<option value="">Please select</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots1').append(option);
+          }
+        }
+      });
+    //  getAvailableTime1();
+    //  getAvailableTime2();
+    //  getAvailableTime3();
+    })
+    })
+   
+    function getAvailableTime1(check) {
+      var boId = $("#businessOwnerId").val();
+      var serviceId = $('.category').find(":selected").data('id');
+      var dateValue = $('[name="date1"]').val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateValue----------->",dateValue);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>findBusinessSlots`,
+        data: {
+          ispId: function () {
+            return boId;
+          },
+          serviceId: function () {
+            return serviceId;
+          },
+          date: function () {
+            return dateValue;
+          },
+          timezone: function () {
+            return $("#findtimezone").val();
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          $(".slots1").empty();
+          if(data.length == 0){
+            Swal.fire("The Business Owner is not available. Please select another day.");
+          } else {
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            var option = '';
+            $(".slots1").append('<option value="">Please select</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots1').append(option);
+          }
+        }
+      });
+    }
+    function getAvailableTime2(check) {
+      var boId = $("#businessOwnerId").val();
+      var serviceId = $('.category2').find(":selected").data('id');
+      var dateValue = $('[name="date2"]').val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateValue----------->",dateValue);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>findBusinessSlots`,
+        data: {
+          ispId: function () {
+            return boId;
+          },
+          serviceId: function () {
+            return serviceId;
+          },
+          date: function () {
+            return dateValue;
+          },
+          timezone: function () {
+            return $("#findtimezone").val();
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          $(".slots2").empty();
+          if(data.length == 0){
+            Swal.fire("The Business Owner is not available. Please select another day.");
+          } else {
+            var option = '';
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            $(".slots2").append('<option value="">Please select</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots2').append(option);
+          }
+        }
+      });
+    }
+    function getAvailableTime3(check) {
+      var boId = $("#businessOwnerId").val();
+      var serviceId = $('.category').find(":selected").data('id');
+      var dateValue = $('[name="date3"]').val();
+      dateValue = moment.utc(dateValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateValue   dateContainerDiv----------->",dateValue);
+      $.ajax({
+        type: "POST",
+        url: `<%- baseUrl %>findBusinessSlots`,
+        data: {
+          ispId: function () {
+            return boId;
+          },
+          serviceId: function () {
+            return serviceId;
+          },
+          date: function () {
+            return dateValue;
+          },
+          timezone: function () {
+            return $("#findtimezone").val();
+          },
+        },
+        success: function(data){
+          var data = data.data;
+          $(".slots3").empty();
+          if(data.length == 0){
+            Swal.fire("The Business Owner is not available. Please select another day.");
+          } else {
+            var option = '';
+            var currentTime = moment().format("hh:mm A");
+            var currentDate = moment().format("YYYY-MM-DD");
+            $(".slots3").append('<option value="">Please select</option>');
+            for (var i = 0; i < data.length; i++) {
+              if(moment(currentDate,"YYYY-MM-DD").isSame(moment(dateValue,"YYYY-MM-DD"))){
+                if(moment(currentTime,'HH:mm A').isBefore(moment(data[i],'HH:mm A'))){
+                  option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+                }
+              }else{
+                option += '<option value="' + moment(data[i],'HH:mm').format('hh:mm A') + '">' + moment(data[i],'HH:mm').format('hh:mm A') + '</option>';
+              }
+            }
+            $('.slots3').append(option);
+          }
+        }
+      });
+    }
+    jQuery.validator.addMethod("checkPrevTime2", function(value, element, params) {
+      var date1 = $('input[name="date1"]').val() || 0;
+      var date2 = $('input[name="date2"]').val() || 0;
+      if( date1 == date2){
+        var time1 = $('#time1').val();
+        var time2 = $('#time2').val();
+        if(time1 == time2){
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return true
+      }
+    }, 'Please, choose different time.');
+    jQuery.validator.addMethod("checkPastTime", function(value, element, params) {
+      var finalTimeZone = moment.tz.guess();
+      var val = value;
+      var dateIdName = ($(element).data('row') == '') ? 'date' : 'date'+$(element).data('row');
+      var dateInputValue = $('#'+dateIdName).val();
+      dateInputValue = moment.utc(dateInputValue, 'MM-DD-YYYY').format('YYYY-MM-DD');
+      console.log("dateInputValue----------->",dateInputValue);
+      var todayDate = new Date().toISOString();
+      // IST time zone code
+      todayDate = todayDate.split('.')[0];
+      var dateTz = moment.tz(todayDate, "GMT");
+      todayDate = dateTz.clone().tz(finalTimeZone).format("YYYY-MM-DD");
+		  var todayTime = dateTz.clone().tz(finalTimeZone).format("HH:mm:ss");
+      // IST time zone code end
+      val = moment.utc(val, 'hh:mm A').format('HH:mm:ss');
+      if(todayDate >= dateInputValue){
+        if(todayDate == dateInputValue){
+          return todayTime < val
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
+    }, 'To Time must be greater than current Time.');
+    function is_past_time1() {
+      return $('[name="date1"]').val().length > 0;
+    }function is_past_time2() {
+      return $('[name="date2"]').val().length > 0;
+    }function is_past_time3() {
+      return $('[name="date3"]').val().length > 0;
+    }
+    $("form[name='newContact']").validate({
+      ignore: [],
+      debug: false,
+      rules: {
+        name: {
+         // required: true,
+        },
+        mail: {
+          required: true,
+          // noSpace: true,
+					// 	remote: {
+					// 		url: "<%- baseUrl %>checkemailexist",
+					// 		type: "post",
+					// 		data: {
+					// 			email: function () {
+					// 				return $("#mail").val();
+					// 			}
+					// 		},
+					// 		beforeSend: function () {
+					// 		},
+					// 		complete: function (data) {
+					// 		}
+					// 	}
+        },
+        mobile: {
+          required: true,
+          noSpace: true,
+          number: true,
+					minlength: 10,
+					maxlength: 10,
+        },
+        // address: {
+        //   required: true,
+        // },
+        notes: {
+         // required: true,
+        },
+        date1: {
+              required: true,
+            },
+            time1: {
+              required: true,
+              checkPastTime:{
+                depends: is_past_time1,
+                param: $('input[name="date1"]').val(),
+              },
+            },
+            date2: {
+              required: true,
+            },
+            time2: {
+              required: true,
+              checkPastTime:{
+                depends: is_past_time2,
+                param: $('input[name="date2"]').val(),
+              },
+              checkPrevTime2:{
+                depends: is_past_time2,
+                param: $('input[name="date2"]').val(),
+              },
+            },
+            date3: {
+              required: true,
+            },
+            time3: {
+              required: true,
+              checkPastTime:{
+                depends: is_past_time3,
+                param: $('input[name="date3"]').val(),
+              },
+            },
+      },
+      messages: {
+        name: {
+          required: 'Please enter contact name.'
+        },
+        mail: {
+          required: 'Please enter email.',
+          // remote: "This email address already exists."
+        },
+        mobile: {
+          required: 'Please enter mobile number',
+          number: "Please enter a phone number",
+					minlength: "Minimum length is 10.",
+					maxlength: "Maximum length is 10.",
+        },
+        address: {
+          required: 'Please enter address.'
+        },
+        notes: {
+          required: 'Please enter notes.',
+        },
+        date: {
+          required: 'Please enter a valid date',
+        },
+        time: {
+          required: 'Please enter a valid time.',
+        },
+        date1: {
+          required: 'Please enter a valid date',
+        },
+        time1: {
+          required: 'Please enter a valid time.',
+        },
+        date2: {
+          required: 'Please enter a valid date',
+        },
+        time2: {
+          required: 'Please enter a valid time.',
+        },
+        date3: {
+          required: 'Please enter a valid date',
+        },
+        time3: {
+          required: 'Please enter a valid time.',
+        },
+      },
+      submitHandler: function (form) {
+        console.log(" submitHandler---,,");
+       $(":submit").attr("disabled", true);
+       form.submit();
+      }
+    });
+//     $.validator.addClassRules("court_price", {
+//     required: true,
+//     priceGreaterThan: true,
+//     twoNumberAfterDecimal: true,
+//     maxlength: 7
+// });
+$.validator.addClassRules("inputName", {
+    required: true,
+}); // This is just a sample script. Paste your real code (javascript or HTML) here.
+
+
+//     $('#contact_name').on('input', function() {
+//       var selectedValue = this.value;
+//     //  alert(selectedValue);
+// });
+    </script> 
+<script>
+	// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+	var placeSearch, autocomplete;
+	var componentForm = {
+		street_number: 'short_name',
+		route: 'long_name',
+		locality: 'long_name',
+		administrative_area_level_1: 'short_name',
+		country: 'long_name',
+		postal_code: 'short_name'
+	};
+
+	function initAutocomplete() {
+		// Create the autocomplete object, restricting the search to geographical
+		// location types.
+		autocomplete = new google.maps.places.Autocomplete(
+          /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+			{ types: ['geocode'] });
+
+		// When the user selects an address from the dropdown, populate the address
+		// fields in the form.
+		autocomplete.addListener('place_changed', fillInAddress);
+	}
+
+	function fillInAddress() {
+		// Get the place details from the autocomplete object.
+		var place = autocomplete.getPlace();
+		document.getElementById('latitude').value = place.geometry.location.lat();
+		document.getElementById('longitude').value = place.geometry.location.lng();
+
+
+		for (var component in componentForm) {
+			document.getElementById(component).value = '';
+			document.getElementById(component).disabled = false;
+		}
+
+		// Get each component of the address from the place details
+		// and fill the corresponding field on the form.
+		for (var i = 0; i < place.address_components.length; i++) {
+			var addressType = place.address_components[i].types[0];
+			if (componentForm[addressType]) {
+				var val = place.address_components[i][componentForm[addressType]];
+				document.getElementById(addressType).value = val;
+			}
+		}
+		var fullAddress = autocomplete.getPlace().formatted_address;
+		var addressArray = fullAddress.split(',');
+		//addressArray.splice(addressArray.length - 3);
+		document.getElementById('autocomplete').value = addressArray.toString();
+	}
+
+	// Bias the autocomplete object to the user's geographical location,
+	// as supplied by the browser's 'navigator.geolocation' object.
+	function geolocate() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function (position) {
+				var geolocation = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				};
+				var circle = new google.maps.Circle({
+					center: geolocation,
+					radius: position.coords.accuracy
+				});
+				autocomplete.setBounds(circle.getBounds());
+			});
+		}
+	}
+</script>
+<script>
+	function getLink(sel){
+		var link = sel.value;
+		$("#websiteName").html(link);
+		$("#websiteLink").attr("href", 'https://' + link);
+	}
+</script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJ6uwVCSWkHJlZD-qZ8hmG--apu2Q76L4&libraries=places&callback=initAutocomplete"
+	async defer></script>
+<script>
+  $(document).ready(function(){  
+    $(".hideShowBtn").click(function(){
+      $(".common-notification-hideShow").toggle();
+    });
+
+    //Hide loader
+    // $(".loader-bg").fadeOut(1750);
+
+    $(".second_tab_link").click(function(){
+      $(".alphabet_bar").hide();
+    });
+
+    $(".first_tab_link").click(function(){
+      $(".alphabet_bar").show();
+    });
+
+    if ($(".second_tab_link").hasClass("active")) {
+      $(".alphabet_bar").hide();
+    }
+
+    
+  });
+  // var counter = 0;
+  // setInterval(function() {
+  //     var frames=19; var frameWidth = 30;
+  //     var offset=counter * -frameWidth;
+  //     document.getElementById("spinner").style.backgroundPosition=
+  //         0 + "px" + " " + offset + "px";
+  //     counter++; if (counter>=frames) counter =0;
+  // }, 60);
+</script>
+</body>
+</html>
